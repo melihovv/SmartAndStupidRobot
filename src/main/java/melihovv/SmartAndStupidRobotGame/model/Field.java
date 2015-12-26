@@ -24,7 +24,7 @@
 
 package melihovv.SmartAndStupidRobotGame.model;
 
-import java.awt.Dimension;
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -167,7 +167,7 @@ public class Field {
     public <Position> List<FieldObject> objects(Class objType, Position pos) {
         List<FieldObject> objList = new ArrayList<>();
 
-        if(_objs.containsKey(objType)) {
+        if (_objs.containsKey(objType)) {
             objList.addAll(_objs.get(objType).stream().filter(
                     obj -> obj.pos().equals(pos)).collect(Collectors.toList()));
         }
@@ -198,5 +198,15 @@ public class Field {
      */
     public void clear() {
         _objs.clear();
+    }
+
+    /**
+     * Returns true if <code>pos</code> belongs to field, otherwise — false.
+     * @param pos
+     * @return
+     */
+    public boolean contains(Point pos) {
+        return pos.getX() >= 1 && pos.getX() <= _dim.getWidth() &&
+                pos.getY() >= 1 && pos.getY() <= _dim.getHeight();
     }
 }
