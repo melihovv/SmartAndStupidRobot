@@ -86,8 +86,8 @@ public class SmartRobot extends FieldObject<CellPosition> {
     }
 
     protected void fireRobotAction() {
-        for (Object listner : _listenerList) {
-            ((SmartRobotActionListener) listner).smartRobotMakedMove(_event);
+        for (Object listener : _listenerList) {
+            ((SmartRobotActionListener) listener).smartRobotMakedMove(_event);
         }
     }
 }
