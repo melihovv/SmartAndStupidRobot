@@ -133,8 +133,8 @@ public class View extends JPanel implements KeyListener {
 
         Point ltc = leftTopCorner(smartRobot.pos());
         g.drawString(
-                "R",
-                ltc.x + CELL_SIZE / 3,
+                "Sm",
+                ltc.x + CELL_SIZE / 5,
                 ltc.y + CELL_SIZE / 5 + FONT_HEIGHT
         );
 
