@@ -171,5 +171,14 @@ public class Model {
         public Target(Field field) {
             super(field);
         }
+
+        @Override
+        public boolean setPos(CellPosition pos) {
+            if (pos != null) {
+                _pos = pos;
+                return true;
+            }
+            return false;
+        }
     }
 }
