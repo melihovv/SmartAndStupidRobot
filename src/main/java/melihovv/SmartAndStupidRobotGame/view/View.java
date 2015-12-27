@@ -24,13 +24,19 @@
 
 package melihovv.SmartAndStupidRobotGame.view;
 
-import melihovv.SmartAndStupidRobotGame.model.*;
+import melihovv.SmartAndStupidRobotGame.model.FieldObject;
+import melihovv.SmartAndStupidRobotGame.model.Mire;
+import melihovv.SmartAndStupidRobotGame.model.Model;
+import melihovv.SmartAndStupidRobotGame.model.SmartRobot;
+import melihovv.SmartAndStupidRobotGame.model.Wall;
 import melihovv.SmartAndStupidRobotGame.model.navigation.CellPosition;
 import melihovv.SmartAndStupidRobotGame.model.navigation.Direction;
-import melihovv.SmartAndStupidRobotGame.model.navigation.MiddlePosition;
 
-import javax.swing.*;
-import java.awt.*;
+import javax.swing.JPanel;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Graphics;
+import java.awt.Point;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.util.List;
@@ -69,6 +75,8 @@ public class View extends JPanel implements KeyListener {
 
         _model.smartRobot().addListener(new SmartRobotObserver());
         addKeyListener(this);
+
+        setFocusable(true);
     }
 
     @Override
@@ -80,10 +88,10 @@ public class View extends JPanel implements KeyListener {
         _offsetY = Math.abs(getHeight() - _height) / 2;
 
         drawGrid(g);
-        drawTarget(g, _model.target());
-        drawSmartRobot(g, _model.smartRobot());
         drawWalls(g, _model.field().objects(Wall.class));
         drawMires(g, _model.field().objects(Mire.class));
+        drawTarget(g, _model.target());
+        drawSmartRobot(g, _model.smartRobot());
         // TODO drawStupidRobot
     }
 
@@ -203,8 +211,15 @@ public class View extends JPanel implements KeyListener {
 
     @Override
     public void keyPressed(KeyEvent e) {
-        // TODO implement.
-        log.info("Key pressed");
+        if (e.getKeyCode() == KeyEvent.VK_UP) {
+            _model.smartRobot().makeMove(Direction.north());
+        } else if (e.getKeyCode() == KeyEvent.VK_DOWN) {
+            _model.smartRobot().makeMove(Direction.south());
+        } else if (e.getKeyCode() == KeyEvent.VK_LEFT) {
+            _model.smartRobot().makeMove(Direction.west());
+        } else if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
+            _model.smartRobot().makeMove(Direction.east());
+        }
     }
 
     @Override
@@ -216,6 +231,7 @@ public class View extends JPanel implements KeyListener {
 
         @Override
         public void smartRobotMadeMove(SmartRobot.SmartRobotActionEvent e) {
+            log.info("Smart robot made move");
             repaint();
         }
     }

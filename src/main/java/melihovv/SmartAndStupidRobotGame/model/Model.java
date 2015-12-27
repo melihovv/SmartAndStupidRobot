@@ -81,6 +81,13 @@ public class Model {
         );
         _field.addObject(
                 new MiddlePosition(
+                        Direction.east(),
+                        new CellPosition(new Point(5, 4))
+                ),
+                new Wall(_field)
+        );
+        _field.addObject(
+                new MiddlePosition(
                         Direction.north(),
                         new CellPosition(new Point(6, 2))
                 ),

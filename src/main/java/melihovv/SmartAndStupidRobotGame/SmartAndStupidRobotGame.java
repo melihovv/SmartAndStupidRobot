@@ -27,7 +27,9 @@ package melihovv.SmartAndStupidRobotGame;
 import melihovv.SmartAndStupidRobotGame.model.Model;
 import melihovv.SmartAndStupidRobotGame.view.View;
 
-import javax.swing.*;
+import javax.swing.JFrame;
+import javax.swing.SwingUtilities;
+import javax.swing.WindowConstants;
 
 public class SmartAndStupidRobotGame {
 
