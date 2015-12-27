@@ -53,8 +53,16 @@ public class Model {
     }
 
     private void identifyGameOver() {
-        if (smartRobot().pos().equals(_target.pos())) {
+        CellPosition smRobPos = smartRobot().pos();
+        if (smRobPos.equals(_target.pos())) {
             log.info("Smart robot has reached target position");
+        }
+
+        for (FieldObject mire : _field.objects(Mire.class)) {
+            if (smRobPos.equals(mire.pos())) {
+                log.info("Smart robot in mire");
+                break;
+            }
         }
     }
 
