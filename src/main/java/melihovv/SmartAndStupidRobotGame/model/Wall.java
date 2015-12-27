@@ -31,8 +31,7 @@ import melihovv.SmartAndStupidRobotGame.model.navigation.MiddlePosition;
  */
 public class Wall extends FieldObject<MiddlePosition> {
 
-    public Wall(Field field, MiddlePosition pos) {
+    public Wall(Field field) {
         super(field);
-        _pos = pos;
     }
 }
