@@ -34,6 +34,16 @@ import melihovv.SmartAndStupidRobotGame.model.navigation.CellPosition;
 import melihovv.SmartAndStupidRobotGame.model.navigation.Direction;
 import melihovv.SmartAndStupidRobotGame.model.navigation.MiddlePosition;
 
+// TODO add stupid robot. check if smart robot in the same cell where the
+// stupid one. stupid robot pass three steps when he steps to cell with mire.
+// TODO add menu bar.
+// TODO load situation from file.
+
+// my mod.
+// TODO add seasons.
+// TODO add rain.
+// TODO add frozen mire. any robot can slide on frozen mire.
+
 /**
  * The <code>SmartRobot</code> class defines smart robot on the field.
  */
