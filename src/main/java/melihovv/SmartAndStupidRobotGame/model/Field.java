@@ -54,6 +54,18 @@ public class Field {
         _objs = new HashMap<>();
     }
 
+    public Dimension size() {
+        return _dim;
+    }
+
+    public int width() {
+        return (int) _dim.getWidth();
+    }
+
+    public int height() {
+        return (int) _dim.getHeight();
+    }
+
     /**
      * Set field size.
      *
