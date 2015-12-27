@@ -34,4 +34,13 @@ public class Mire extends FieldObject<CellPosition> {
     public Mire(Field field) {
         super(field);
     }
+
+    @Override
+    public boolean setPos(CellPosition pos) {
+        if (pos != null && _field.objects(Mire.class, pos).isEmpty()) {
+            _pos = pos;
+            return true;
+        }
+        return false;
+    }
 }
