@@ -24,7 +24,6 @@
 
 package melihovv.SmartAndStupidRobotGame.model;
 
-import java.awt.*;
 import java.util.EventListener;
 import java.util.EventObject;
 import java.util.ArrayList;
@@ -74,7 +73,7 @@ public class SmartRobot extends FieldObject<CellPosition> {
     }
 
     public interface SmartRobotActionListener extends EventListener {
-        void smartRobotMakedMove(SmartRobotActionEvent e);
+        void smartRobotMadeMove(SmartRobotActionEvent e);
     }
 
     public void addListener(SmartRobotActionListener l) {
@@ -87,7 +86,7 @@ public class SmartRobot extends FieldObject<CellPosition> {
 
     protected void fireRobotAction() {
         for (Object listener : _listenerList) {
-            ((SmartRobotActionListener) listener).smartRobotMakedMove(_event);
+            ((SmartRobotActionListener) listener).smartRobotMadeMove(_event);
         }
     }
 }
