@@ -114,6 +114,15 @@ public class Direction {
     }
 
     /**
+     * Check if <code>other</code> direction is opposite of current.
+     * @param other Direction to check.
+     * @return Result of checking.
+     */
+    public boolean isOpposite(Direction other) {
+        return this.opposite().equals(other);
+    }
+
+    /**
      * Check if <code>other</code> equals current direction.
      * @param other Any object.
      * @return Result of checking.
@@ -128,12 +137,8 @@ public class Direction {
         return false;
     }
 
-    /**
-     * Check if <code>other</code> direction is opposite of current.
-     * @param other Direction to check.
-     * @return Result of checking.
-     */
-    public boolean isOpposite(Direction other) {
-        return this.opposite().equals(other);
+    @Override
+    public int hashCode() {
+        return _angle;
     }
 }
