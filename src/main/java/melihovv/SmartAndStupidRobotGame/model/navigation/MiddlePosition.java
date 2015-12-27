@@ -48,7 +48,7 @@ public class MiddlePosition {
     @Override
     public boolean equals(Object obj) {
         if (obj instanceof MiddlePosition) {
-            MiddlePosition other = (MiddlePosition) obj;
+            final MiddlePosition other = (MiddlePosition) obj;
             return _cellPos.equals(other._cellPos) &&
                     _direct.equals(other._direct);
         }

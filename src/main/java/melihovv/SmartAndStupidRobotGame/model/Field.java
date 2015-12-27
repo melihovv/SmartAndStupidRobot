@@ -38,7 +38,7 @@ import java.util.stream.Collectors;
 public class Field {
 
     // Field objects.
-    private HashMap<Class, List<FieldObject>> _objs;
+    private final HashMap<Class, List<FieldObject>> _objs;
     // Field dimension.
     private Dimension _dim;
 
@@ -90,7 +90,7 @@ public class Field {
      */
     public <Position> boolean addObject(Position pos,
                                         FieldObject<Position> obj) {
-        Class objClass = obj.getClass();
+        final Class objClass = obj.getClass();
 
         if (obj.setPos(pos)) {
             if (_objs.containsKey(objClass)) {
@@ -115,7 +115,7 @@ public class Field {
      */
     public <Position> boolean removeObject(FieldObject<Position> obj) {
         boolean success = false;
-        Class objClass = obj.getClass();
+        final Class objClass = obj.getClass();
 
         if (_objs.containsKey(objClass)) {
             success = _objs.get(objClass).remove(obj);
@@ -134,7 +134,7 @@ public class Field {
      * @return
      */
     public List<FieldObject> objects() {
-        List<FieldObject> objsList = new ArrayList<>();
+        final List<FieldObject> objsList = new ArrayList<>();
 
         for (Map.Entry<Class, List<FieldObject>> entry : _objs.entrySet()) {
             objsList.addAll(entry.getValue());
@@ -150,7 +150,7 @@ public class Field {
      * @return
      */
     public List<FieldObject> objects(Class objType) {
-        List<FieldObject> objList = new ArrayList<>();
+        final List<FieldObject> objList = new ArrayList<>();
 
         if (_objs.containsKey(objType)) {
             objList.addAll(_objs.get(objType));
@@ -166,7 +166,7 @@ public class Field {
      * @return List of objects which are on position <code>pos</code>.
      */
     public <Position> List<FieldObject> objects(Position pos) {
-        List<FieldObject> objsList = new ArrayList<>();
+        final List<FieldObject> objsList = new ArrayList<>();
 
         for (Map.Entry<Class, List<FieldObject>> entry : _objs.entrySet()) {
             objsList.addAll(entry.getValue().stream().filter(
@@ -177,7 +177,7 @@ public class Field {
     }
 
     public <Position> List<FieldObject> objects(Class objType, Position pos) {
-        List<FieldObject> objList = new ArrayList<>();
+        final List<FieldObject> objList = new ArrayList<>();
 
         if (_objs.containsKey(objType)) {
             objList.addAll(_objs.get(objType).stream().filter(
@@ -214,6 +214,7 @@ public class Field {
 
     /**
      * Returns true if <code>pos</code> belongs to field, otherwise — false.
+     *
      * @param pos
      * @return
      */

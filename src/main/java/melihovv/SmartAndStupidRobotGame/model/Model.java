@@ -35,8 +35,8 @@ import java.util.logging.Logger;
  */
 public class Model {
 
-    private Field _field;
-    private Target _target;
+    private final Field _field;
+    private final Target _target;
     static final Logger log = Logger.getLogger(Model.class.getName());
 
     public Model() {
@@ -59,7 +59,7 @@ public class Model {
     private void generateField() {
         _field.addObject(
                 new CellPosition(new Point(9, 6)),
-                new Target(_field)
+                _target
         );
         _field.addObject(
                 new CellPosition(new Point(3, 3)),

@@ -33,7 +33,7 @@ import java.util.HashMap;
 public class CellPosition {
 
     private Point _pos;
-    private static HashMap<Direction, int[]> _offset =
+    private static final HashMap<Direction, int[]> _offset =
             new HashMap<Direction, int[]>() {{
                 put(Direction.north(), new int[]{0, -1});
                 put(Direction.south(), new int[]{0, 1});
@@ -54,7 +54,7 @@ public class CellPosition {
     }
 
     private static Point calcNewPos(Point pos, Direction dir) {
-        int[] offset = _offset.get(dir);
+        final int[] offset = _offset.get(dir);
         return new Point(pos.x + offset[0], pos.y + offset[1]);
     }
 

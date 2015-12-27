@@ -37,8 +37,8 @@ import melihovv.SmartAndStupidRobotGame.model.navigation.MiddlePosition;
  */
 public class SmartRobot extends FieldObject<CellPosition> {
 
-    private ArrayList<SmartRobotActionListener> _listenerList;
-    private SmartRobotActionEvent _event;
+    private final ArrayList<SmartRobotActionListener> _listenerList;
+    private final SmartRobotActionEvent _event;
 
     public SmartRobot(Field field) {
         super(field);
