@@ -25,6 +25,8 @@
 package melihovv.SmartAndStupidRobotGame.model;
 
 import melihovv.SmartAndStupidRobotGame.model.navigation.CellPosition;
+import melihovv.SmartAndStupidRobotGame.model.navigation.Direction;
+import melihovv.SmartAndStupidRobotGame.model.navigation.MiddlePosition;
 
 import java.awt.*;
 import java.util.List;
@@ -64,6 +66,67 @@ public class Model {
         _field.addObject(
                 new CellPosition(new Point(3, 3)),
                 new SmartRobot(_field)
+        );
+        _field.addObject(
+                new CellPosition(new Point(4, 3)),
+                new Mire(_field)
+        );
+        _field.addObject(
+                new CellPosition(new Point(5, 3)),
+                new Mire(_field)
+        );
+        _field.addObject(
+                new CellPosition(new Point(5, 4)),
+                new Mire(_field)
+        );
+        _field.addObject(
+                new MiddlePosition(
+                        Direction.north(),
+                        new CellPosition(new Point(6, 2))
+                ),
+                new Wall(_field)
+        );
+        _field.addObject(
+                new MiddlePosition(
+                        Direction.south(),
+                        new CellPosition(new Point(7, 2))
+                ),
+                new Wall(_field)
+        );
+        _field.addObject(
+                new MiddlePosition(
+                        Direction.south(),
+                        new CellPosition(new Point(6, 2))
+                ),
+                new Wall(_field)
+        );
+        _field.addObject(
+                new MiddlePosition(
+                        Direction.west(),
+                        new CellPosition(new Point(6, 1))
+                ),
+                new Wall(_field)
+        );
+        _field.addObject(
+                new MiddlePosition(
+                        Direction.west(),
+                        new CellPosition(new Point(6, 2))
+                ),
+                new Wall(_field)
+        );
+        _field.addObject(
+                new MiddlePosition(
+                        Direction.east(),
+                        new CellPosition(new Point(6, 1))
+                ),
+                new Wall(_field)
+        );
+        _field.addObject(
+                new MiddlePosition(
+                        Direction.east(),
+                        new CellPosition(new Point(6, 2))
+                ),
+                new Wall(_field)
         );
     }
 
