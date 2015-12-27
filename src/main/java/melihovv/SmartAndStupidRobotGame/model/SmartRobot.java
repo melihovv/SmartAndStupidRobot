@@ -70,6 +70,15 @@ public class SmartRobot extends FieldObject<CellPosition> {
         return isPosValid;
     }
 
+    @Override
+    public boolean setPos(CellPosition pos) {
+        if (pos != null) {
+            _pos = pos;
+            return true;
+        }
+        return false;
+    }
+
 
     ////////////////////////////////////////////////////////////////////////////
     // Events.
