@@ -59,14 +59,19 @@ public class Model {
     }
 
     private void generateField() {
+        // Add target.
         _field.addObject(
                 new CellPosition(new Point(9, 6)),
                 _target
         );
+
+        // Add smart robot.
         _field.addObject(
                 new CellPosition(new Point(3, 3)),
                 new SmartRobot(_field)
         );
+
+        // Add mires.
         _field.addObject(
                 new CellPosition(new Point(4, 3)),
                 new Mire(_field)
@@ -79,6 +84,8 @@ public class Model {
                 new CellPosition(new Point(5, 4)),
                 new Mire(_field)
         );
+
+        // Add walls.
         _field.addObject(
                 new MiddlePosition(
                         Direction.east(),
