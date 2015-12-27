@@ -40,7 +40,7 @@ public class Field {
     // Field objects.
     private HashMap<Class, List<FieldObject>> _objs;
     // Field dimension.
-    Dimension _dim;
+    private Dimension _dim;
 
     /**
      * Construct new <code>Dimension</code>.
