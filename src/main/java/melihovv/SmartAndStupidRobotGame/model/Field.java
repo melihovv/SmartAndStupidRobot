@@ -29,6 +29,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
 /**
@@ -41,6 +42,7 @@ public class Field {
     private final HashMap<Class, List<FieldObject>> _objs;
     // Field dimension.
     private Dimension _dim;
+    static final Logger log = Logger.getLogger(Field.class.getName());
 
     /**
      * Construct new <code>Dimension</code>.
@@ -101,6 +103,8 @@ public class Field {
                 _objs.put(objClass, objList);
             }
             return true;
+        } else {
+            log.info("Cannot set pos " + pos + " to object " + obj);
         }
 
         return false;
