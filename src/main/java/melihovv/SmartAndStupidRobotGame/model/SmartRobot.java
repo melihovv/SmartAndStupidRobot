@@ -24,9 +24,11 @@
 
 package melihovv.SmartAndStupidRobotGame.model;
 
+import java.awt.Point;
 import java.util.EventListener;
 import java.util.EventObject;
 import java.util.ArrayList;
+import java.util.List;
 
 import melihovv.SmartAndStupidRobotGame.model.navigation.CellPosition;
 import melihovv.SmartAndStupidRobotGame.model.navigation.Direction;
@@ -48,14 +50,24 @@ public class SmartRobot extends FieldObject<CellPosition> {
 
     public void makeMove(Direction dir) {
         if (isMovePossible(dir)) {
-            setPos(_pos.next(dir));
-            fireRobotAction();
+            if (setPos(_pos.next(dir))) {
+                fireRobotAction();
+            }
         }
     }
 
     private boolean isMovePossible(Direction dir) {
-        return _field.contains(_pos.next(dir).pos()) &&
-                _field.objects(new MiddlePosition(dir, _pos)).isEmpty();
+        List<FieldObject> objs = _field.objects(Wall.class,
+                new MiddlePosition(dir.opposite(), _pos.next(dir)));
+        List<FieldObject> objs2 = _field.objects(Wall.class,
+                new MiddlePosition(dir, _pos));
+        if (!objs.isEmpty() || !objs2.isEmpty()) {
+            return false;
+        }
+
+        Point nextPos = _pos.next(dir).pos();
+        boolean isPosValid = _field.contains(nextPos);
+        return isPosValid;
     }
 
 
