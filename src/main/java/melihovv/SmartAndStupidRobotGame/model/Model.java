@@ -35,9 +35,9 @@ import java.util.logging.Logger;
  */
 public class Model {
 
-    Field _field;
-    Target _target;
-    static Logger log = Logger.getLogger(Model.class.getName());
+    private Field _field;
+    private Target _target;
+    static final Logger log = Logger.getLogger(Model.class.getName());
 
     public Model() {
         _field = new Field(new Dimension(10, 10));
