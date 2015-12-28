@@ -34,8 +34,6 @@ import melihovv.SmartAndStupidRobotGame.model.navigation.CellPosition;
 import melihovv.SmartAndStupidRobotGame.model.navigation.Direction;
 import melihovv.SmartAndStupidRobotGame.model.navigation.MiddlePosition;
 
-// TODO add stupid robot. check if smart robot in the same cell where the
-// stupid one. stupid robot pass three steps when he steps to cell with mire.
 // TODO add menu bar.
 // TODO load situation from file.
 
@@ -113,6 +111,10 @@ public class SmartRobot extends FieldObject<CellPosition> {
 
     public void removeListener(SmartRobotActionListener l) {
         _listenerList.remove(l);
+    }
+
+    public void clearListeners() {
+        _listenerList.clear();
     }
 
     protected void fireRobotAction() {
