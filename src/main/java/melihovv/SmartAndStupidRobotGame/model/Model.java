@@ -39,27 +39,36 @@ public class Model {
 
     private final Field _field;
     private final Target _target;
+    private boolean _isGameFinished;
     static final Logger log = Logger.getLogger(Model.class.getName());
 
     public Model() {
         _field = new Field(new Dimension(10, 10));
         _target = new Target(_field);
+        _isGameFinished = false;
     }
 
     public void start() {
+        _isGameFinished = false;
         generateField();
         identifyGameOver();
+
+        smartRobot().clearListeners();
+        stupidRobot().clearListeners();
         smartRobot().addListener(new SmartRobotObserver());
+        stupidRobot().addListener(new StupidRobotObserver());
     }
 
     private void identifyGameOver() {
         CellPosition smRobPos = smartRobot().pos();
         if (smRobPos.equals(_target.pos())) {
+            _isGameFinished = true;
             log.info("Smart robot has reached target position");
         }
 
         for (FieldObject mire : _field.objects(Mire.class)) {
             if (smRobPos.equals(mire.pos())) {
+                _isGameFinished = true;
                 log.info("Smart robot in mire");
                 break;
             }
@@ -67,6 +76,8 @@ public class Model {
     }
 
     private void generateField() {
+        _field.clear();
+
         // Add target.
         _field.addObject(
                 new CellPosition(new Point(9, 6)),
@@ -75,8 +86,13 @@ public class Model {
 
         // Add smart robot.
         _field.addObject(
-                new CellPosition(new Point(3, 3)),
+                new CellPosition(new Point(5, 5)),
                 new SmartRobot(_field)
+        );
+        // Add stupid robot.
+        _field.addObject(
+                new CellPosition(new Point(2, 2)),
+                new StupidRobot(_field)
         );
 
         // Add mires.
@@ -97,48 +113,6 @@ public class Model {
         _field.addObject(
                 new MiddlePosition(
                         Direction.east(),
-                        new CellPosition(new Point(5, 4))
-                ),
-                new Wall(_field)
-        );
-        _field.addObject(
-                new MiddlePosition(
-                        Direction.north(),
-                        new CellPosition(new Point(6, 2))
-                ),
-                new Wall(_field)
-        );
-        _field.addObject(
-                new MiddlePosition(
-                        Direction.south(),
-                        new CellPosition(new Point(7, 2))
-                ),
-                new Wall(_field)
-        );
-        _field.addObject(
-                new MiddlePosition(
-                        Direction.south(),
-                        new CellPosition(new Point(6, 2))
-                ),
-                new Wall(_field)
-        );
-        _field.addObject(
-                new MiddlePosition(
-                        Direction.west(),
-                        new CellPosition(new Point(6, 1))
-                ),
-                new Wall(_field)
-        );
-        _field.addObject(
-                new MiddlePosition(
-                        Direction.west(),
-                        new CellPosition(new Point(6, 2))
-                ),
-                new Wall(_field)
-        );
-        _field.addObject(
-                new MiddlePosition(
-                        Direction.east(),
                         new CellPosition(new Point(6, 1))
                 ),
                 new Wall(_field)
@@ -150,6 +124,12 @@ public class Model {
                 ),
                 new Wall(_field)
         );
+    }
+
+    public void makeMove(Direction dir) {
+        if (!_isGameFinished) {
+            smartRobot().makeMove(dir);
+        }
     }
 
     public Field field() {
@@ -161,6 +141,11 @@ public class Model {
         return objects.isEmpty() ? null : (SmartRobot) objects.get(0);
     }
 
+    public StupidRobot stupidRobot() {
+        List<FieldObject> objects = _field.objects(StupidRobot.class);
+        return objects.isEmpty() ? null : (StupidRobot) objects.get(0);
+    }
+
     public Target target() {
         return _target;
     }
@@ -170,8 +155,26 @@ public class Model {
 
         @Override
         public void smartRobotMadeMove(SmartRobot.SmartRobotActionEvent e) {
-            log.info("Smart robot made move");
+            log.fine("Smart robot made move");
             identifyGameOver();
+
+            if (!_isGameFinished) {
+                stupidRobot().makeMove();
+            }
+        }
+    }
+
+    private class StupidRobotObserver
+            implements StupidRobot.StupidRobotActionListener {
+
+        @Override
+        public void stupidRobotMadeMove(StupidRobot.StupidRobotActionEvent e) {
+        }
+
+        @Override
+        public void smartRobotIsCatched(StupidRobot.StupidRobotActionEvent e) {
+            log.info("Smart robot is catched");
+            _isGameFinished = true;
         }
     }
 

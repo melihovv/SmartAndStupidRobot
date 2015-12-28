@@ -24,11 +24,7 @@
 
 package melihovv.SmartAndStupidRobotGame.view;
 
-import melihovv.SmartAndStupidRobotGame.model.FieldObject;
-import melihovv.SmartAndStupidRobotGame.model.Mire;
-import melihovv.SmartAndStupidRobotGame.model.Model;
-import melihovv.SmartAndStupidRobotGame.model.SmartRobot;
-import melihovv.SmartAndStupidRobotGame.model.Wall;
+import melihovv.SmartAndStupidRobotGame.model.*;
 import melihovv.SmartAndStupidRobotGame.model.navigation.CellPosition;
 import melihovv.SmartAndStupidRobotGame.model.navigation.Direction;
 
@@ -72,11 +68,12 @@ public class View extends JPanel implements KeyListener {
         setPreferredSize(new Dimension(_width, _height));
         setMaximumSize(new Dimension(_width, _height));
         setMinimumSize(new Dimension(_width, _height));
+        setFocusable(true);
 
         _model.smartRobot().addListener(new SmartRobotObserver());
-        addKeyListener(this);
+        _model.stupidRobot().addListener(new StupidRobotObserver());
 
-        setFocusable(true);
+        addKeyListener(this);
     }
 
     @Override
@@ -92,7 +89,7 @@ public class View extends JPanel implements KeyListener {
         drawMires(g, _model.field().objects(Mire.class));
         drawTarget(g, _model.target());
         drawSmartRobot(g, _model.smartRobot());
-        // TODO drawStupidRobot
+        drawStupidRobot(g, _model.stupidRobot());
     }
 
     private void drawGrid(Graphics g) {
@@ -135,6 +132,20 @@ public class View extends JPanel implements KeyListener {
         g.drawString(
                 "Sm",
                 ltc.x + CELL_SIZE / 5,
+                ltc.y + CELL_SIZE / 5 + FONT_HEIGHT
+        );
+
+        g.setColor(preserved);
+    }
+
+    private void drawStupidRobot(Graphics g, StupidRobot stupidRobot) {
+        Color preserved = g.getColor();
+        g.setColor(FONT_COLOR);
+
+        Point ltc = leftTopCorner(stupidRobot.pos());
+        g.drawString(
+                "St",
+                ltc.x + CELL_SIZE / 3,
                 ltc.y + CELL_SIZE / 5 + FONT_HEIGHT
         );
 
@@ -211,14 +222,19 @@ public class View extends JPanel implements KeyListener {
 
     @Override
     public void keyPressed(KeyEvent e) {
+        Direction dir = null;
         if (e.getKeyCode() == KeyEvent.VK_UP) {
-            _model.smartRobot().makeMove(Direction.north());
+            dir = Direction.north();
         } else if (e.getKeyCode() == KeyEvent.VK_DOWN) {
-            _model.smartRobot().makeMove(Direction.south());
+            dir = Direction.south();
         } else if (e.getKeyCode() == KeyEvent.VK_LEFT) {
-            _model.smartRobot().makeMove(Direction.west());
+            dir = Direction.west();
         } else if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
-            _model.smartRobot().makeMove(Direction.east());
+            dir = Direction.east();
+        }
+
+        if (dir != null) {
+            _model.makeMove(dir);
         }
     }
 
@@ -231,8 +247,22 @@ public class View extends JPanel implements KeyListener {
 
         @Override
         public void smartRobotMadeMove(SmartRobot.SmartRobotActionEvent e) {
-            log.info("Smart robot made move");
+            log.fine("Smart robot made move");
             repaint();
+        }
+    }
+
+    private class StupidRobotObserver
+            implements StupidRobot.StupidRobotActionListener {
+
+        @Override
+        public void stupidRobotMadeMove(StupidRobot.StupidRobotActionEvent e) {
+            log.fine("Stupid robot made move");
+            repaint();
+        }
+
+        @Override
+        public void smartRobotIsCatched(StupidRobot.StupidRobotActionEvent e) {
         }
     }
 }
