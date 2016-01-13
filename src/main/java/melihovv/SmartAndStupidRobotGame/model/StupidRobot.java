@@ -98,7 +98,6 @@ public class StupidRobot extends FieldObject<CellPosition> {
                 if (nearWall.isEmpty()) {
                     setPos(smRobPos);
                     fireSmartRobotIsCatched();
-                    return;
                 }
             } else if (smRobPos.pos().getY() == _pos.pos().getY()) {
                 // Robots are in the same row.
@@ -115,15 +114,6 @@ public class StupidRobot extends FieldObject<CellPosition> {
                 if (nearWall.isEmpty()) {
                     setPos(smRobPos);
                     fireSmartRobotIsCatched();
-                    return;
-                }
-            } else {
-                // The smart robot is diagonally across from the stupid one.
-
-                // Smart robot is on the left.
-                if (smRobPos.pos().getX() < _pos.pos().getX()) {
-                } else {
-                    // Smart robot is on the right.
                 }
             }
         } else {
@@ -173,15 +163,7 @@ public class StupidRobot extends FieldObject<CellPosition> {
         return _pos.next(Direction.north()).equals(smRobPos) ||
                 _pos.next(Direction.south()).equals(smRobPos) ||
                 _pos.next(Direction.east()).equals(smRobPos) ||
-                _pos.next(Direction.east()).next(Direction.north())
-                        .equals(smRobPos) ||
-                _pos.next(Direction.east()).next(Direction.south())
-                        .equals(smRobPos) ||
-                _pos.next(Direction.west()).equals(smRobPos) ||
-                _pos.next(Direction.west()).next(Direction.north())
-                        .equals(smRobPos) ||
-                _pos.next(Direction.west()).next(Direction.south())
-                        .equals(smRobPos);
+                _pos.next(Direction.west()).equals(smRobPos);
     }
 
     /**
