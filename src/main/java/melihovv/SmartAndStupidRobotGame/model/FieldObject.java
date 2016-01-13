@@ -31,7 +31,7 @@ package melihovv.SmartAndStupidRobotGame.model;
 public abstract class FieldObject<Position> {
 
     // A field.
-    protected Field _field;
+    protected final Field _field;
     // Position on a field.
     protected Position _pos;
 

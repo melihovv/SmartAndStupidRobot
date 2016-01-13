@@ -66,7 +66,7 @@ public class SmartAndStupidRobotGame {
      */
     public static class View extends JPanel implements KeyListener {
 
-        private Model _model;
+        private final Model _model;
         static final Logger log = Logger.getLogger(View.class.getName());
 
         private static final int CELL_SIZE = 30;
@@ -78,8 +78,8 @@ public class SmartAndStupidRobotGame {
         private static final Color MIRE_COLOR = new Color(139, 69, 19);
         private static final Color WALL_COLOR = Color.BLACK;
 
-        private int _width;
-        private int _height;
+        private final int _width;
+        private final int _height;
         private int _offsetX;
         private int _offsetY;
 

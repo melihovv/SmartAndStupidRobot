@@ -26,6 +26,7 @@ package melihovv.SmartAndStupidRobotGame.model.navigation;
 
 import java.awt.*;
 import java.util.HashMap;
+import java.util.Map;
 
 /**
  * The <code>CellPosition</code> class defines cell position.
@@ -33,9 +34,9 @@ import java.util.HashMap;
 public class CellPosition {
 
     // Position on the field.
-    private Point _pos;
+    private final Point _pos;
     // Offset which is used for calculation new position.
-    private static final HashMap<Direction, int[]> _offset =
+    private static final Map<Direction, int[]> _offset =
             new HashMap<Direction, int[]>() {{
                 put(Direction.north(), new int[]{0, -1});
                 put(Direction.south(), new int[]{0, 1});
@@ -99,5 +100,15 @@ public class CellPosition {
             return _pos.equals(other._pos);
         }
         return false;
+    }
+
+    /**
+     * Returns hash code of the <code>CellPosition</code> instance.
+     *
+     * @return Hash code of the <code>CellPosition</code> instance.
+     */
+    @Override
+    public int hashCode() {
+        return _pos.x ^ _pos.y;
     }
 }

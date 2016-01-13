@@ -41,13 +41,15 @@ import java.util.logging.Logger;
 public class StupidRobot extends FieldObject<CellPosition> {
 
     // List of the stupid robot's listeners.
-    private final ArrayList<StupidRobotActionListener> _listenerList;
+    private final List<StupidRobotActionListener> _listenerList;
     // The stupid robot action event.
     private final StupidRobotActionEvent _event;
     // The number of steps to skip.
     private int _stepsToSkip = 0;
     // Logger.
-    static final Logger log = Logger.getLogger(StupidRobot.class.getName());
+    private static final Logger log = Logger.getLogger(
+            StupidRobot.class.getName()
+    );
 
     /**
      * Constructs the stupid robot.
@@ -203,42 +205,6 @@ public class StupidRobot extends FieldObject<CellPosition> {
     ////////////////////////////////////////////////////////////////////////////
 
     /**
-     * The <code>StupidRobotActionEvent</code> defines the stupid robot event.
-     */
-    public class StupidRobotActionEvent extends EventObject {
-
-        /**
-         * Constructs the stupid robot action event.
-         *
-         * @param source Source of event.
-         */
-        public StupidRobotActionEvent(Object source) {
-            super(source);
-        }
-    }
-
-    /**
-     * The <code>SmartRobotActionListener</code> defines the stupid robot action
-     * listener.
-     */
-    public interface StupidRobotActionListener extends EventListener {
-
-        /**
-         * This method is invoked after the stupid robot made movement.
-         *
-         * @param e The smart robot action event.
-         */
-        void stupidRobotMadeMove(StupidRobotActionEvent e);
-
-        /**
-         * This method is invoked when stupid robot has caught the smart one.
-         *
-         * @param e The smart robot action event.
-         */
-        void smartRobotIsCaught(StupidRobotActionEvent e);
-    }
-
-    /**
      * Adds the stupid robot action listener <code>l</code> to the list of
      * listeners.
      *
@@ -278,9 +244,45 @@ public class StupidRobot extends FieldObject<CellPosition> {
      * Notifies all the listeners that the stupid robot has caught the smart
      * one.
      */
-    protected void fireSmartRobotIsCatched() {
+    private void fireSmartRobotIsCatched() {
         for (Object listener : _listenerList) {
             ((StupidRobotActionListener) listener).smartRobotIsCaught(_event);
         }
+    }
+
+    /**
+     * The <code>StupidRobotActionEvent</code> defines the stupid robot event.
+     */
+    public static class StupidRobotActionEvent extends EventObject {
+
+        /**
+         * Constructs the stupid robot action event.
+         *
+         * @param source Source of event.
+         */
+        public StupidRobotActionEvent(Object source) {
+            super(source);
+        }
+    }
+
+    /**
+     * The <code>SmartRobotActionListener</code> defines the stupid robot action
+     * listener.
+     */
+    public interface StupidRobotActionListener extends EventListener {
+
+        /**
+         * This method is invoked after the stupid robot made movement.
+         *
+         * @param e The smart robot action event.
+         */
+        void stupidRobotMadeMove(StupidRobotActionEvent e);
+
+        /**
+         * This method is invoked when stupid robot has caught the smart one.
+         *
+         * @param e The smart robot action event.
+         */
+        void smartRobotIsCaught(StupidRobotActionEvent e);
     }
 }

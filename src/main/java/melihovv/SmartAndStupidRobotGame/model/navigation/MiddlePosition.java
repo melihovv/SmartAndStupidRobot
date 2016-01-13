@@ -30,9 +30,9 @@ package melihovv.SmartAndStupidRobotGame.model.navigation;
 public class MiddlePosition {
 
     // Cell position.
-    CellPosition _cellPos;
+    private final CellPosition _cellPos;
     // Direction which is corresponding the side of the cell.
-    Direction _direct;
+    private final Direction _direct;
 
     /**
      * Constructs middle position.
@@ -78,5 +78,15 @@ public class MiddlePosition {
                     _direct.equals(other._direct);
         }
         return false;
+    }
+
+    /**
+     * Returns hash code of the <code>CellPosition</code> instance.
+     *
+     * @return Hash code of the <code>CellPosition</code> instance.
+     */
+    @Override
+    public int hashCode() {
+        return _cellPos.hashCode() ^ _direct.hashCode();
     }
 }

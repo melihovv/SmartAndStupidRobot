@@ -42,12 +42,12 @@ public class Direction {
      *              north direction).
      */
     private Direction(int angle) {
-        angle = angle % 360;
-        if (angle < 0) {
-            angle += 360;
+        int copy = angle % 360;
+        if (copy < 0) {
+            copy += 360;
         }
 
-        _angle = angle;
+        _angle = copy;
     }
 
     /**

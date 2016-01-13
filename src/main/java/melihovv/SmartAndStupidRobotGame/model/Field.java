@@ -45,7 +45,7 @@ public class Field {
     // Field dimension.
     private Dimension _dim;
     // Logger.
-    static final Logger log = Logger.getLogger(Field.class.getName());
+    private static final Logger log = Logger.getLogger(Field.class.getName());
 
     /**
      * Constructs new <code>Dimension</code> with dimension

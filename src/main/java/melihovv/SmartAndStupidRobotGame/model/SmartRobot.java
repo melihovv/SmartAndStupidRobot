@@ -34,7 +34,6 @@ import java.util.EventListener;
 import java.util.EventObject;
 import java.util.List;
 
-// TODO qa check.
 // TODO add menu bar.
 // TODO load situation from file.
 
@@ -49,7 +48,7 @@ import java.util.List;
 public class SmartRobot extends FieldObject<CellPosition> {
 
     // List of the smart robot's listeners.
-    private final ArrayList<SmartRobotActionListener> _listenerList;
+    private final List<SmartRobotActionListener> _listenerList;
     // The smart robot action event.
     private final SmartRobotActionEvent _event;
 
@@ -115,35 +114,6 @@ public class SmartRobot extends FieldObject<CellPosition> {
     ////////////////////////////////////////////////////////////////////////////
 
     /**
-     * The <code>SmartRobotActionEvent</code> defines the smart robot event.
-     */
-    public class SmartRobotActionEvent extends EventObject {
-
-        /**
-         * Constructs the smart robot action event.
-         *
-         * @param source Source of event.
-         */
-        public SmartRobotActionEvent(Object source) {
-            super(source);
-        }
-    }
-
-    /**
-     * The <code>SmartRobotActionListener</code> defines the smart robot action
-     * listener.
-     */
-    public interface SmartRobotActionListener extends EventListener {
-
-        /**
-         * This method is invoked after the smart robot made movement.
-         *
-         * @param e The smart robot action event.
-         */
-        void smartRobotMadeMove(SmartRobotActionEvent e);
-    }
-
-    /**
      * Adds the smart robot action listener <code>l</code> to the list of
      * listeners.
      *
@@ -177,5 +147,34 @@ public class SmartRobot extends FieldObject<CellPosition> {
         for (Object listener : _listenerList) {
             ((SmartRobotActionListener) listener).smartRobotMadeMove(_event);
         }
+    }
+
+    /**
+     * The <code>SmartRobotActionEvent</code> defines the smart robot event.
+     */
+    public static class SmartRobotActionEvent extends EventObject {
+
+        /**
+         * Constructs the smart robot action event.
+         *
+         * @param source Source of event.
+         */
+        public SmartRobotActionEvent(Object source) {
+            super(source);
+        }
+    }
+
+    /**
+     * The <code>SmartRobotActionListener</code> defines the smart robot action
+     * listener.
+     */
+    public interface SmartRobotActionListener extends EventListener {
+
+        /**
+         * This method is invoked after the smart robot made movement.
+         *
+         * @param e The smart robot action event.
+         */
+        void smartRobotMadeMove(SmartRobotActionEvent e);
     }
 }

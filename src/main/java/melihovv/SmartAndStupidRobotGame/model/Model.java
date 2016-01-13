@@ -44,7 +44,7 @@ public class Model {
     // If game is finished.
     private boolean _isGameFinished;
     // Logger.
-    static final Logger log = Logger.getLogger(Model.class.getName());
+    private static final Logger log = Logger.getLogger(Model.class.getName());
 
     /**
      * Constructs game model.
@@ -223,7 +223,7 @@ public class Model {
     /**
      * The target of the smart robot.
      */
-    public class Target extends FieldObject<CellPosition> {
+    public static class Target extends FieldObject<CellPosition> {
         public Target(Field field) {
             super(field);
         }
