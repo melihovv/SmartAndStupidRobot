@@ -24,16 +24,17 @@
 
 package melihovv.SmartAndStupidRobotGame.model;
 
-import java.awt.Point;
-import java.util.EventListener;
-import java.util.EventObject;
-import java.util.ArrayList;
-import java.util.List;
-
 import melihovv.SmartAndStupidRobotGame.model.navigation.CellPosition;
 import melihovv.SmartAndStupidRobotGame.model.navigation.Direction;
 import melihovv.SmartAndStupidRobotGame.model.navigation.MiddlePosition;
 
+import java.awt.*;
+import java.util.ArrayList;
+import java.util.EventListener;
+import java.util.EventObject;
+import java.util.List;
+
+// TODO qa check.
 // TODO add menu bar.
 // TODO load situation from file.
 
@@ -43,41 +44,62 @@ import melihovv.SmartAndStupidRobotGame.model.navigation.MiddlePosition;
 // TODO add frozen mire. any robot can slide on frozen mire.
 
 /**
- * The <code>SmartRobot</code> class defines smart robot on the field.
+ * The <code>SmartRobot</code> class defines the smart robot on the field.
  */
 public class SmartRobot extends FieldObject<CellPosition> {
 
+    // List of the smart robot's listeners.
     private final ArrayList<SmartRobotActionListener> _listenerList;
+    // The smart robot action event.
     private final SmartRobotActionEvent _event;
 
+    /**
+     * Constructs the smart robot.
+     *
+     * @param field A field on which the smart robot is placed.
+     */
     public SmartRobot(Field field) {
         super(field);
         _listenerList = new ArrayList<>();
         _event = new SmartRobotActionEvent(this);
     }
 
+    /**
+     * Makes step by the smart robot in direction <code>dir</code>.
+     *
+     * @param dir The direction in which the motion is made.
+     */
     public void makeMove(Direction dir) {
         if (isMovePossible(dir)) {
             if (setPos(_pos.next(dir))) {
-                fireRobotAction();
+                fireRobotMadeMove();
             }
         }
     }
 
+    /**
+     * Check if movement is possible in the direction <code>dir</code>.
+     *
+     * @param dir The direction in which it is checked.
+     * @return Result of checking.
+     */
     private boolean isMovePossible(Direction dir) {
         List<FieldObject> objs = _field.objects(Wall.class,
-                new MiddlePosition(dir.opposite(), _pos.next(dir)));
-        List<FieldObject> objs2 = _field.objects(Wall.class,
                 new MiddlePosition(dir, _pos));
-        if (!objs.isEmpty() || !objs2.isEmpty()) {
+        if (!objs.isEmpty()) {
             return false;
         }
 
         Point nextPos = _pos.next(dir).pos();
-        boolean isPosValid = _field.contains(nextPos);
-        return isPosValid;
+        return _field.contains(nextPos);
     }
 
+    /**
+     * Sets the smart robot position to <code>pos</code>.
+     *
+     * @param pos The position to which object will be placed.
+     * @return True if position was not null, otherwise — false.
+     */
     @Override
     public boolean setPos(CellPosition pos) {
         if (pos != null) {
@@ -93,31 +115,65 @@ public class SmartRobot extends FieldObject<CellPosition> {
     ////////////////////////////////////////////////////////////////////////////
 
     /**
-     * The <code>SmartRobotActionEvent</code> defines event of smart robot.
+     * The <code>SmartRobotActionEvent</code> defines the smart robot event.
      */
     public class SmartRobotActionEvent extends EventObject {
+
+        /**
+         * Constructs the smart robot action event.
+         *
+         * @param source Source of event.
+         */
         public SmartRobotActionEvent(Object source) {
             super(source);
         }
     }
 
+    /**
+     * The <code>SmartRobotActionListener</code> defines the smart robot action
+     * listener.
+     */
     public interface SmartRobotActionListener extends EventListener {
+
+        /**
+         * This method is invoked after the smart robot made movement.
+         *
+         * @param e The smart robot action event.
+         */
         void smartRobotMadeMove(SmartRobotActionEvent e);
     }
 
+    /**
+     * Adds the smart robot action listener <code>l</code> to the list of
+     * listeners.
+     *
+     * @param l The smart robot action listener.
+     */
     public void addListener(SmartRobotActionListener l) {
         _listenerList.add(l);
     }
 
+    /**
+     * Removes the smart robot action listener <code>l</code> from the list of
+     * listeners.
+     *
+     * @param l The smart robot action listener.
+     */
     public void removeListener(SmartRobotActionListener l) {
         _listenerList.remove(l);
     }
 
+    /**
+     * Removes all the smart robot action listeners.
+     */
     public void clearListeners() {
         _listenerList.clear();
     }
 
-    protected void fireRobotAction() {
+    /**
+     * Notifies all the listeners that the smart robot is made movement.
+     */
+    private void fireRobotMadeMove() {
         for (Object listener : _listenerList) {
             ((SmartRobotActionListener) listener).smartRobotMadeMove(_event);
         }

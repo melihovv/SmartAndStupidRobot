@@ -24,6 +24,8 @@
 
 package melihovv.SmartAndStupidRobotGame.model;
 
+import melihovv.SmartAndStupidRobotGame.model.navigation.MiddlePosition;
+
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -42,12 +44,14 @@ public class Field {
     private final HashMap<Class, List<FieldObject>> _objs;
     // Field dimension.
     private Dimension _dim;
+    // Logger.
     static final Logger log = Logger.getLogger(Field.class.getName());
 
     /**
-     * Construct new <code>Dimension</code>.
+     * Constructs new <code>Dimension</code> with dimension
+     * <code>dimension</code>.
      *
-     * @param dimension
+     * @param dimension The dimension of the field.
      * @throws IllegalArgumentException If <code>dimension</code> isn't
      *                                  positive.
      */
@@ -56,22 +60,37 @@ public class Field {
         _objs = new HashMap<>();
     }
 
+    /**
+     * Returns the dimension of the field.
+     *
+     * @return The dimension of the field.
+     */
     public Dimension size() {
         return _dim;
     }
 
+    /**
+     * Returns the width of the field.
+     *
+     * @return The width of the field.
+     */
     public int width() {
         return (int) _dim.getWidth();
     }
 
+    /**
+     * Returns the height of the field.
+     *
+     * @return The height of the field.
+     */
     public int height() {
         return (int) _dim.getHeight();
     }
 
     /**
-     * Set field size.
+     * Sets field size.
      *
-     * @param dimension
+     * @param dimension The dimension of the field that will be set.
      * @throws IllegalArgumentException If <code>dimension</code> isn't
      *                                  positive.
      */
@@ -84,10 +103,10 @@ public class Field {
     }
 
     /**
-     * Add object to field.
+     * Adds an object to the field.
      *
-     * @param pos
-     * @param obj
+     * @param pos Position to which an object will be placed.
+     * @param obj An object to be added.
      * @return True if object was added, otherwise false.
      */
     public <Position> boolean addObject(Position pos,
@@ -104,18 +123,18 @@ public class Field {
             }
             return true;
         } else {
-            log.info("Cannot set pos " + pos + " to object " + obj);
+            log.warning("Cannot set pos " + pos + " to object " + obj);
         }
 
         return false;
     }
 
     /**
-     * Remove object from field.
+     * Removes object from the field.
      *
-     * @param obj
-     * @return True if such object was on field and it was deleted, otherwise
-     * false.
+     * @param obj An object to be removed.
+     * @return True if such object was on the field and it was deleted,
+     * otherwise false.
      */
     public <Position> boolean removeObject(FieldObject<Position> obj) {
         boolean success = false;
@@ -133,9 +152,9 @@ public class Field {
     }
 
     /**
-     * Get all field objects.
+     * Returns all field objects.
      *
-     * @return
+     * @return All objects on the field.
      */
     public List<FieldObject> objects() {
         final List<FieldObject> objsList = new ArrayList<>();
@@ -148,10 +167,10 @@ public class Field {
     }
 
     /**
-     * Get all <code>objType</code> field objects.
+     * Returns all <code>objType</code> field objects.
      *
-     * @param objType
-     * @return
+     * @param objType Type of objects.
+     * @return All objects of type <code>objType</code>.
      */
     public List<FieldObject> objects(Class objType) {
         final List<FieldObject> objList = new ArrayList<>();
@@ -164,9 +183,9 @@ public class Field {
     }
 
     /**
-     * Get object with position <code>pos</code>.
+     * Returns objects with position <code>pos</code>.
      *
-     * @param pos
+     * @param pos Position on which objects will be returned.
      * @return List of objects which are on position <code>pos</code>.
      */
     public <Position> List<FieldObject> objects(Position pos) {
@@ -180,6 +199,14 @@ public class Field {
         return objsList;
     }
 
+    /**
+     * Returns objects with type <code>objType</code> and position <code>pos</code>.
+     *
+     * @param objType Type of objects.
+     * @param pos     Position on which objects will be returned.
+     * @return List of objects of type <code>objType</code> which are on
+     * position <code>pos</code>.
+     */
     public <Position> List<FieldObject> objects(Class objType, Position pos) {
         final List<FieldObject> objList = new ArrayList<>();
 
@@ -192,9 +219,37 @@ public class Field {
     }
 
     /**
-     * Check if position <code>pos</code> is free.
+     * Returns all objects of type <code>objType</code> with MiddlePosition
+     * <code>pos</code>.
      *
-     * @param pos
+     * @param objType Type of objects.
+     * @param pos     Position on which objects will be returned.
+     * @return List of objects of type <code>objType</code> which are on
+     * middle position <code>pos</code>.
+     */
+    public List<FieldObject> objects(Class objType,
+                                     MiddlePosition pos) {
+
+        final List<FieldObject> objList = new ArrayList<>();
+        final MiddlePosition oppositePos = new MiddlePosition(
+                pos.direct().opposite(),
+                pos.cellPos().next(pos.direct())
+        );
+
+        if (_objs.containsKey(objType)) {
+            objList.addAll(_objs.get(objType).stream().filter(
+                    obj -> obj.pos().equals(pos) ||
+                            obj.pos().equals(oppositePos)
+            ).collect(Collectors.toList()));
+        }
+
+        return objList;
+    }
+
+    /**
+     * Checks if position <code>pos</code> is free.
+     *
+     * @param pos Position to check.
      * @return True if position is free, otherwise — false.
      */
     public <Position> boolean isPosFree(Position pos) {
@@ -210,7 +265,7 @@ public class Field {
     }
 
     /**
-     * Clear game field.
+     * Clears game field.
      */
     public void clear() {
         _objs.clear();
@@ -219,8 +274,8 @@ public class Field {
     /**
      * Returns true if <code>pos</code> belongs to field, otherwise — false.
      *
-     * @param pos
-     * @return
+     * @param pos Position which is checked.
+     * @return True if <code>pos</code> belongs to field, otherwise — false.
      */
     public boolean contains(Point pos) {
         return pos.getX() >= 1 && pos.getX() <= _dim.getWidth() &&

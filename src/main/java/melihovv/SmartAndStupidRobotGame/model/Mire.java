@@ -31,10 +31,22 @@ import melihovv.SmartAndStupidRobotGame.model.navigation.CellPosition;
  */
 public class Mire extends FieldObject<CellPosition> {
 
+    /**
+     * Constructs mire.
+     *
+     * @param field A field on which mire is placed.
+     */
     public Mire(Field field) {
         super(field);
     }
 
+    /**
+     * Sets object position to <code>pos</code> if there are not any other mires
+     * on the same position.
+     *
+     * @param pos The position to which object will be placed.
+     * @return True if position was set, otherwise — false.
+     */
     @Override
     public boolean setPos(CellPosition pos) {
         if (pos != null && _field.objects(Mire.class, pos).isEmpty()) {

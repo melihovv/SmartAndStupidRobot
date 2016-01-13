@@ -27,10 +27,15 @@ package melihovv.SmartAndStupidRobotGame.model;
 import melihovv.SmartAndStupidRobotGame.model.navigation.MiddlePosition;
 
 /**
- * The <code>Wall</code> class defines wall on the field.
+ * The <code>Wall</code> class defines a wall on the field.
  */
 public class Wall extends FieldObject<MiddlePosition> {
 
+    /**
+     * Constructs a wall.
+     *
+     * @param field A field on which a wall is placed.
+     */
     public Wall(Field field) {
         super(field);
     }

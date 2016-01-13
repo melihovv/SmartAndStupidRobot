@@ -29,22 +29,47 @@ package melihovv.SmartAndStupidRobotGame.model.navigation;
  */
 public class MiddlePosition {
 
+    // Cell position.
     CellPosition _cellPos;
+    // Direction which is corresponding the side of the cell.
     Direction _direct;
 
+    /**
+     * Constructs middle position.
+     *
+     * @param direct  Direction which is corresponding the side of the cell.
+     * @param cellPos Cell position.
+     */
     public MiddlePosition(Direction direct, CellPosition cellPos) {
         _direct = direct;
         _cellPos = cellPos;
     }
 
+    /**
+     * Returns cell position.
+     *
+     * @return Cell position.
+     */
     public CellPosition cellPos() {
         return _cellPos;
     }
 
+    /**
+     * Returns direction.
+     * @return Direction.
+     */
     public Direction direct() {
         return _direct;
     }
 
+    /**
+     * Checks if two objects are equal. They are equal if <code>obj</code> is
+     * instance of <code>MiddlePosition</code> and both have the same cell
+     * position and direction.
+     *
+     * @param obj Object to check.
+     * @return Result of checking.
+     */
     @Override
     public boolean equals(Object obj) {
         if (obj instanceof MiddlePosition) {

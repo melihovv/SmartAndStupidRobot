@@ -24,7 +24,7 @@
 
 package melihovv.SmartAndStupidRobotGame.model.navigation;
 
-import java.awt.Point;
+import java.awt.*;
 import java.util.HashMap;
 
 /**
@@ -32,7 +32,9 @@ import java.util.HashMap;
  */
 public class CellPosition {
 
+    // Position on the field.
     private Point _pos;
+    // Offset which is used for calculation new position.
     private static final HashMap<Direction, int[]> _offset =
             new HashMap<Direction, int[]>() {{
                 put(Direction.north(), new int[]{0, -1});
@@ -41,23 +43,55 @@ public class CellPosition {
                 put(Direction.west(), new int[]{-1, 0});
             }};
 
+    /**
+     * Constructs cell position.
+     *
+     * @param pos Position.
+     */
     public CellPosition(Point pos) {
         _pos = pos;
     }
 
+    /**
+     * Returns position.
+     *
+     * @return Position.
+     */
     public Point pos() {
         return _pos;
     }
 
+    /**
+     * Returns new cell position which is located near the current one in
+     * direction <code>dir</code>.
+     *
+     * @param dir Direction.
+     * @return New cell position.
+     */
     public CellPosition next(Direction dir) {
         return new CellPosition(calcNewPos(_pos, dir));
     }
 
+    /**
+     * Calculates new position relative position <code>pos</code> in direction
+     * <code>dir</code>.
+     *
+     * @param pos Position with respect to which the new position is calculated.
+     * @param dir Direction in which new position is calculated.
+     * @return Coordinates of the new position.
+     */
     private static Point calcNewPos(Point pos, Direction dir) {
         final int[] offset = _offset.get(dir);
         return new Point(pos.x + offset[0], pos.y + offset[1]);
     }
 
+    /**
+     * Checks if two objects are equal. They are equal if <code>obj</code> is
+     * instance of <code>CellPosition</code> and both have the same position.
+     *
+     * @param obj Object to check.
+     * @return Result of checking.
+     */
     @Override
     public boolean equals(Object obj) {
         if (obj instanceof CellPosition) {

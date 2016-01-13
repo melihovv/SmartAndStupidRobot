@@ -24,32 +24,25 @@
 
 package melihovv.SmartAndStupidRobotGame;
 
-import melihovv.SmartAndStupidRobotGame.model.FieldObject;
-import melihovv.SmartAndStupidRobotGame.model.Mire;
-import melihovv.SmartAndStupidRobotGame.model.Model;
-import melihovv.SmartAndStupidRobotGame.model.SmartRobot;
-import melihovv.SmartAndStupidRobotGame.model.StupidRobot;
-import melihovv.SmartAndStupidRobotGame.model.Wall;
+import melihovv.SmartAndStupidRobotGame.model.*;
 import melihovv.SmartAndStupidRobotGame.model.navigation.CellPosition;
 import melihovv.SmartAndStupidRobotGame.model.navigation.Direction;
 
-import javax.swing.JPanel;
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.Graphics;
-import java.awt.Point;
+import javax.swing.*;
+import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.util.List;
 import java.util.logging.Logger;
-
-import javax.swing.*;
 
 /**
  * The <code>SmartAndStupidRobotGame</code> defines the main class of game.
  */
 public class SmartAndStupidRobotGame {
 
+    /**
+     * Constructs <code>SmartAndStupidRobotGame</code>.
+     */
     public SmartAndStupidRobotGame() {
         Model model = new Model();
         model.start();
@@ -69,7 +62,7 @@ public class SmartAndStupidRobotGame {
     }
 
     /**
-     * The <code>View</code> defines representation of <code>Model</code> class.
+     * The <code>View</code> defines view of <code>Model</code> class.
      */
     public static class View extends JPanel implements KeyListener {
 
@@ -90,6 +83,11 @@ public class SmartAndStupidRobotGame {
         private int _offsetX;
         private int _offsetY;
 
+        /**
+         * Constructs view.
+         *
+         * @param model Model of game.
+         */
         public View(Model model) {
             _model = model;
 
@@ -100,8 +98,8 @@ public class SmartAndStupidRobotGame {
             setMinimumSize(new Dimension(_width, _height));
             setFocusable(true);
 
-            _model.smartRobot().addListener(new SmartRobotObserver());
-            _model.stupidRobot().addListener(new StupidRobotObserver());
+            _model.smartRobot().addListener(new SmartRobotListener());
+            _model.stupidRobot().addListener(new StupidRobotListener());
 
             addKeyListener(this);
         }
@@ -239,6 +237,12 @@ public class SmartAndStupidRobotGame {
             g.setColor(preserved);
         }
 
+        /**
+         * Returns left top corner coordinates of the cell.
+         *
+         * @param c Position of cell.
+         * @return Left top corner coordinates of the cell.
+         */
         private Point leftTopCorner(CellPosition c) {
             return new Point(
                     _offsetX + CELL_SIZE * ((int) c.pos().getX() - 1),
@@ -272,7 +276,10 @@ public class SmartAndStupidRobotGame {
         public void keyReleased(KeyEvent e) {
         }
 
-        private class SmartRobotObserver
+        /**
+         * Smart robot listener.
+         */
+        private class SmartRobotListener
                 implements SmartRobot.SmartRobotActionListener {
 
             @Override
@@ -282,7 +289,10 @@ public class SmartAndStupidRobotGame {
             }
         }
 
-        private class StupidRobotObserver
+        /**
+         * Stupid robot listener.
+         */
+        private class StupidRobotListener
                 implements StupidRobot.StupidRobotActionListener {
 
             @Override
@@ -292,7 +302,7 @@ public class SmartAndStupidRobotGame {
             }
 
             @Override
-            public void smartRobotIsCatched(StupidRobot.StupidRobotActionEvent e) {
+            public void smartRobotIsCaught(StupidRobot.StupidRobotActionEvent e) {
             }
         }
     }

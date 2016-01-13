@@ -36,7 +36,7 @@ public class Direction {
     private int _angle = 0;
 
     /**
-     * Construct the new <code>Direction</code>.
+     * Constructs the new <code>Direction</code>.
      *
      * @param angle The angle corresponding to the direction (0 degree - is the
      *              north direction).
@@ -51,7 +51,7 @@ public class Direction {
     }
 
     /**
-     * Get north direction.
+     * Returns north direction.
      *
      * @return The north <code>Direction</code>.
      */
@@ -60,7 +60,7 @@ public class Direction {
     }
 
     /**
-     * Get south direction.
+     * Returns south direction.
      *
      * @return The south <code>Direction</code>.
      */
@@ -69,7 +69,7 @@ public class Direction {
     }
 
     /**
-     * Get east direction.
+     * Returns east direction.
      *
      * @return The east <code>Direction</code>.
      */
@@ -78,7 +78,7 @@ public class Direction {
     }
 
     /**
-     * Get west direction.
+     * Returns west direction.
      *
      * @return The west <code>Direction</code>.
      */
@@ -87,7 +87,7 @@ public class Direction {
     }
 
     /**
-     * Return the new <code>Direction</code> rotated 45 degrees clockwise.
+     * Returns the new <code>Direction</code> rotated 45 degrees clockwise.
      *
      * @return The new <code>Direction</code> rotated 45 degrees clockwise.
      */
@@ -96,7 +96,7 @@ public class Direction {
     }
 
     /**
-     * Return the new <code>Direction</code> rotated 45 degrees anticlockwise.
+     * Returns the new <code>Direction</code> rotated 45 degrees anticlockwise.
      *
      * @return The new <code>Direction</code> rotated 45 degrees anticlockwise.
      */
@@ -105,7 +105,7 @@ public class Direction {
     }
 
     /**
-     * Return the new <code>Direction</code> rotated 180 degrees.
+     * Returns the new <code>Direction</code> rotated 180 degrees.
      *
      * @return The new <code>Direction</code> rotated 180 degrees.
      */
@@ -114,7 +114,8 @@ public class Direction {
     }
 
     /**
-     * Check if <code>other</code> direction is opposite of current.
+     * Checks if <code>other</code> direction is opposite of current.
+     *
      * @param other Direction to check.
      * @return Result of checking.
      */
@@ -123,7 +124,10 @@ public class Direction {
     }
 
     /**
-     * Check if <code>other</code> equals current direction.
+     * Checks if <code>other</code> equals current direction. They are equal if
+     * the <code>other</code> object is instance of <code>Direction</code> and
+     * both have the same direction.
+     *
      * @param other Any object.
      * @return Result of checking.
      */
@@ -137,6 +141,11 @@ public class Direction {
         return false;
     }
 
+    /**
+     * Returns hash code of the <code>Direction</code> instance.
+     *
+     * @return Hash code of the <code>Direction</code> instance.
+     */
     @Override
     public int hashCode() {
         return _angle;

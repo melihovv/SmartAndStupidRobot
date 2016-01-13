@@ -40,17 +40,29 @@ import java.util.logging.Logger;
  */
 public class StupidRobot extends FieldObject<CellPosition> {
 
+    // List of the stupid robot's listeners.
     private final ArrayList<StupidRobotActionListener> _listenerList;
+    // The stupid robot action event.
     private final StupidRobotActionEvent _event;
+    // The number of steps to skip.
     private int _stepsToSkip = 0;
+    // Logger.
     static final Logger log = Logger.getLogger(StupidRobot.class.getName());
 
+    /**
+     * Constructs the stupid robot.
+     *
+     * @param field A field on which the stupid robot is placed.
+     */
     public StupidRobot(Field field) {
         super(field);
         _listenerList = new ArrayList<>();
         _event = new StupidRobotActionEvent(this);
     }
 
+    /**
+     * Makes step by the stupid robot.
+     */
     public void makeMove() {
         if (_stepsToSkip != 0) {
             --_stepsToSkip;
@@ -67,97 +79,40 @@ public class StupidRobot extends FieldObject<CellPosition> {
         }
 
         // Check if smart robot is near.
-        boolean isSmartRobotNear =
-                _pos.next(Direction.north()).equals(smRobPos) ||
-                        _pos.next(Direction.south()).equals(smRobPos) ||
-                        _pos.next(Direction.east()).equals(smRobPos) ||
-                        _pos.next(Direction.east()).next(Direction.north())
-                                .equals(smRobPos) ||
-                        _pos.next(Direction.east()).next(Direction.south())
-                                .equals(smRobPos) ||
-                        _pos.next(Direction.west()).equals(smRobPos) ||
-                        _pos.next(Direction.west()).next(Direction.north())
-                                .equals(smRobPos) ||
-                        _pos.next(Direction.west()).next(Direction.south())
-                                .equals(smRobPos);
-        log.info("Is smart robot near? " + isSmartRobotNear);
+        boolean isSmartRobotNear = isSmartRobotNear(smRobPos);
+        log.fine("Is smart robot near? " + isSmartRobotNear);
 
         if (isSmartRobotNear) {
-
-            // Robots are in the same column.
             if (smRobPos.pos().getX() == _pos.pos().getX()) {
-                List<FieldObject> nearWall = null;
-                List<FieldObject> nearWall2 = null;
+                // Robots are in the same column.
+                List<FieldObject> nearWall = _field.objects(
+                        Wall.class,
+                        new MiddlePosition(
+                                smRobPos.pos().getY() < _pos.pos().getY() ?
+                                        Direction.north() :
+                                        Direction.south(),
+                                _pos
+                        )
+                );
 
-                // Smart robot is on the top.
-                if (smRobPos.pos().getY() < _pos.pos().getY()) {
-                    nearWall = _field.objects(
-                            Wall.class,
-                            new MiddlePosition(Direction.north(), _pos)
-                    );
-                    nearWall2 = _field.objects(
-                            Wall.class,
-                            new MiddlePosition(
-                                    Direction.south(),
-                                    _pos.next(Direction.north())
-                            )
-                    );
-                } else if (smRobPos.pos().getY() > _pos.pos().getY()) {
-                    nearWall = _field.objects(
-                            Wall.class,
-                            new MiddlePosition(Direction.south(), _pos)
-                    );
-                    nearWall2 = _field.objects(
-                            Wall.class,
-                            new MiddlePosition(
-                                    Direction.north(),
-                                    _pos.next(Direction.south())
-                            )
-                    );
-                }
-
-                if (nearWall.isEmpty() &&
-                        nearWall2.isEmpty()) {
-
+                if (nearWall.isEmpty()) {
                     setPos(smRobPos);
                     fireSmartRobotIsCatched();
                     return;
                 }
             } else if (smRobPos.pos().getY() == _pos.pos().getY()) {
                 // Robots are in the same row.
-                List<FieldObject> nearWall = null;
-                List<FieldObject> nearWall2 = null;
+                List<FieldObject> nearWall = _field.objects(
+                        Wall.class,
+                        new MiddlePosition(
+                                smRobPos.pos().getX() < _pos.pos().getX() ?
+                                        Direction.west() :
+                                        Direction.east(),
+                                _pos
+                        )
+                );
 
-                // Smart robot is on the left.
-                if (smRobPos.pos().getX() < _pos.pos().getX()) {
-                    nearWall = _field.objects(
-                            Wall.class,
-                            new MiddlePosition(Direction.west(), _pos)
-                    );
-                    nearWall2 = _field.objects(
-                            Wall.class,
-                            new MiddlePosition(
-                                    Direction.east(),
-                                    _pos.next(Direction.west())
-                            )
-                    );
-                } else if (smRobPos.pos().getX() > _pos.pos().getX()) {
-                    nearWall = _field.objects(
-                            Wall.class,
-                            new MiddlePosition(Direction.east(), _pos)
-                    );
-                    nearWall2 = _field.objects(
-                            Wall.class,
-                            new MiddlePosition(
-                                    Direction.west(),
-                                    _pos.next(Direction.east())
-                            )
-                    );
-                }
-
-                if (nearWall.isEmpty() &&
-                        nearWall2.isEmpty()) {
-
+                if (nearWall.isEmpty()) {
                     setPos(smRobPos);
                     fireSmartRobotIsCatched();
                     return;
@@ -165,7 +120,6 @@ public class StupidRobot extends FieldObject<CellPosition> {
             } else {
                 // The smart robot is diagonally across from the stupid one.
 
-                // TODO remove duplicated code.
                 // Smart robot is on the left.
                 if (smRobPos.pos().getX() < _pos.pos().getX()) {
                 } else {
@@ -173,7 +127,7 @@ public class StupidRobot extends FieldObject<CellPosition> {
                 }
             }
         } else {
-            Direction dir = null;
+            Direction dir;
 
             // Robots are in the same column.
             if (smRobPos.pos().getX() == _pos.pos().getX()) {
@@ -193,38 +147,66 @@ public class StupidRobot extends FieldObject<CellPosition> {
                 }
             }
 
-            if (dir != null) {
-                if (isMovePossible(dir)) {
-                    if (setPos(_pos.next(dir))) {
-                        for (FieldObject mire : _field.objects(Mire.class)) {
-                            if (_pos.equals(mire.pos())) {
-                                log.info("Stupid robot in mire, skip 3 steps");
-                                _stepsToSkip = 3;
-                                break;
-                            }
+            if (isMovePossible(dir)) {
+                if (setPos(_pos.next(dir))) {
+                    for (FieldObject mire : _field.objects(Mire.class)) {
+                        if (_pos.equals(mire.pos())) {
+                            log.info("Stupid robot in mire, skip 3 steps");
+                            _stepsToSkip = 3;
+                            break;
                         }
-
-                        fireRobotAction();
                     }
+
+                    fireRobotMadeMove();
                 }
             }
         }
     }
 
+    /**
+     * Checks if the smart robot is near.
+     *
+     * @param smRobPos Position of the smart robot.
+     * @return Result of checking.
+     */
+    private boolean isSmartRobotNear(CellPosition smRobPos) {
+        return _pos.next(Direction.north()).equals(smRobPos) ||
+                _pos.next(Direction.south()).equals(smRobPos) ||
+                _pos.next(Direction.east()).equals(smRobPos) ||
+                _pos.next(Direction.east()).next(Direction.north())
+                        .equals(smRobPos) ||
+                _pos.next(Direction.east()).next(Direction.south())
+                        .equals(smRobPos) ||
+                _pos.next(Direction.west()).equals(smRobPos) ||
+                _pos.next(Direction.west()).next(Direction.north())
+                        .equals(smRobPos) ||
+                _pos.next(Direction.west()).next(Direction.south())
+                        .equals(smRobPos);
+    }
+
+    /**
+     * Check if movement is possible in the direction <code>dir</code>.
+     *
+     * @param dir The direction in which it is checked.
+     * @return Result of checking.
+     */
     private boolean isMovePossible(Direction dir) {
         List<FieldObject> objs = _field.objects(Wall.class,
-                new MiddlePosition(dir.opposite(), _pos.next(dir)));
-        List<FieldObject> objs2 = _field.objects(Wall.class,
                 new MiddlePosition(dir, _pos));
-        if (!objs.isEmpty() || !objs2.isEmpty()) {
+        if (!objs.isEmpty()) {
             return false;
         }
 
         Point nextPos = _pos.next(dir).pos();
-        boolean isPosValid = _field.contains(nextPos);
-        return isPosValid;
+        return _field.contains(nextPos);
     }
 
+    /**
+     * Sets the stupid robot position to <code>pos</code>.
+     *
+     * @param pos The position to which object will be placed.
+     * @return True if position was not null, otherwise — false.
+     */
     @Override
     public boolean setPos(CellPosition pos) {
         if (pos != null) {
@@ -239,41 +221,84 @@ public class StupidRobot extends FieldObject<CellPosition> {
     ////////////////////////////////////////////////////////////////////////////
 
     /**
-     * The <code>StupidRobotActionEvent</code> defines event of stupid robot.
+     * The <code>StupidRobotActionEvent</code> defines the stupid robot event.
      */
     public class StupidRobotActionEvent extends EventObject {
+
+        /**
+         * Constructs the stupid robot action event.
+         *
+         * @param source Source of event.
+         */
         public StupidRobotActionEvent(Object source) {
             super(source);
         }
     }
 
+    /**
+     * The <code>SmartRobotActionListener</code> defines the stupid robot action
+     * listener.
+     */
     public interface StupidRobotActionListener extends EventListener {
+
+        /**
+         * This method is invoked after the stupid robot made movement.
+         *
+         * @param e The smart robot action event.
+         */
         void stupidRobotMadeMove(StupidRobotActionEvent e);
 
-        void smartRobotIsCatched(StupidRobotActionEvent e);
+        /**
+         * This method is invoked when stupid robot has caught the smart one.
+         *
+         * @param e The smart robot action event.
+         */
+        void smartRobotIsCaught(StupidRobotActionEvent e);
     }
 
+    /**
+     * Adds the stupid robot action listener <code>l</code> to the list of
+     * listeners.
+     *
+     * @param l The stupid robot action listener.
+     */
     public void addListener(StupidRobotActionListener l) {
         _listenerList.add(l);
     }
 
+    /**
+     * Removes the stupid robot action listener <code>l</code> from the list of
+     * listeners.
+     *
+     * @param l The stupid robot action listener.
+     */
     public void removeListener(StupidRobotActionListener l) {
         _listenerList.remove(l);
     }
 
+    /**
+     * Removes all the stupid robot action listeners.
+     */
     public void clearListeners() {
         _listenerList.clear();
     }
 
-    protected void fireRobotAction() {
+    /**
+     * Notifies all the listeners that the stupid robot is made movement.
+     */
+    private void fireRobotMadeMove() {
         for (Object listener : _listenerList) {
             ((StupidRobotActionListener) listener).stupidRobotMadeMove(_event);
         }
     }
 
+    /**
+     * Notifies all the listeners that the stupid robot has caught the smart
+     * one.
+     */
     protected void fireSmartRobotIsCatched() {
         for (Object listener : _listenerList) {
-            ((StupidRobotActionListener) listener).smartRobotIsCatched(_event);
+            ((StupidRobotActionListener) listener).smartRobotIsCaught(_event);
         }
     }
 }

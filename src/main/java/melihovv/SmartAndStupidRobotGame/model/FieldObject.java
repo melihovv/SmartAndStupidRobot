@@ -25,27 +25,39 @@
 package melihovv.SmartAndStupidRobotGame.model;
 
 /**
- * The <code>FieldObject</code> class defines game field object. It have
+ * The <code>FieldObject</code> class defines game field object. It has
  * position on the game field.
  */
 public abstract class FieldObject<Position> {
 
+    // A field.
     protected Field _field;
+    // Position on a field.
     protected Position _pos;
 
+    /**
+     * Constructs field object.
+     *
+     * @param field A field on which object is placed.
+     */
     public FieldObject(Field field) {
         _field = field;
     }
 
+    /**
+     * Returns object's position.
+     *
+     * @return Object's position.
+     */
     public Position pos() {
         return _pos;
     }
 
     /**
-     * Set object position to <code>pos</code> if it isn't occupied by other
+     * Sets object position to <code>pos</code> if it isn't occupied by other
      * object.
      *
-     * @param pos
+     * @param pos The position to which object will be placed.
      * @return True if position was set, otherwise — false.
      */
     public boolean setPos(Position pos) {

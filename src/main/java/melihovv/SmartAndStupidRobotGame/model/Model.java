@@ -37,17 +37,27 @@ import java.util.logging.Logger;
  */
 public class Model {
 
+    // The game field.
     private final Field _field;
+    // The target of the smart robots.
     private final Target _target;
+    // If game is finished.
     private boolean _isGameFinished;
+    // Logger.
     static final Logger log = Logger.getLogger(Model.class.getName());
 
+    /**
+     * Constructs game model.
+     */
     public Model() {
         _field = new Field(new Dimension(10, 10));
         _target = new Target(_field);
         _isGameFinished = false;
     }
 
+    /**
+     * Starts new game.
+     */
     public void start() {
         _isGameFinished = false;
         generateField();
@@ -55,10 +65,13 @@ public class Model {
 
         smartRobot().clearListeners();
         stupidRobot().clearListeners();
-        smartRobot().addListener(new SmartRobotObserver());
-        stupidRobot().addListener(new StupidRobotObserver());
+        smartRobot().addListener(new SmartRobotListener());
+        stupidRobot().addListener(new StupidRobotListener());
     }
 
+    /**
+     * Identifies game over.
+     */
     private void identifyGameOver() {
         CellPosition smRobPos = smartRobot().pos();
         if (smRobPos.equals(_target.pos())) {
@@ -75,6 +88,9 @@ public class Model {
         }
     }
 
+    /**
+     * Generates game field.
+     */
     private void generateField() {
         _field.clear();
 
@@ -126,34 +142,59 @@ public class Model {
         );
     }
 
+    /**
+     * Makes one game step: first the smart robot makes move, then the stupid
+     * one.
+     *
+     * @param dir Direction in which smart robot make movement.
+     */
     public void makeMove(Direction dir) {
         if (!_isGameFinished) {
             smartRobot().makeMove(dir);
         }
     }
 
+    /**
+     * Returns game field.
+     *
+     * @return Game field.
+     */
     public Field field() {
         return _field;
     }
 
+    /**
+     * Returns the smart robot.
+     * @return The smart robot.
+     */
     public SmartRobot smartRobot() {
         List<FieldObject> objects = _field.objects(SmartRobot.class);
         return objects.isEmpty() ? null : (SmartRobot) objects.get(0);
     }
 
+    /**
+     * Returns the stupid robot.
+     * @return The stupid robot.
+     */
     public StupidRobot stupidRobot() {
         List<FieldObject> objects = _field.objects(StupidRobot.class);
         return objects.isEmpty() ? null : (StupidRobot) objects.get(0);
     }
 
+    /**
+     * Returns the target of the smart robot.
+     * @return The target of the smart robot.
+     */
     public Target target() {
         return _target;
     }
 
-    private class SmartRobotObserver
+    /**
+     * Smart robot listener.
+     */
+    private class SmartRobotListener
             implements SmartRobot.SmartRobotActionListener {
 
-        @Override
         public void smartRobotMadeMove(SmartRobot.SmartRobotActionEvent e) {
             log.fine("Smart robot made move");
             identifyGameOver();
@@ -164,25 +205,35 @@ public class Model {
         }
     }
 
-    private class StupidRobotObserver
+    /**
+     * Stupid robot listener.
+     */
+    private class StupidRobotListener
             implements StupidRobot.StupidRobotActionListener {
 
-        @Override
         public void stupidRobotMadeMove(StupidRobot.StupidRobotActionEvent e) {
         }
 
-        @Override
-        public void smartRobotIsCatched(StupidRobot.StupidRobotActionEvent e) {
-            log.info("Smart robot is catched");
+        public void smartRobotIsCaught(StupidRobot.StupidRobotActionEvent e) {
+            log.info("Smart robot is caught");
             _isGameFinished = true;
         }
     }
 
+    /**
+     * The target of the smart robot.
+     */
     public class Target extends FieldObject<CellPosition> {
         public Target(Field field) {
             super(field);
         }
 
+        /**
+         * Sets the target of the smart robot position to <code>pos</code>.
+         *
+         * @param pos The position to which object will be placed.
+         * @return True if position was not null, otherwise — false.
+         */
         @Override
         public boolean setPos(CellPosition pos) {
             if (pos != null) {
