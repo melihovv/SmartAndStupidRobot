@@ -86,7 +86,7 @@ public class SmartAndStupidRobotGame {
         /**
          * Constructs view.
          *
-         * @param model Model of game.
+         * @param model Model of the game.
          */
         public View(Model model) {
             _model = model;
