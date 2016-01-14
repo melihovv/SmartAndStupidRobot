@@ -195,6 +195,7 @@ public class Model {
     private class SmartRobotListener
             implements SmartRobot.SmartRobotActionListener {
 
+        @Override
         public void smartRobotMadeMove(SmartRobot.SmartRobotActionEvent e) {
             log.fine("Smart robot made move");
             identifyGameOver();
@@ -211,9 +212,11 @@ public class Model {
     private class StupidRobotListener
             implements StupidRobot.StupidRobotActionListener {
 
+        @Override
         public void stupidRobotMadeMove(StupidRobot.StupidRobotActionEvent e) {
         }
 
+        @Override
         public void smartRobotIsCaught(StupidRobot.StupidRobotActionEvent e) {
             log.info("Smart robot is caught");
             _isGameFinished = true;
