@@ -30,6 +30,8 @@ import melihovv.SmartAndStupidRobotGame.model.navigation.Direction;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.util.List;
@@ -38,23 +40,43 @@ import java.util.logging.Logger;
 /**
  * The <code>SmartAndStupidRobotGame</code> defines the main class of game.
  */
-public class SmartAndStupidRobotGame {
+public class SmartAndStupidRobotGame extends JFrame {
+
+    private JMenuBar _menuBar;
+    private final View _view;
 
     /**
      * Constructs <code>SmartAndStupidRobotGame</code>.
      */
     public SmartAndStupidRobotGame() {
-        Model model = new Model();
-        model.start();
-        View view = new View(model);
+        _view = new View();
 
-        JFrame window = new JFrame("Smart and stupid robot game");
-        window.setContentPane(view);
-        window.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-        window.pack();
-        window.setLocationRelativeTo(null);
-        window.setResizable(false);
-        window.setVisible(true);
+        createMenu();
+        setJMenuBar(_menuBar);
+
+        setTitle("Smart and stupid robot game");
+        setContentPane(_view);
+        setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+        pack();
+        setLocationRelativeTo(null);
+        setResizable(false);
+        setVisible(true);
+    }
+
+    private void createMenu() {
+        _menuBar = new JMenuBar();
+        final JMenu menu = new JMenu("File");
+        final String menuItems[] = new String[]{"New", "Exit"};
+
+        for (String menuItem : menuItems) {
+            final JMenuItem item = new JMenuItem(menuItem);
+            item.setActionCommand(menuItem.toLowerCase());
+            item.addActionListener(new MenuItemsListener());
+            menu.add(item);
+        }
+
+        menu.insertSeparator(1);
+        _menuBar.add(menu);
     }
 
     public static void main(String[] args) {
@@ -64,19 +86,20 @@ public class SmartAndStupidRobotGame {
     /**
      * The <code>View</code> defines view of <code>Model</code> class.
      */
-    public static class View extends JPanel implements KeyListener {
+    public class View extends JPanel implements KeyListener {
 
         private final Model _model;
-        static final Logger log = Logger.getLogger(View.class.getName());
+        private boolean _isGameStarted;
+        final Logger log = Logger.getLogger(View.class.getName());
 
         private static final int CELL_SIZE = 30;
         private static final int FONT_HEIGHT = 15;
 
-        private static final Color BACKGROUND_COLOR = new Color(175, 255, 175);
-        private static final Color GRID_COLOR = Color.GREEN;
-        private static final Color FONT_COLOR = Color.RED;
-        private static final Color MIRE_COLOR = new Color(139, 69, 19);
-        private static final Color WALL_COLOR = Color.BLACK;
+        private final Color BACKGROUND_COLOR = new Color(175, 255, 175);
+        private final Color GRID_COLOR = Color.GREEN;
+        private final Color FONT_COLOR = Color.RED;
+        private final Color MIRE_COLOR = new Color(139, 69, 19);
+        private final Color WALL_COLOR = Color.BLACK;
 
         private final int _width;
         private final int _height;
@@ -85,11 +108,10 @@ public class SmartAndStupidRobotGame {
 
         /**
          * Constructs view.
-         *
-         * @param model Model of the game.
          */
-        public View(Model model) {
-            _model = model;
+        public View() {
+            _model = new Model();
+            _isGameStarted = false;
 
             _width = CELL_SIZE * _model.field().width();
             _height = CELL_SIZE * _model.field().height();
@@ -98,10 +120,15 @@ public class SmartAndStupidRobotGame {
             setMinimumSize(new Dimension(_width, _height));
             setFocusable(true);
 
+            addKeyListener(this);
+        }
+
+        public void start() {
+            _isGameStarted = true;
+            _model.start();
             _model.smartRobot().addListener(new SmartRobotListener());
             _model.stupidRobot().addListener(new StupidRobotListener());
-
-            addKeyListener(this);
+            repaint();
         }
 
         @Override
@@ -113,11 +140,14 @@ public class SmartAndStupidRobotGame {
             _offsetY = Math.abs(getHeight() - _height) / 2;
 
             drawGrid(g);
-            drawWalls(g, _model.field().objects(Wall.class));
-            drawMires(g, _model.field().objects(Mire.class));
-            drawTarget(g, _model.target());
-            drawSmartRobot(g, _model.smartRobot());
-            drawStupidRobot(g, _model.stupidRobot());
+
+            if (_isGameStarted) {
+                drawWalls(g, _model.field().objects(Wall.class));
+                drawMires(g, _model.field().objects(Mire.class));
+                drawTarget(g, _model.target());
+                drawSmartRobot(g, _model.smartRobot());
+                drawStupidRobot(g, _model.stupidRobot());
+            }
         }
 
         private void drawGrid(Graphics g) {
@@ -256,6 +286,10 @@ public class SmartAndStupidRobotGame {
 
         @Override
         public void keyPressed(KeyEvent e) {
+            if (!_isGameStarted) {
+                return;
+            }
+
             Direction dir = null;
             if (e.getKeyCode() == KeyEvent.VK_UP) {
                 dir = Direction.north();
@@ -303,6 +337,19 @@ public class SmartAndStupidRobotGame {
 
             @Override
             public void smartRobotIsCaught(StupidRobot.StupidRobotActionEvent e) {
+            }
+        }
+    }
+
+    private class MenuItemsListener implements ActionListener {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            String command = e.getActionCommand();
+            if ("exit".equals(command)) {
+                System.exit(0);
+            }
+            if ("new".equals(command)) {
+                _view.start();
             }
         }
     }

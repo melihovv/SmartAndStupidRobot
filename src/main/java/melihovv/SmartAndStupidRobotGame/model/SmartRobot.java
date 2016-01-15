@@ -34,7 +34,6 @@ import java.util.EventListener;
 import java.util.EventObject;
 import java.util.List;
 
-// TODO add menu bar.
 // TODO load situation from file.
 
 // my mod.
