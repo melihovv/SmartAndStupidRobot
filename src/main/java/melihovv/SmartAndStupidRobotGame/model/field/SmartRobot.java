@@ -37,7 +37,6 @@ import java.util.List;
 // TODO load situation from file.
 
 // my mod.
-// TODO add seasons.
 // TODO add rain.
 // TODO add frozen mire. any robot can slide on frozen mire.
 

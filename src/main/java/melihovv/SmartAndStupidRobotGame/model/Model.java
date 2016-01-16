@@ -28,6 +28,9 @@ import melihovv.SmartAndStupidRobotGame.model.field.*;
 import melihovv.SmartAndStupidRobotGame.model.field.position.CellPosition;
 import melihovv.SmartAndStupidRobotGame.model.field.position.MiddlePosition;
 import melihovv.SmartAndStupidRobotGame.model.navigation.Direction;
+import melihovv.SmartAndStupidRobotGame.model.seasons.SeasonsManager;
+import melihovv.SmartAndStupidRobotGame.model.seasons.Summer;
+import melihovv.SmartAndStupidRobotGame.model.seasons.Winter;
 
 import java.awt.*;
 import java.util.List;
@@ -46,6 +49,8 @@ public class Model {
     private boolean _isGameFinished;
     // Logger.
     private static final Logger log = Logger.getLogger(Model.class.getName());
+    // Seasons manager.
+    private final SeasonsManager _manager;
 
     /**
      * Constructs game model.
@@ -54,6 +59,7 @@ public class Model {
         _field = new Field(new Dimension(10, 10));
         _target = new Target(_field);
         _isGameFinished = false;
+        _manager = new SeasonsManager();
     }
 
     /**
@@ -61,6 +67,12 @@ public class Model {
      */
     public void start() {
         _isGameFinished = false;
+
+        _manager.clearListeners();
+        _manager.addSeason(new Summer("summer", 25, "rain"));
+        _manager.addSeason(new Winter("winter", -20, ""));
+        _manager.start();
+
         generateField();
         identifyGameOver();
 
@@ -183,11 +195,43 @@ public class Model {
     }
 
     /**
+     * Returns the seasons manager.
+     * @return The seasons manager.
+     */
+    public SeasonsManager seasonsManager() {
+        return _manager;
+    }
+
+    /**
      * Returns the target of the smart robot.
      * @return The target of the smart robot.
      */
     public Target target() {
         return _target;
+    }
+
+    /**
+     * The target of the smart robot.
+     */
+    public static class Target extends FieldObject<CellPosition> {
+        public Target(Field field) {
+            super(field);
+        }
+
+        /**
+         * Sets the target of the smart robot position to <code>pos</code>.
+         *
+         * @param pos The position to which object will be placed.
+         * @return True if position was not null, otherwise — false.
+         */
+        @Override
+        public boolean setPos(CellPosition pos) {
+            if (pos != null) {
+                _pos = pos;
+                return true;
+            }
+            return false;
+        }
     }
 
     /**
@@ -221,30 +265,6 @@ public class Model {
         public void smartRobotIsCaught(StupidRobot.StupidRobotActionEvent e) {
             log.info("Smart robot is caught");
             _isGameFinished = true;
-        }
-    }
-
-    /**
-     * The target of the smart robot.
-     */
-    public static class Target extends FieldObject<CellPosition> {
-        public Target(Field field) {
-            super(field);
-        }
-
-        /**
-         * Sets the target of the smart robot position to <code>pos</code>.
-         *
-         * @param pos The position to which object will be placed.
-         * @return True if position was not null, otherwise — false.
-         */
-        @Override
-        public boolean setPos(CellPosition pos) {
-            if (pos != null) {
-                _pos = pos;
-                return true;
-            }
-            return false;
         }
     }
 }

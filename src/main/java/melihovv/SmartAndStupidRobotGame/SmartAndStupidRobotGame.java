@@ -28,6 +28,10 @@ import melihovv.SmartAndStupidRobotGame.model.Model;
 import melihovv.SmartAndStupidRobotGame.model.field.*;
 import melihovv.SmartAndStupidRobotGame.model.field.position.CellPosition;
 import melihovv.SmartAndStupidRobotGame.model.navigation.Direction;
+import melihovv.SmartAndStupidRobotGame.model.seasons.Season;
+import melihovv.SmartAndStupidRobotGame.model.seasons.SeasonsManager;
+import melihovv.SmartAndStupidRobotGame.model.seasons.Summer;
+import melihovv.SmartAndStupidRobotGame.model.seasons.Winter;
 
 import javax.swing.*;
 import javax.swing.border.MatteBorder;
@@ -47,6 +51,7 @@ public class SmartAndStupidRobotGame extends JFrame {
     private JMenuBar _menuBar;
     private JLabel _infoLabel;
     private final View _view;
+    final Logger _log = Logger.getLogger(View.class.getName());
 
     /**
      * Constructs <code>SmartAndStupidRobotGame</code>.
@@ -108,16 +113,16 @@ public class SmartAndStupidRobotGame extends JFrame {
     /**
      * The <code>View</code> defines view of <code>Model</code> class.
      */
-    public class View extends JPanel implements KeyListener {
+    private class View extends JPanel implements KeyListener {
 
         private final Model _model;
         private boolean _isGameStarted;
-        final Logger log = Logger.getLogger(View.class.getName());
 
         private static final int CELL_SIZE = 30;
         private static final int FONT_HEIGHT = 15;
 
-        private final Color BACKGROUND_COLOR = new Color(175, 255, 175);
+        private final Color SUMMER_COLOR = new Color(175, 255, 175);
+        private final Color WINTER_COLOR = new Color(83, 201, 239);
         private final Color GRID_COLOR = Color.GREEN;
         private final Color FONT_COLOR = Color.RED;
         private final Color MIRE_COLOR = new Color(139, 69, 19);
@@ -145,17 +150,30 @@ public class SmartAndStupidRobotGame extends JFrame {
             addKeyListener(this);
         }
 
+        /**
+         * Start the game.
+         */
         public void start() {
             _isGameStarted = true;
             _model.start();
             _model.smartRobot().addListener(new SmartRobotListener());
             _model.stupidRobot().addListener(new StupidRobotListener());
             super.repaint();
+            _infoLabel.setText(_model.seasonsManager().activeSeason().name() +
+                    " is now");
         }
 
         @Override
         public void paintComponent(Graphics g) {
-            g.setColor(BACKGROUND_COLOR);
+            g.setColor(SUMMER_COLOR);
+            Season season = _model.seasonsManager().activeSeason();
+            if (season != null) {
+                if (season instanceof Winter) {
+                    g.setColor(WINTER_COLOR);
+                } else if (season instanceof Summer) {
+                    g.setColor(SUMMER_COLOR);
+                }
+            }
             g.fillRect(0, 0, super.getWidth(), getHeight());
 
             _offsetX = Math.abs(super.getWidth() - _width) / 2;
@@ -340,7 +358,7 @@ public class SmartAndStupidRobotGame extends JFrame {
 
             @Override
             public void smartRobotMadeMove(SmartRobot.SmartRobotActionEvent e) {
-                log.fine("Smart robot made move");
+                _log.fine("Smart robot made move");
                 repaint();
             }
         }
@@ -353,7 +371,7 @@ public class SmartAndStupidRobotGame extends JFrame {
 
             @Override
             public void stupidRobotMadeMove(StupidRobot.StupidRobotActionEvent e) {
-                log.fine("Stupid robot made move");
+                _log.fine("Stupid robot made move");
                 repaint();
             }
 
@@ -372,7 +390,22 @@ public class SmartAndStupidRobotGame extends JFrame {
             }
             if ("new".equals(command)) {
                 _view.start();
+                _view._model.seasonsManager().addListener(
+                        new SeasonsListener()
+                );
             }
+        }
+    }
+
+    private class SeasonsListener implements SeasonsManager.SeasonsListener {
+
+        @Override
+        public void seasonIsChanged(SeasonsManager.SeasonsEvent e) {
+            String downfall = e.downfall().length() != 0 ?
+                    ", downfall: " + e.downfall() :
+                    "";
+            _infoLabel.setText(e.name() + " is now" + downfall);
+            repaint();
         }
     }
 }
