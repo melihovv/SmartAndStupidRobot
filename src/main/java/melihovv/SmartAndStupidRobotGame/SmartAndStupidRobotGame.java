@@ -123,9 +123,11 @@ public class SmartAndStupidRobotGame extends JFrame {
 
         private final Color SUMMER_COLOR = new Color(175, 255, 175);
         private final Color WINTER_COLOR = new Color(83, 201, 239);
-        private final Color GRID_COLOR = Color.GREEN;
+        private final Color SUMMER_GRID_COLOR = Color.GREEN;
+        private final Color WINTER_GRID_COLOR = Color.BLUE;
         private final Color FONT_COLOR = Color.RED;
-        private final Color MIRE_COLOR = new Color(139, 69, 19);
+        private final Color SUMMER_MIRE_COLOR = new Color(139, 69, 19);
+        private final Color WINTER_MIRE_COLOR = Color.WHITE;
         private final Color WALL_COLOR = Color.BLACK;
 
         private final int _width;
@@ -138,6 +140,7 @@ public class SmartAndStupidRobotGame extends JFrame {
          */
         public View() {
             _model = new Model();
+            _model.addListener(new ModelListener());
             _isGameStarted = false;
 
             _width = CELL_SIZE * _model.field().width();
@@ -165,15 +168,7 @@ public class SmartAndStupidRobotGame extends JFrame {
 
         @Override
         public void paintComponent(Graphics g) {
-            g.setColor(SUMMER_COLOR);
-            Season season = _model.seasonsManager().activeSeason();
-            if (season != null) {
-                if (season instanceof Winter) {
-                    g.setColor(WINTER_COLOR);
-                } else if (season instanceof Summer) {
-                    g.setColor(SUMMER_COLOR);
-                }
-            }
+            g.setColor(getCurrentSeasonColor(WINTER_COLOR, SUMMER_COLOR));
             g.fillRect(0, 0, super.getWidth(), getHeight());
 
             _offsetX = Math.abs(super.getWidth() - _width) / 2;
@@ -190,9 +185,32 @@ public class SmartAndStupidRobotGame extends JFrame {
             }
         }
 
+        /**
+         * Return <code>winterColor</code> if winter is now,
+         * <code>summerColor</code> if summer is now, otherwise -
+         * <code>summerColor</code>.
+         *
+         * @param winterColor Color to return when season is winter.
+         * @param summerColor Color to return when season is summer.
+         * @return Current season color.
+         */
+        private Color getCurrentSeasonColor(Color winterColor,
+                                            Color summerColor) {
+            Season season = _model.seasonsManager().activeSeason();
+            if (season != null) {
+                if (season instanceof Winter) {
+                    return winterColor;
+                } else if (season instanceof Summer) {
+                    return summerColor;
+                }
+            }
+            return summerColor;
+        }
+
         private void drawGrid(Graphics g) {
             Color preserved = g.getColor();
-            g.setColor(GRID_COLOR);
+            g.setColor(getCurrentSeasonColor(WINTER_GRID_COLOR,
+                    SUMMER_GRID_COLOR));
 
             final int height = super.getHeight();
             final int width = super.getWidth();
@@ -252,7 +270,8 @@ public class SmartAndStupidRobotGame extends JFrame {
 
         private void drawMires(Graphics g, List<FieldObject> mires) {
             Color preserved = g.getColor();
-            g.setColor(MIRE_COLOR);
+            g.setColor(getCurrentSeasonColor(WINTER_MIRE_COLOR,
+                    SUMMER_MIRE_COLOR));
 
             for (FieldObject mire : mires) {
                 Point ltc = leftTopCorner(((Mire) mire).pos());
@@ -377,6 +396,7 @@ public class SmartAndStupidRobotGame extends JFrame {
 
             @Override
             public void smartRobotIsCaught(StupidRobot.StupidRobotActionEvent e) {
+                _infoLabel.setText("Game is over");
             }
         }
     }
@@ -401,11 +421,23 @@ public class SmartAndStupidRobotGame extends JFrame {
 
         @Override
         public void seasonIsChanged(SeasonsManager.SeasonsEvent e) {
+            if (_view._model.isGameFinished()) {
+                return;
+            }
+
             String downfall = e.downfall().length() != 0 ?
                     ", downfall: " + e.downfall() :
                     "";
             _infoLabel.setText(e.name() + " is now" + downfall);
             repaint();
+        }
+    }
+
+    private class ModelListener implements Model.ModelListener {
+
+        @Override
+        public void gameIsOver(Model.ModelEvent e) {
+            _infoLabel.setText("Game is over");
         }
     }
 }

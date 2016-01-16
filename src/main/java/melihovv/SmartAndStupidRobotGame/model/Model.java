@@ -33,6 +33,9 @@ import melihovv.SmartAndStupidRobotGame.model.seasons.Summer;
 import melihovv.SmartAndStupidRobotGame.model.seasons.Winter;
 
 import java.awt.*;
+import java.util.ArrayList;
+import java.util.EventListener;
+import java.util.EventObject;
 import java.util.List;
 import java.util.logging.Logger;
 
@@ -51,6 +54,10 @@ public class Model {
     private static final Logger log = Logger.getLogger(Model.class.getName());
     // Seasons manager.
     private final SeasonsManager _manager;
+    // List of the listeners.
+    private final List<ModelListener> _listenerList;
+    // Seasons event.
+    private final ModelEvent _event;
 
     /**
      * Constructs game model.
@@ -60,6 +67,8 @@ public class Model {
         _target = new Target(_field);
         _isGameFinished = false;
         _manager = new SeasonsManager();
+        _event = new ModelEvent(this);
+        _listenerList = new ArrayList<>();
     }
 
     /**
@@ -90,12 +99,14 @@ public class Model {
         if (smRobPos.equals(_target.pos())) {
             _isGameFinished = true;
             log.info("Smart robot has reached target position");
+            fireGameIsOver();
         }
 
         for (FieldObject mire : _field.objects(Mire.class)) {
             if (smRobPos.equals(mire.pos())) {
                 _isGameFinished = true;
                 log.info("Smart robot in mire");
+                fireGameIsOver();
                 break;
             }
         }
@@ -178,6 +189,7 @@ public class Model {
 
     /**
      * Returns the smart robot.
+     *
      * @return The smart robot.
      */
     public SmartRobot smartRobot() {
@@ -187,6 +199,7 @@ public class Model {
 
     /**
      * Returns the stupid robot.
+     *
      * @return The stupid robot.
      */
     public StupidRobot stupidRobot() {
@@ -195,7 +208,17 @@ public class Model {
     }
 
     /**
+     * Returns true if game is finished, otherwise - false.
+     *
+     * @return true if game is finished, otherwise - false
+     */
+    public boolean isGameFinished() {
+        return _isGameFinished;
+    }
+
+    /**
      * Returns the seasons manager.
+     *
      * @return The seasons manager.
      */
     public SeasonsManager seasonsManager() {
@@ -204,10 +227,50 @@ public class Model {
 
     /**
      * Returns the target of the smart robot.
+     *
      * @return The target of the smart robot.
      */
     public Target target() {
         return _target;
+    }
+
+
+    ////////////////////////////////////////////////////////////////////////////
+    // Events.
+    ////////////////////////////////////////////////////////////////////////////
+
+    /**
+     * Adds listener <code>l</code> to the list of listeners.
+     *
+     * @param l The seasons listener.
+     */
+    public void addListener(ModelListener l) {
+        _listenerList.add(l);
+    }
+
+    /**
+     * Removes listener <code>l</code> from the list of listeners.
+     *
+     * @param l The seasons listener.
+     */
+    public void removeListener(ModelListener l) {
+        _listenerList.remove(l);
+    }
+
+    /**
+     * Removes all the listeners.
+     */
+    public void clearListeners() {
+        _listenerList.clear();
+    }
+
+    /**
+     * Notifies all the listers that the game is over.
+     */
+    private void fireGameIsOver() {
+        for (Object listener : _listenerList) {
+            ((ModelListener) listener).gameIsOver(_event);
+        }
     }
 
     /**
@@ -266,5 +329,34 @@ public class Model {
             log.info("Smart robot is caught");
             _isGameFinished = true;
         }
+    }
+
+    /**
+     * Model event.
+     */
+    public static class ModelEvent extends EventObject {
+
+        /**
+         * Constructs a prototypical Event.
+         *
+         * @param source The object on which the Event initially occurred.
+         * @throws IllegalArgumentException if source is null.
+         */
+        public ModelEvent(Object source) {
+            super(source);
+        }
+    }
+
+    /**
+     * Model listener interface.
+     */
+    public interface ModelListener extends EventListener {
+
+        /**
+         * This method is invoked when game is over.
+         *
+         * @param e Model event.
+         */
+        void gameIsOver(ModelEvent e);
     }
 }
