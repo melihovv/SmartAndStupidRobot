@@ -35,10 +35,7 @@ import java.util.EventObject;
 import java.util.List;
 
 // TODO load situation from file.
-
-// my mod.
 // TODO add rain.
-// TODO add frozen mire. any robot can slide on frozen mire.
 
 /**
  * The <code>SmartRobot</code> class defines the smart robot on the field.
@@ -68,7 +65,13 @@ public class SmartRobot extends MovableObject<CellPosition> {
      */
     public void makeMove(Direction dir) {
         if (isMovePossible(dir)) {
-            if (setPos(_pos.next(dir))) {
+            List<FieldObject> objects = _field.objects(_pos.next(dir));
+
+            if (objects.size() != 0 && objects.get(0) instanceof Mire &&
+                    ((Mire) objects.get(0)).move(this, dir)) {
+
+                fireRobotMadeMove();
+            } else if (setPos(_pos.next(dir))) {
                 fireRobotMadeMove();
             }
         }

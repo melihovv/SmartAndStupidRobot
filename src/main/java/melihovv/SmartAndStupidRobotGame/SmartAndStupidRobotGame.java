@@ -48,9 +48,13 @@ import java.util.logging.Logger;
  */
 public class SmartAndStupidRobotGame extends JFrame {
 
+    // Menu.
     private JMenuBar _menuBar;
+    // Info label.
     private JLabel _infoLabel;
+    // View of model.
     private final View _view;
+    // Logger.
     final Logger _log = Logger.getLogger(View.class.getName());
 
     /**
@@ -75,6 +79,11 @@ public class SmartAndStupidRobotGame extends JFrame {
         super.setVisible(true);
     }
 
+    /**
+     * Create status bar.
+     *
+     * @return Status bar.
+     */
     private JPanel createStatusBar() {
         final JPanel panel = new JPanel();
         panel.setBorder(new MatteBorder(1, 0, 0, 0, Color.GRAY));
@@ -90,6 +99,9 @@ public class SmartAndStupidRobotGame extends JFrame {
         return panel;
     }
 
+    /**
+     * Create menu.
+     */
     private void createMenu() {
         _menuBar = new JMenuBar();
         final JMenu menu = new JMenu("File");
@@ -106,6 +118,10 @@ public class SmartAndStupidRobotGame extends JFrame {
         _menuBar.add(menu);
     }
 
+    /**
+     * Main function.
+     * @param args Args.
+     */
     public static void main(String[] args) {
         SwingUtilities.invokeLater(SmartAndStupidRobotGame::new);
     }
@@ -115,24 +131,40 @@ public class SmartAndStupidRobotGame extends JFrame {
      */
     private class View extends JPanel implements KeyListener {
 
+        // Model.
         private final Model _model;
+        // Is game started?
         private boolean _isGameStarted;
 
+        // Cell size.
         private static final int CELL_SIZE = 30;
+        // Font height.
         private static final int FONT_HEIGHT = 15;
 
+        // Main summer color.
         private final Color SUMMER_COLOR = new Color(175, 255, 175);
+        // Main winter color.
         private final Color WINTER_COLOR = new Color(83, 201, 239);
+        // Summer grid color.
         private final Color SUMMER_GRID_COLOR = Color.GREEN;
+        // Winter grid color.
         private final Color WINTER_GRID_COLOR = Color.BLUE;
+        // Font color.
         private final Color FONT_COLOR = Color.RED;
+        // Summer mire color.
         private final Color SUMMER_MIRE_COLOR = new Color(139, 69, 19);
+        // Winter mire color.
         private final Color WINTER_MIRE_COLOR = Color.WHITE;
+        // Wall color.
         private final Color WALL_COLOR = Color.BLACK;
 
+        // Width of field.
         private final int _width;
+        // Height of field.
         private final int _height;
+        // Offset from left and right side of frame.
         private int _offsetX;
+        // Offset from top and bottom side of frame.
         private int _offsetY;
 
         /**
@@ -154,7 +186,7 @@ public class SmartAndStupidRobotGame extends JFrame {
         }
 
         /**
-         * Start the game.
+         * Starts the game.
          */
         public void start() {
             _isGameStarted = true;
@@ -166,6 +198,10 @@ public class SmartAndStupidRobotGame extends JFrame {
                     " is now");
         }
 
+        /**
+         * Paints view.
+         * @param g Graphic context.
+         */
         @Override
         public void paintComponent(Graphics g) {
             g.setColor(getCurrentSeasonColor(WINTER_COLOR, SUMMER_COLOR));
@@ -186,7 +222,7 @@ public class SmartAndStupidRobotGame extends JFrame {
         }
 
         /**
-         * Return <code>winterColor</code> if winter is now,
+         * Returns <code>winterColor</code> if winter is now,
          * <code>summerColor</code> if summer is now, otherwise -
          * <code>summerColor</code>.
          *
@@ -207,6 +243,10 @@ public class SmartAndStupidRobotGame extends JFrame {
             return summerColor;
         }
 
+        /**
+         * Draws grid.
+         * @param g Graphic context.
+         */
         private void drawGrid(Graphics g) {
             Color preserved = g.getColor();
             g.setColor(getCurrentSeasonColor(WINTER_GRID_COLOR,
@@ -226,6 +266,11 @@ public class SmartAndStupidRobotGame extends JFrame {
             g.setColor(preserved);
         }
 
+        /**
+         * Draws target.
+         * @param g Graphic context.
+         * @param target Smart robot target.
+         */
         private void drawTarget(Graphics g, Model.Target target) {
             Color preserved = g.getColor();
             g.setColor(FONT_COLOR);
@@ -240,6 +285,11 @@ public class SmartAndStupidRobotGame extends JFrame {
             g.setColor(preserved);
         }
 
+        /**
+         * Draws smart robot.
+         * @param g Graphic context.
+         * @param smartRobot Smart robot.
+         */
         private void drawSmartRobot(Graphics g, SmartRobot smartRobot) {
             Color preserved = g.getColor();
             g.setColor(FONT_COLOR);
@@ -254,6 +304,11 @@ public class SmartAndStupidRobotGame extends JFrame {
             g.setColor(preserved);
         }
 
+        /**
+         * Draws stupid robot.
+         * @param g Graphic context.
+         * @param stupidRobot Stupid robot.
+         */
         private void drawStupidRobot(Graphics g, StupidRobot stupidRobot) {
             Color preserved = g.getColor();
             g.setColor(FONT_COLOR);
@@ -268,6 +323,11 @@ public class SmartAndStupidRobotGame extends JFrame {
             g.setColor(preserved);
         }
 
+        /**
+         * Draws mires.
+         * @param g Graphic context.
+         * @param mires Mires.
+         */
         private void drawMires(Graphics g, List<FieldObject> mires) {
             Color preserved = g.getColor();
             g.setColor(getCurrentSeasonColor(WINTER_MIRE_COLOR,
@@ -281,6 +341,11 @@ public class SmartAndStupidRobotGame extends JFrame {
             g.setColor(preserved);
         }
 
+        /**
+         * Draws walls.
+         * @param g Graphic context.
+         * @param walls Walls.
+         */
         private void drawWalls(Graphics g, List<FieldObject> walls) {
             Color preserved = g.getColor();
             g.setColor(WALL_COLOR);
@@ -339,10 +404,18 @@ public class SmartAndStupidRobotGame extends JFrame {
             );
         }
 
+        /**
+         * This method is invoked when the key is typed.
+         * @param e Key event.
+         */
         @Override
         public void keyTyped(KeyEvent e) {
         }
 
+        /**
+         * This method is invoked when the key is pressed.
+         * @param e Key event.
+         */
         @Override
         public void keyPressed(KeyEvent e) {
             if (!_isGameStarted) {
@@ -365,6 +438,10 @@ public class SmartAndStupidRobotGame extends JFrame {
             }
         }
 
+        /**
+         * This method is invoked when the key is released.
+         * @param e Key event.
+         */
         @Override
         public void keyReleased(KeyEvent e) {
         }
@@ -401,6 +478,9 @@ public class SmartAndStupidRobotGame extends JFrame {
         }
     }
 
+    /**
+     * Menu listener.
+     */
     private class MenuItemsListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
@@ -417,6 +497,9 @@ public class SmartAndStupidRobotGame extends JFrame {
         }
     }
 
+    /**
+     * Seasons listener.
+     */
     private class SeasonsListener implements SeasonsManager.SeasonsListener {
 
         @Override
@@ -433,10 +516,14 @@ public class SmartAndStupidRobotGame extends JFrame {
         }
     }
 
+    /**
+     * Model listener.
+     */
     private class ModelListener implements Model.ModelListener {
 
         @Override
         public void gameIsOver(Model.ModelEvent e) {
+            repaint();
             _infoLabel.setText("Game is over");
         }
     }

@@ -83,6 +83,7 @@ public class Model {
         _manager.start();
 
         generateField();
+        _manager.addListener(new SeasonsListener());
         identifyGameOver();
 
         smartRobot().clearListeners();
@@ -95,6 +96,10 @@ public class Model {
      * Identifies game over.
      */
     private void identifyGameOver() {
+        if (_isGameFinished) {
+            return;
+        }
+
         CellPosition smRobPos = smartRobot().pos();
         if (smRobPos.equals(_target.pos())) {
             _isGameFinished = true;
@@ -103,7 +108,7 @@ public class Model {
         }
 
         for (FieldObject mire : _field.objects(Mire.class)) {
-            if (smRobPos.equals(mire.pos())) {
+            if (smRobPos.equals(mire.pos()) && !((Mire) mire).isFrozen()) {
                 _isGameFinished = true;
                 log.info("Smart robot in mire");
                 fireGameIsOver();
@@ -136,18 +141,27 @@ public class Model {
         );
 
         // Add mires.
+        Mire[] mires = new Mire[]{
+                new Mire(_field),
+                new Mire(_field),
+                new Mire(_field),
+        };
         _field.addObject(
                 new CellPosition(new Point(4, 3)),
-                new Mire(_field)
+                mires[0]
         );
         _field.addObject(
                 new CellPosition(new Point(5, 3)),
-                new Mire(_field)
+                mires[1]
         );
         _field.addObject(
                 new CellPosition(new Point(5, 4)),
-                new Mire(_field)
+                mires[2]
         );
+
+        for (Mire mire : mires) {
+            _manager.addListener(mire.new SeasonsListener());
+        }
 
         // Add walls.
         _field.addObject(
@@ -358,5 +372,16 @@ public class Model {
          * @param e Model event.
          */
         void gameIsOver(ModelEvent e);
+    }
+
+    /**
+     * Season listener.
+     */
+    private class SeasonsListener implements SeasonsManager.SeasonsListener {
+
+        @Override
+        public void seasonIsChanged(SeasonsManager.SeasonsEvent e) {
+            identifyGameOver();
+        }
     }
 }

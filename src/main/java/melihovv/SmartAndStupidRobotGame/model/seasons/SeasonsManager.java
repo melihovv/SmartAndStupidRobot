@@ -143,6 +143,9 @@ public class SeasonsManager implements ActionListener {
         fireSeasonChanged();
     }
 
+    /**
+     * Seasons event.
+     */
     public static class SeasonsEvent extends EventObject {
 
         // Season name.
@@ -198,6 +201,9 @@ public class SeasonsManager implements ActionListener {
 
     }
 
+    /**
+     * Seasons listener.
+     */
     public interface SeasonsListener extends EventListener {
 
         /**
