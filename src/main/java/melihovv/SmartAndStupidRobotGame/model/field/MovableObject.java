@@ -24,19 +24,17 @@
 
 package melihovv.SmartAndStupidRobotGame.model.field;
 
-import melihovv.SmartAndStupidRobotGame.model.field.position.MiddlePosition;
-
 /**
- * The <code>Wall</code> class defines a wall on the field.
+ * The <code>MovableObject</code> class defines abstract movable field object.
  */
-public class Wall extends ImmovableObject<MiddlePosition> {
+public abstract class MovableObject<Position> extends FieldObject<Position> {
 
     /**
-     * Constructs a wall.
+     * Constructs field object.
      *
-     * @param field A field on which a wall is placed.
+     * @param field A field on which object is placed.
      */
-    public Wall(Field field) {
+    public MovableObject(Field field) {
         super(field);
     }
 }

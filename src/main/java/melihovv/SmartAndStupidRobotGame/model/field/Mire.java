@@ -29,7 +29,7 @@ import melihovv.SmartAndStupidRobotGame.model.field.position.CellPosition;
 /**
  * The <code>Mire</code> class defines mire on the field.
  */
-public class Mire extends FieldObject<CellPosition> {
+public class Mire extends ImmovableObject<CellPosition> {
 
     /**
      * Constructs mire.

@@ -38,7 +38,7 @@ import java.util.logging.Logger;
 /**
  * The <code>StupidRobot</code> defines stupid robot on the field.
  */
-public class StupidRobot extends FieldObject<CellPosition> {
+public class StupidRobot extends MovableObject<CellPosition> {
 
     // List of the stupid robot's listeners.
     private final List<StupidRobotActionListener> _listenerList;

@@ -43,7 +43,7 @@ import java.util.List;
 /**
  * The <code>SmartRobot</code> class defines the smart robot on the field.
  */
-public class SmartRobot extends FieldObject<CellPosition> {
+public class SmartRobot extends MovableObject<CellPosition> {
 
     // List of the smart robot's listeners.
     private final List<SmartRobotActionListener> _listenerList;
