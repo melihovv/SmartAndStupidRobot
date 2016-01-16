@@ -29,6 +29,7 @@ import melihovv.SmartAndStupidRobotGame.model.navigation.CellPosition;
 import melihovv.SmartAndStupidRobotGame.model.navigation.Direction;
 
 import javax.swing.*;
+import javax.swing.border.MatteBorder;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -43,6 +44,7 @@ import java.util.logging.Logger;
 public class SmartAndStupidRobotGame extends JFrame {
 
     private JMenuBar _menuBar;
+    private JLabel _infoLabel;
     private final View _view;
 
     /**
@@ -51,16 +53,35 @@ public class SmartAndStupidRobotGame extends JFrame {
     public SmartAndStupidRobotGame() {
         _view = new View();
 
+        final JPanel wrapper = new JPanel(new BorderLayout());
+        wrapper.add(_view);
+        wrapper.add(createStatusBar(), BorderLayout.SOUTH);
+
         createMenu();
         super.setJMenuBar(_menuBar);
 
         super.setTitle("Smart and stupid robot game");
-        super.setContentPane(_view);
+        super.setContentPane(wrapper);
         super.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         super.pack();
         super.setLocationRelativeTo(null);
         super.setResizable(false);
         super.setVisible(true);
+    }
+
+    private JPanel createStatusBar() {
+        final JPanel panel = new JPanel();
+        panel.setBorder(new MatteBorder(1, 0, 0, 0, Color.GRAY));
+        panel.setLayout(new BoxLayout(panel, BoxLayout.X_AXIS));
+
+        _infoLabel = new JLabel("");
+        _infoLabel.setHorizontalAlignment(SwingConstants.LEFT);
+        panel.add(_infoLabel);
+
+        final int HEIGHT = 20;
+        panel.setPreferredSize(new Dimension(super.getWidth(), HEIGHT));
+
+        return panel;
     }
 
     private void createMenu() {
@@ -134,10 +155,10 @@ public class SmartAndStupidRobotGame extends JFrame {
         @Override
         public void paintComponent(Graphics g) {
             g.setColor(BACKGROUND_COLOR);
-            g.fillRect(0, 0, getWidth(), getHeight());
+            g.fillRect(0, 0, super.getWidth(), getHeight());
 
-            _offsetX = Math.abs(getWidth() - _width) / 2;
-            _offsetY = Math.abs(getHeight() - _height) / 2;
+            _offsetX = Math.abs(super.getWidth() - _width) / 2;
+            _offsetY = Math.abs(super.getHeight() - _height) / 2;
 
             drawGrid(g);
 
@@ -154,8 +175,8 @@ public class SmartAndStupidRobotGame extends JFrame {
             Color preserved = g.getColor();
             g.setColor(GRID_COLOR);
 
-            final int height = getHeight();
-            final int width = getWidth();
+            final int height = super.getHeight();
+            final int width = super.getWidth();
 
             for (int i = 1; i <= _model.field().width() + 1; ++i) {
                 int x = _offsetX + CELL_SIZE * (i - 1);
