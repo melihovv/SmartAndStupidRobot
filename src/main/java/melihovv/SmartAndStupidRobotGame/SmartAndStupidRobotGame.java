@@ -52,15 +52,15 @@ public class SmartAndStupidRobotGame extends JFrame {
         _view = new View();
 
         createMenu();
-        setJMenuBar(_menuBar);
+        super.setJMenuBar(_menuBar);
 
-        setTitle("Smart and stupid robot game");
-        setContentPane(_view);
-        setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-        pack();
-        setLocationRelativeTo(null);
-        setResizable(false);
-        setVisible(true);
+        super.setTitle("Smart and stupid robot game");
+        super.setContentPane(_view);
+        super.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+        super.pack();
+        super.setLocationRelativeTo(null);
+        super.setResizable(false);
+        super.setVisible(true);
     }
 
     private void createMenu() {
@@ -128,7 +128,7 @@ public class SmartAndStupidRobotGame extends JFrame {
             _model.start();
             _model.smartRobot().addListener(new SmartRobotListener());
             _model.stupidRobot().addListener(new StupidRobotListener());
-            repaint();
+            super.repaint();
         }
 
         @Override
