@@ -22,7 +22,7 @@
  * SOFTWARE.
  */
 
-package melihovv.SmartAndStupidRobotGame.model;
+package melihovv.SmartAndStupidRobotGame.model.field;
 
 /**
  * The <code>FieldObject</code> class defines game field object. It has

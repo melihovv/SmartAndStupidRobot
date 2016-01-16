@@ -22,9 +22,9 @@
  * SOFTWARE.
  */
 
-package melihovv.SmartAndStupidRobotGame.model;
+package melihovv.SmartAndStupidRobotGame.model.field;
 
-import melihovv.SmartAndStupidRobotGame.model.navigation.MiddlePosition;
+import melihovv.SmartAndStupidRobotGame.model.field.position.MiddlePosition;
 
 import java.awt.*;
 import java.util.ArrayList;

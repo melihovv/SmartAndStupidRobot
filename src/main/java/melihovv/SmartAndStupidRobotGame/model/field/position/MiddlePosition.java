@@ -22,7 +22,9 @@
  * SOFTWARE.
  */
 
-package melihovv.SmartAndStupidRobotGame.model.navigation;
+package melihovv.SmartAndStupidRobotGame.model.field.position;
+
+import melihovv.SmartAndStupidRobotGame.model.navigation.Direction;
 
 /**
  * The <code>MiddlePosition</code> defines position between two cells.

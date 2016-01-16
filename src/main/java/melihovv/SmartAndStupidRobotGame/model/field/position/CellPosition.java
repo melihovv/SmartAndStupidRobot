@@ -22,7 +22,9 @@
  * SOFTWARE.
  */
 
-package melihovv.SmartAndStupidRobotGame.model.navigation;
+package melihovv.SmartAndStupidRobotGame.model.field.position;
+
+import melihovv.SmartAndStupidRobotGame.model.navigation.Direction;
 
 import java.awt.*;
 import java.util.HashMap;

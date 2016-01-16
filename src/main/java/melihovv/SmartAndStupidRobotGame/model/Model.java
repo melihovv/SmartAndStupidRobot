@@ -24,9 +24,10 @@
 
 package melihovv.SmartAndStupidRobotGame.model;
 
-import melihovv.SmartAndStupidRobotGame.model.navigation.CellPosition;
+import melihovv.SmartAndStupidRobotGame.model.field.*;
+import melihovv.SmartAndStupidRobotGame.model.field.position.CellPosition;
+import melihovv.SmartAndStupidRobotGame.model.field.position.MiddlePosition;
 import melihovv.SmartAndStupidRobotGame.model.navigation.Direction;
-import melihovv.SmartAndStupidRobotGame.model.navigation.MiddlePosition;
 
 import java.awt.*;
 import java.util.List;
