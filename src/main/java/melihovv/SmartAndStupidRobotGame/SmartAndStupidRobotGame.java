@@ -104,7 +104,7 @@ public class SmartAndStupidRobotGame extends JFrame {
      */
     private void createMenu() {
         _menuBar = new JMenuBar();
-        final JMenu menu = new JMenu("File");
+        final JMenu menu = new JMenu("Game");
         final String menuItems[] = new String[]{"New", "Exit"};
 
         for (String menuItem : menuItems) {
