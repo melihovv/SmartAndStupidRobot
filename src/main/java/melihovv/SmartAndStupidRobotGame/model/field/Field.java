@@ -202,7 +202,8 @@ public class Field implements CanMoveFieldObject<CellPosition> {
     }
 
     /**
-     * Returns objects with type <code>objType</code> and position <code>pos</code>.
+     * Returns objects with type <code>objType</code> and position
+     * <code>pos</code>.
      *
      * @param objType Type of objects.
      * @param pos     Position on which objects will be returned.
@@ -246,6 +247,17 @@ public class Field implements CanMoveFieldObject<CellPosition> {
         }
 
         return objList;
+    }
+
+    /**
+     * Returns first object of type <code>objType</code>.
+     *
+     * @param objType Type of object to return.
+     * @return First object of type <code>objType</code>.
+     */
+    public FieldObject object(Class objType) {
+        final List<FieldObject> objects = objects(objType);
+        return objects.size() != 0 ? objects.get(0) : null;
     }
 
     /**

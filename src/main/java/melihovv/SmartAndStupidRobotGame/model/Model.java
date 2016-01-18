@@ -198,8 +198,7 @@ public class Model {
      * @return The smart robot.
      */
     public SmartRobot smartRobot() {
-        List<FieldObject> objects = _field.objects(SmartRobot.class);
-        return objects.isEmpty() ? null : (SmartRobot) objects.get(0);
+        return (SmartRobot) _field.object(SmartRobot.class);
     }
 
     /**
@@ -208,8 +207,7 @@ public class Model {
      * @return The stupid robot.
      */
     public StupidRobot stupidRobot() {
-        List<FieldObject> objects = _field.objects(StupidRobot.class);
-        return objects.isEmpty() ? null : (StupidRobot) objects.get(0);
+        return (StupidRobot) _field.object(StupidRobot.class);
     }
 
     /**
