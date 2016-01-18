@@ -26,7 +26,6 @@ package melihovv.SmartAndStupidRobotGame.model.field;
 
 import melihovv.SmartAndStupidRobotGame.model.field.position.CellPosition;
 import melihovv.SmartAndStupidRobotGame.model.navigation.Direction;
-import melihovv.SmartAndStupidRobotGame.model.seasons.SeasonsManager;
 
 import java.util.List;
 
@@ -55,6 +54,13 @@ public class Mire extends ImmovableObject<CellPosition> {
      */
     public boolean isFrozen() {
         return _isFrozen;
+    }
+
+    /**
+     * Freezes mire.
+     */
+    public void freeze() {
+        _isFrozen = true;
     }
 
     /**
@@ -91,16 +97,5 @@ public class Mire extends ImmovableObject<CellPosition> {
             return true;
         }
         return false;
-    }
-
-    /**
-     * Seasons listener.
-     */
-    public class SeasonsListener implements SeasonsManager.SeasonsListener {
-
-        @Override
-        public void seasonIsChanged(SeasonsManager.SeasonsEvent e) {
-            _isFrozen = e.name().equals("winter");
-        }
     }
 }

@@ -24,6 +24,8 @@
 
 package melihovv.SmartAndStupidRobotGame.model.seasons;
 
+import melihovv.SmartAndStupidRobotGame.model.field.Field;
+
 /**
  * The abstract <code>Season</code> class defines the abstract season.
  */
@@ -48,6 +50,13 @@ public abstract class Season {
         _temperature = temperature;
         _downfall = downfall;
     }
+
+    /**
+     * Influence on the field and on the field objects.
+     *
+     * @param field The game field.
+     */
+    public abstract void influence(Field field);
 
     /**
      * Returns season name.

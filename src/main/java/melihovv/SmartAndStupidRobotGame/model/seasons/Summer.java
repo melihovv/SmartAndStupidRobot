@@ -24,6 +24,8 @@
 
 package melihovv.SmartAndStupidRobotGame.model.seasons;
 
+import melihovv.SmartAndStupidRobotGame.model.field.Field;
+
 /**
  * The <code>Summer</code> class defines the summer season.
  */
@@ -38,5 +40,15 @@ public class Summer extends Season {
      */
     public Summer(String name, int temperature, String downfall) {
         super(name, temperature, downfall);
+    }
+
+    /**
+     * Influence on the field and on the field objects.
+     *
+     * @param field The game field.
+     */
+    @Override
+    public void influence(Field field) {
+        // TODO implement mire expanding.
     }
 }

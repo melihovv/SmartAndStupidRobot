@@ -24,6 +24,8 @@
 
 package melihovv.SmartAndStupidRobotGame.model.seasons;
 
+import melihovv.SmartAndStupidRobotGame.model.field.Field;
+
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -47,16 +49,19 @@ public class SeasonsManager implements ActionListener {
     private final SeasonsEvent _event;
     // Timer.
     private final Timer _timer;
+    // Game field.
+    private Field _field;
 
     /**
      * Constructs seasons manager.
      */
-    public SeasonsManager() {
+    public SeasonsManager(Field field) {
+        _field = field;
         _seasons = new ArrayList<>();
         _listenerList = new ArrayList<>();
         _event = new SeasonsEvent(this);
         _activeSeasonIndex = 0;
-        _timer = new Timer(20000, this);
+        _timer = new Timer(5000, this);
     }
 
     /**
@@ -138,8 +143,11 @@ public class SeasonsManager implements ActionListener {
             _activeSeasonIndex = 0;
         }
 
-        _event.setName(_seasons.get(_activeSeasonIndex).name());
-        _event.setDownfall(_seasons.get(_activeSeasonIndex).downfall());
+        Season curSeason = _seasons.get(_activeSeasonIndex);
+        curSeason.influence(_field);
+
+        _event.setName(curSeason.name());
+        _event.setDownfall(curSeason.downfall());
         fireSeasonChanged();
     }
 

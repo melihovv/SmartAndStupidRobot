@@ -66,7 +66,7 @@ public class Model {
         _field = new Field(new Dimension(10, 10));
         _target = new Target(_field);
         _isGameFinished = false;
-        _manager = new SeasonsManager();
+        _manager = new SeasonsManager(_field);
         _event = new ModelEvent(this);
         _listenerList = new ArrayList<>();
     }
@@ -140,28 +140,18 @@ public class Model {
                 new StupidRobot(_field)
         );
 
-        // Add mires.
-        Mire[] mires = new Mire[]{
-                new Mire(_field),
-                new Mire(_field),
-                new Mire(_field),
-        };
         _field.addObject(
                 new CellPosition(new Point(4, 3)),
-                mires[0]
+                new Mire(_field)
         );
         _field.addObject(
                 new CellPosition(new Point(5, 3)),
-                mires[1]
+                new Mire(_field)
         );
         _field.addObject(
                 new CellPosition(new Point(5, 4)),
-                mires[2]
+                new Mire(_field)
         );
-
-        for (Mire mire : mires) {
-            _manager.addListener(mire.new SeasonsListener());
-        }
 
         // Add walls.
         _field.addObject(
