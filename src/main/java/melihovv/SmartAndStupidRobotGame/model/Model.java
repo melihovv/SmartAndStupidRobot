@@ -77,14 +77,15 @@ public class Model {
     public void start() {
         _isGameFinished = false;
 
+        generateField();
+
         _manager.stop();
         _manager.clearListeners();
         _manager.removeAllSeasons();
-        _manager.addSeason(new Summer("summer", 25, "rain"));
         _manager.addSeason(new Winter("winter", -20, ""));
+        _manager.addSeason(new Summer("summer", 25, "rain"));
         _manager.start();
 
-        generateField();
         _manager.addListener(new SeasonsListener());
         identifyGameOver();
 

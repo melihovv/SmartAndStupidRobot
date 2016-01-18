@@ -84,6 +84,7 @@ public class SeasonsManager implements ActionListener {
      * Runs endless loop with season changing.
      */
     public void start() {
+        activeSeason().influence(_field);
         _timer.start();
     }
 

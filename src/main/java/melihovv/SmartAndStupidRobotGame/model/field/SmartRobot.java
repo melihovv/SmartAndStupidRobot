@@ -35,7 +35,6 @@ import java.util.EventObject;
 import java.util.List;
 
 // TODO load situation from file.
-// TODO add rain.
 
 /**
  * The <code>SmartRobot</code> class defines the smart robot on the field.

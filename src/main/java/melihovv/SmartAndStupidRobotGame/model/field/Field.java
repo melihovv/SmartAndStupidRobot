@@ -48,6 +48,17 @@ public class Field implements CanMoveFieldObject<CellPosition> {
     private Dimension _dim;
     // Logger.
     private static final Logger log = Logger.getLogger(Field.class.getName());
+    // Offsets used in freeCellAround() method.
+    private static int[][] _offsets = {
+            {-1, -1},
+            {0, -1},
+            {1, -1},
+            {1, 0},
+            {1, 1},
+            {0, 1},
+            {-1, 1},
+            {-1, 0},
+    };
 
     /**
      * Constructs new <code>Dimension</code> with dimension
@@ -317,5 +328,28 @@ public class Field implements CanMoveFieldObject<CellPosition> {
         }
 
         return object.setPos(object.pos().next(dir));
+    }
+
+    /**
+     * Returns first cell which is not occupied by object of type
+     * <code>type</code> around cell with position <code>pos</code>.
+     *
+     * @param pos Position of cell.
+     * @return First free cell around cell with position <code>pos</code>.
+     */
+    public CellPosition freeCellAround(CellPosition pos, Class type) {
+        for (int[] offset : _offsets) {
+            final CellPosition p = new CellPosition(
+                    new Point(
+                            pos.pos().x + offset[0],
+                            pos.pos().y + offset[1]
+                    )
+            );
+            final List<FieldObject> objects = objects(type, p);
+            if (objects.size() == 0) {
+                return p;
+            }
+        }
+        return null;
     }
 }

@@ -25,11 +25,21 @@
 package melihovv.SmartAndStupidRobotGame.model.seasons;
 
 import melihovv.SmartAndStupidRobotGame.model.field.Field;
+import melihovv.SmartAndStupidRobotGame.model.field.FieldObject;
+import melihovv.SmartAndStupidRobotGame.model.field.Mire;
+import melihovv.SmartAndStupidRobotGame.model.field.StupidRobot;
+import melihovv.SmartAndStupidRobotGame.model.field.position.CellPosition;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * The <code>Summer</code> class defines the summer season.
  */
 public class Summer extends Season {
+
+    // New mires which are created when it is raining.
+    private List<Mire> _mires = new ArrayList<>();
 
     /**
      * Constructs summer season.
@@ -45,20 +55,38 @@ public class Summer extends Season {
     /**
      * Influences on the field and on the field objects.
      *
+     * It is raining, all mires are expanding.
+     *
      * @param field The game field.
      */
     @Override
     public void influence(Field field) {
-        // TODO implement mire expanding.
+        for (FieldObject mire : field.objects(Mire.class)) {
+            CellPosition pos = field.freeCellAround(
+                    ((Mire) mire).pos(),
+                    Mire.class
+            );
+
+            if (pos != null) {
+                Mire newMire = new Mire(field);
+                newMire.setPos(pos);
+                field.addObject(pos, newMire);
+                _mires.add(newMire);
+            }
+        }
+        ((StupidRobot) field.object(StupidRobot.class)).checkIfRobotIsInMire();
     }
 
     /**
      * Cleans result of influence on the field and on the field objects.
      *
+     * All mires return to their previous size.
+     *
      * @param field The game field.
      */
     @Override
     public void cleanInfluence(Field field) {
-        // TODO implement.
+        _mires.forEach(field::removeObject);
+        ((StupidRobot) field.object(StupidRobot.class)).checkIfRobotIsInMire();
     }
 }
