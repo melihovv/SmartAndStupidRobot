@@ -52,11 +52,18 @@ public abstract class Season {
     }
 
     /**
-     * Influence on the field and on the field objects.
+     * Influences on the field and on the field objects.
      *
      * @param field The game field.
      */
     public abstract void influence(Field field);
+
+    /**
+     * Cleans result of influence on the field and on the field objects.
+     *
+     * @param field The game field.
+     */
+    public abstract void cleanInfluence(Field field);
 
     /**
      * Returns season name.

@@ -45,7 +45,7 @@ public class Winter extends Season {
     }
 
     /**
-     * Influence on the field and on the field objects.
+     * Influences on the field and on the field objects.
      *
      * @param field The game field.
      */
@@ -53,6 +53,18 @@ public class Winter extends Season {
     public void influence(Field field) {
         for (FieldObject mire : field.objects(Mire.class)) {
             ((Mire) mire).freeze();
+        }
+    }
+
+    /**
+     * Cleans result of influence on the field and on the field objects.
+     *
+     * @param field The game field.
+     */
+    @Override
+    public void cleanInfluence(Field field) {
+        for (FieldObject mire : field.objects(Mire.class)) {
+            ((Mire) mire).unfreeze();
         }
     }
 }

@@ -142,7 +142,9 @@ public class StupidRobot extends MovableObject<CellPosition> {
             if (isMovePossible(dir)) {
                 if (setPos(_pos.next(dir))) {
                     for (FieldObject mire : _field.objects(Mire.class)) {
-                        if (_pos.equals(mire.pos())) {
+                        if (_pos.equals(mire.pos()) &&
+                                !((Mire) mire).isFrozen()) {
+
                             log.info("Stupid robot in mire, skip 3 steps");
                             _stepsToSkip = 3;
                             break;

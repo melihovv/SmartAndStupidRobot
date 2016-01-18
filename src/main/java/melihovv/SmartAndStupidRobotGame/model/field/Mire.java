@@ -64,6 +64,13 @@ public class Mire extends ImmovableObject<CellPosition> {
     }
 
     /**
+     * Unfreezes mire.
+     */
+    public void unfreeze() {
+        _isFrozen = false;
+    }
+
+    /**
      * Move movable object <code>object</code> in the direction of
      * <code>dir</code>.
      *

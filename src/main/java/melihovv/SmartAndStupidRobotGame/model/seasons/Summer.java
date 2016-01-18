@@ -43,12 +43,22 @@ public class Summer extends Season {
     }
 
     /**
-     * Influence on the field and on the field objects.
+     * Influences on the field and on the field objects.
      *
      * @param field The game field.
      */
     @Override
     public void influence(Field field) {
         // TODO implement mire expanding.
+    }
+
+    /**
+     * Cleans result of influence on the field and on the field objects.
+     *
+     * @param field The game field.
+     */
+    @Override
+    public void cleanInfluence(Field field) {
+        // TODO implement.
     }
 }

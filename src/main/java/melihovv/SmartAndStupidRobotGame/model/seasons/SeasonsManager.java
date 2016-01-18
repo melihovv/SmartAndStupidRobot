@@ -81,6 +81,14 @@ public class SeasonsManager implements ActionListener {
     }
 
     /**
+     * Stops season changing.
+     */
+    public void stop() {
+        _timer.stop();
+        _activeSeasonIndex = 0;
+    }
+
+    /**
      * Returns active season.
      *
      * @return Active season.
@@ -138,6 +146,9 @@ public class SeasonsManager implements ActionListener {
         if (_seasons.size() == 0) {
             return;
         }
+
+        Season prevSeason = _seasons.get(_activeSeasonIndex);
+        prevSeason.cleanInfluence(_field);
 
         if (++_activeSeasonIndex >= _seasons.size()) {
             _activeSeasonIndex = 0;

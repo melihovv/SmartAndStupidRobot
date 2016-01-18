@@ -77,6 +77,7 @@ public class Model {
     public void start() {
         _isGameFinished = false;
 
+        _manager.stop();
         _manager.clearListeners();
         _manager.addSeason(new Summer("summer", 25, "rain"));
         _manager.addSeason(new Winter("winter", -20, ""));

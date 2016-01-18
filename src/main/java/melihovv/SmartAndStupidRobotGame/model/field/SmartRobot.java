@@ -34,6 +34,7 @@ import java.util.EventListener;
 import java.util.EventObject;
 import java.util.List;
 
+// TODO robot movement in frozen mire.
 // TODO improve stupid robot in winter.
 // TODO field is responsible for movement.
 // TODO load situation from file.
