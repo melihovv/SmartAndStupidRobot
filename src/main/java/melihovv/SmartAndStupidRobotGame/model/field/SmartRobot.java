@@ -34,8 +34,6 @@ import java.util.EventListener;
 import java.util.EventObject;
 import java.util.List;
 
-// TODO load situation from file.
-
 /**
  * The <code>SmartRobot</code> class defines the smart robot on the field.
  */

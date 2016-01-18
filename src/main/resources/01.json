@@ -1,0 +1,62 @@
+{
+  "field": {
+    "size": [
+      10,
+      10
+    ]
+  },
+  "target": {
+    "pos": [
+      9,
+      6
+    ]
+  },
+  "smart robot": {
+    "pos": [
+      10,
+      10
+    ]
+  },
+  "stupid robot": {
+    "pos": [
+      1,
+      1
+    ]
+  },
+  "walls": [
+    {
+      "pos": [
+        6,
+        1
+      ],
+      "direction": "east"
+    },
+    {
+      "pos": [
+        6,
+        2
+      ],
+      "direction": "east"
+    }
+  ],
+  "mires": [
+    {
+      "pos": [
+        4,
+        3
+      ]
+    },
+    {
+      "pos": [
+        5,
+        3
+      ]
+    },
+    {
+      "pos": [
+        5,
+        4
+      ]
+    }
+  ]
+}

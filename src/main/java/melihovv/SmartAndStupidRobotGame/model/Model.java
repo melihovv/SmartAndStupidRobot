@@ -24,6 +24,10 @@
 
 package melihovv.SmartAndStupidRobotGame.model;
 
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import melihovv.SmartAndStupidRobotGame.model.field.*;
 import melihovv.SmartAndStupidRobotGame.model.field.position.CellPosition;
 import melihovv.SmartAndStupidRobotGame.model.field.position.MiddlePosition;
@@ -33,6 +37,9 @@ import melihovv.SmartAndStupidRobotGame.model.seasons.Summer;
 import melihovv.SmartAndStupidRobotGame.model.seasons.Winter;
 
 import java.awt.*;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.EventListener;
 import java.util.EventObject;
@@ -73,11 +80,27 @@ public class Model {
 
     /**
      * Starts new game.
+     *
+     * @throws IOException|IllegalArgumentException If json file is invalid or
+     *                                              it is impossible to read
+     *                                              file.
      */
-    public void start() {
+    public void start(String path)
+            throws IOException, IllegalArgumentException {
+
         _isGameFinished = false;
 
-        generateField();
+        try {
+            loadSituation(path);
+        } catch (Exception e) {
+            _manager.stop();
+            _manager.clearListeners();
+            _manager.removeAllSeasons();
+            smartRobot().clearListeners();
+            stupidRobot().clearListeners();
+            _field.clear();
+            throw e;
+        }
 
         _manager.stop();
         _manager.clearListeners();
@@ -85,10 +108,9 @@ public class Model {
         _manager.addSeason(new Winter("winter", -20, ""));
         _manager.addSeason(new Summer("summer", 25, "rain"));
         _manager.start();
-
         _manager.addListener(new SeasonsListener());
-        identifyGameOver();
 
+        identifyGameOver();
         smartRobot().clearListeners();
         stupidRobot().clearListeners();
         smartRobot().addListener(new SmartRobotListener());
@@ -121,56 +143,173 @@ public class Model {
     }
 
     /**
-     * Generates game field.
+     * Load game situation from file.
+     *
+     * @throws IOException|InvalidArgumentException If json file is invalid or
+     *                                              it is impossible to read
+     *                                              file.
      */
-    private void generateField() {
+    private void loadSituation(String path)
+            throws IllegalArgumentException, IOException {
+
         _field.clear();
 
+        final String input = new String(Files.readAllBytes(Paths.get(path)));
+        final JsonParser parser = new JsonParser();
+        final JsonObject json = parser.parse(input).getAsJsonObject();
+
+        if (!json.has("field") ||
+                !json.has("target") ||
+                !json.has("smart robot") ||
+                !json.has("stupid robot")) {
+            throw new IllegalArgumentException("Invalid situation file");
+        }
+
+        // Add field size.
+        final JsonObject field = json.get("field").getAsJsonObject();
+        if (!field.has("size")) {
+            throw new IllegalArgumentException("Invalid situation file");
+        }
+
+        final int width;
+        final int height;
+        {
+            final JsonArray size = field.get("size").getAsJsonArray();
+            width = size.get(0).getAsInt();
+            height = size.get(1).getAsInt();
+            if (width < 2 || height < 2) {
+                throw new IllegalArgumentException("Invalid situation file");
+            }
+            _field.setSize(new Dimension(width, height));
+        }
+
         // Add target.
-        _field.addObject(
-                new CellPosition(new Point(9, 6)),
-                _target
-        );
+        final JsonObject target = json.get("target").getAsJsonObject();
+        if (!target.has("pos")) {
+            throw new IllegalArgumentException("Invalid situation file");
+        }
+        {
+            final JsonArray pos = target.get("pos").getAsJsonArray();
+            final int x = pos.get(0).getAsInt();
+            final int y = pos.get(1).getAsInt();
+            if (!_field.contains(new Point(x, y))) {
+                throw new IllegalArgumentException("Invalid situation file");
+            }
+            _field.addObject(
+                    new CellPosition(new Point(x, y)),
+                    _target
+            );
+        }
 
         // Add smart robot.
-        _field.addObject(
-                new CellPosition(new Point(5, 5)),
-                new SmartRobot(_field)
-        );
-        // Add stupid robot.
-        _field.addObject(
-                new CellPosition(new Point(2, 2)),
-                new StupidRobot(_field)
-        );
+        final JsonObject smRobot = json.get("smart robot").getAsJsonObject();
+        if (!smRobot.has("pos")) {
+            throw new IllegalArgumentException("Invalid situation file");
+        }
+        {
+            final JsonArray pos = smRobot.get("pos").getAsJsonArray();
+            final int x = pos.get(0).getAsInt();
+            final int y = pos.get(1).getAsInt();
+            if (!_field.contains(new Point(x, y))) {
+                throw new IllegalArgumentException("Invalid situation file");
+            }
+            _field.addObject(
+                    new CellPosition(new Point(x, y)),
+                    new SmartRobot(_field)
+            );
+        }
 
-        _field.addObject(
-                new CellPosition(new Point(4, 3)),
-                new Mire(_field)
-        );
-        _field.addObject(
-                new CellPosition(new Point(5, 3)),
-                new Mire(_field)
-        );
-        _field.addObject(
-                new CellPosition(new Point(5, 4)),
-                new Mire(_field)
-        );
+        // Add stupid robot.
+        final JsonObject stRobot = json.get("stupid robot").getAsJsonObject();
+        if (!stRobot.has("pos")) {
+            throw new IllegalArgumentException("Invalid situation file");
+        }
+        {
+            final JsonArray pos = stRobot.get("pos").getAsJsonArray();
+            final int x = pos.get(0).getAsInt();
+            final int y = pos.get(1).getAsInt();
+            if (!_field.contains(new Point(x, y))) {
+                throw new IllegalArgumentException("Invalid situation file");
+            }
+            _field.addObject(
+                    new CellPosition(new Point(x, y)),
+                    new StupidRobot(_field)
+            );
+        }
 
         // Add walls.
-        _field.addObject(
-                new MiddlePosition(
-                        Direction.east(),
-                        new CellPosition(new Point(6, 1))
-                ),
-                new Wall(_field)
-        );
-        _field.addObject(
-                new MiddlePosition(
-                        Direction.east(),
-                        new CellPosition(new Point(6, 2))
-                ),
-                new Wall(_field)
-        );
+        if (json.has("walls")) {
+            final JsonArray walls = json.get("walls").getAsJsonArray();
+            for (JsonElement temp : walls) {
+                JsonObject wall = temp.getAsJsonObject();
+
+                if (!wall.has("pos") || !wall.has("direction")) {
+                    throw new IllegalArgumentException(
+                            "Invalid situation file");
+                }
+
+                final JsonArray pos = wall.get("pos").getAsJsonArray();
+                final int x = pos.get(0).getAsInt();
+                final int y = pos.get(1).getAsInt();
+                if (!_field.contains(new Point(x, y))) {
+                    throw new IllegalArgumentException(
+                            "Invalid situation file");
+                }
+
+                Direction dir;
+                switch (wall.get("direction").getAsString()) {
+                    case "north":
+                        dir = Direction.north();
+                        break;
+                    case "south":
+                        dir = Direction.south();
+                        break;
+                    case "west":
+                        dir = Direction.west();
+                        break;
+                    case "east":
+                        dir = Direction.east();
+                        break;
+                    default:
+                        throw new IllegalArgumentException(
+                                "Invalid situation file");
+                }
+
+                _field.addObject(
+                        new MiddlePosition(
+                                dir,
+                                new CellPosition(new Point(x, y))
+                        ),
+                        new Wall(_field)
+                );
+            }
+        }
+
+        // Add mires.
+        if (json.has("mires")) {
+            final JsonArray mires = json.get("mires").getAsJsonArray();
+            for (JsonElement temp : mires) {
+                JsonObject mire = temp.getAsJsonObject();
+
+                if (!mire.has("pos")) {
+                    throw new IllegalArgumentException(
+                            "Invalid situation file");
+                }
+
+                final JsonArray pos = mire.get("pos").getAsJsonArray();
+                final int x = pos.get(0).getAsInt();
+                final int y = pos.get(1).getAsInt();
+                if (!_field.contains(new Point(x, y))) {
+                    throw new IllegalArgumentException(
+                            "Invalid situation file");
+                }
+
+                _field.addObject(
+                        new CellPosition(new Point(x, y)),
+                        new Mire(_field)
+                );
+            }
+        }
     }
 
     /**
