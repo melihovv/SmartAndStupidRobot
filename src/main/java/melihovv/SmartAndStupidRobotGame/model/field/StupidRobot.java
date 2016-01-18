@@ -152,14 +152,20 @@ public class StupidRobot extends MovableObject<CellPosition> {
      * Checks is stupid robot in not frozen mire.
      */
     public void checkIfRobotIsInMire() {
+        boolean isInMire = false;
         for (FieldObject mire : _field.objects(Mire.class)) {
             if (_pos.equals(mire.pos()) &&
                     !((Mire) mire).isFrozen()) {
 
                 log.info("Stupid robot in mire, skip 3 steps");
                 _stepsToSkip = 3;
+                isInMire = true;
                 break;
             }
+        }
+
+        if (!isInMire) {
+            _stepsToSkip = 0;
         }
     }
 

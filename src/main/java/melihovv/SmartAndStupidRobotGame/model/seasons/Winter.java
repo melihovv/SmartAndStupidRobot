@@ -27,6 +27,7 @@ package melihovv.SmartAndStupidRobotGame.model.seasons;
 import melihovv.SmartAndStupidRobotGame.model.field.Field;
 import melihovv.SmartAndStupidRobotGame.model.field.FieldObject;
 import melihovv.SmartAndStupidRobotGame.model.field.Mire;
+import melihovv.SmartAndStupidRobotGame.model.field.StupidRobot;
 
 /**
  * The <code>Winter</code> class defines the winter season.
@@ -54,6 +55,7 @@ public class Winter extends Season {
         for (FieldObject mire : field.objects(Mire.class)) {
             ((Mire) mire).freeze();
         }
+        ((StupidRobot) field.object(StupidRobot.class)).checkIfRobotIsInMire();
     }
 
     /**
@@ -66,5 +68,6 @@ public class Winter extends Season {
         for (FieldObject mire : field.objects(Mire.class)) {
             ((Mire) mire).unfreeze();
         }
+        ((StupidRobot) field.object(StupidRobot.class)).checkIfRobotIsInMire();
     }
 }
