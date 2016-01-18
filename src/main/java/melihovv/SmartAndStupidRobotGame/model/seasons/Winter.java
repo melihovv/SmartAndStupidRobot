@@ -48,6 +48,8 @@ public class Winter extends Season {
     /**
      * Influences on the field and on the field objects.
      *
+     * Freezes all mires on the field.
+     *
      * @param field The game field.
      */
     @Override
@@ -60,6 +62,8 @@ public class Winter extends Season {
 
     /**
      * Cleans result of influence on the field and on the field objects.
+     *
+     * Unfreezes all mires on the field.
      *
      * @param field The game field.
      */
