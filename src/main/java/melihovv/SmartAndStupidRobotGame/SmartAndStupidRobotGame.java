@@ -25,11 +25,15 @@
 package melihovv.SmartAndStupidRobotGame;
 
 import melihovv.SmartAndStupidRobotGame.model.Model;
+import melihovv.SmartAndStupidRobotGame.model.Model.ModelEvent;
 import melihovv.SmartAndStupidRobotGame.model.field.*;
+import melihovv.SmartAndStupidRobotGame.model.field.SmartRobot.SmartRobotActionEvent;
+import melihovv.SmartAndStupidRobotGame.model.field.StupidRobot.StupidRobotActionEvent;
 import melihovv.SmartAndStupidRobotGame.model.field.position.CellPosition;
 import melihovv.SmartAndStupidRobotGame.model.navigation.Direction;
 import melihovv.SmartAndStupidRobotGame.model.seasons.Season;
 import melihovv.SmartAndStupidRobotGame.model.seasons.SeasonsManager;
+import melihovv.SmartAndStupidRobotGame.model.seasons.SeasonsManager.SeasonsEvent;
 import melihovv.SmartAndStupidRobotGame.model.seasons.Summer;
 import melihovv.SmartAndStupidRobotGame.model.seasons.Winter;
 
@@ -127,7 +131,7 @@ public class SmartAndStupidRobotGame extends JFrame {
      *
      * @param args Args.
      */
-    public static void main(String[] args) {
+    public static void main(final String[] args) {
         SwingUtilities.invokeLater(SmartAndStupidRobotGame::new);
     }
 
@@ -215,7 +219,7 @@ public class SmartAndStupidRobotGame extends JFrame {
          * @param g Graphic context.
          */
         @Override
-        public void paintComponent(Graphics g) {
+        public void paintComponent(final Graphics g) {
             g.setColor(getCurrentSeasonColor(WINTER_COLOR, SUMMER_COLOR));
             g.fillRect(0, 0, super.getWidth(), getHeight());
 
@@ -242,8 +246,8 @@ public class SmartAndStupidRobotGame extends JFrame {
          * @param summerColor Color to return when season is summer.
          * @return Current season color.
          */
-        private Color getCurrentSeasonColor(Color winterColor,
-                                            Color summerColor) {
+        private Color getCurrentSeasonColor(final Color winterColor,
+                                            final Color summerColor) {
             Season season = _model.seasonsManager().activeSeason();
             if (season != null) {
                 if (season instanceof Winter) {
@@ -260,7 +264,7 @@ public class SmartAndStupidRobotGame extends JFrame {
          *
          * @param g Graphic context.
          */
-        private void drawGrid(Graphics g) {
+        private void drawGrid(final Graphics g) {
             Color preserved = g.getColor();
             g.setColor(getCurrentSeasonColor(WINTER_GRID_COLOR,
                     SUMMER_GRID_COLOR));
@@ -285,7 +289,7 @@ public class SmartAndStupidRobotGame extends JFrame {
          * @param g      Graphic context.
          * @param target Smart robot target.
          */
-        private void drawTarget(Graphics g, Model.Target target) {
+        private void drawTarget(final Graphics g, final Model.Target target) {
             Color preserved = g.getColor();
             g.setColor(FONT_COLOR);
 
@@ -305,7 +309,8 @@ public class SmartAndStupidRobotGame extends JFrame {
          * @param g          Graphic context.
          * @param smartRobot Smart robot.
          */
-        private void drawSmartRobot(Graphics g, SmartRobot smartRobot) {
+        private void drawSmartRobot(final Graphics g,
+                                    final SmartRobot smartRobot) {
             Color preserved = g.getColor();
             g.setColor(FONT_COLOR);
 
@@ -325,7 +330,8 @@ public class SmartAndStupidRobotGame extends JFrame {
          * @param g           Graphic context.
          * @param stupidRobot Stupid robot.
          */
-        private void drawStupidRobot(Graphics g, StupidRobot stupidRobot) {
+        private void drawStupidRobot(final Graphics g,
+                                     final StupidRobot stupidRobot) {
             Color preserved = g.getColor();
             g.setColor(FONT_COLOR);
 
@@ -345,7 +351,7 @@ public class SmartAndStupidRobotGame extends JFrame {
          * @param g     Graphic context.
          * @param mires Mires.
          */
-        private void drawMires(Graphics g, List<FieldObject> mires) {
+        private void drawMires(final Graphics g, final List<FieldObject> mires) {
             Color preserved = g.getColor();
             g.setColor(getCurrentSeasonColor(WINTER_MIRE_COLOR,
                     SUMMER_MIRE_COLOR));
@@ -364,7 +370,7 @@ public class SmartAndStupidRobotGame extends JFrame {
          * @param g     Graphic context.
          * @param walls Walls.
          */
-        private void drawWalls(Graphics g, List<FieldObject> walls) {
+        private void drawWalls(final Graphics g, final List<FieldObject> walls) {
             Color preserved = g.getColor();
             g.setColor(WALL_COLOR);
 
@@ -415,7 +421,7 @@ public class SmartAndStupidRobotGame extends JFrame {
          * @param c Position of cell.
          * @return Left top corner coordinates of the cell.
          */
-        private Point leftTopCorner(CellPosition c) {
+        private Point leftTopCorner(final CellPosition c) {
             return new Point(
                     _offsetX + CELL_SIZE * ((int) c.pos().getX() - 1),
                     _offsetY + CELL_SIZE * ((int) c.pos().getY() - 1)
@@ -428,7 +434,7 @@ public class SmartAndStupidRobotGame extends JFrame {
          * @param e Key event.
          */
         @Override
-        public void keyTyped(KeyEvent e) {
+        public void keyTyped(final KeyEvent e) {
         }
 
         /**
@@ -437,7 +443,7 @@ public class SmartAndStupidRobotGame extends JFrame {
          * @param e Key event.
          */
         @Override
-        public void keyPressed(KeyEvent e) {
+        public void keyPressed(final KeyEvent e) {
             if (!_isGameStarted) {
                 return;
             }
@@ -464,7 +470,7 @@ public class SmartAndStupidRobotGame extends JFrame {
          * @param e Key event.
          */
         @Override
-        public void keyReleased(KeyEvent e) {
+        public void keyReleased(final KeyEvent e) {
         }
 
         /**
@@ -474,7 +480,7 @@ public class SmartAndStupidRobotGame extends JFrame {
                 implements SmartRobot.SmartRobotActionListener {
 
             @Override
-            public void smartRobotMadeMove(SmartRobot.SmartRobotActionEvent e) {
+            public void smartRobotMadeMove(final SmartRobotActionEvent e) {
                 _log.fine("Smart robot made move");
                 repaint();
             }
@@ -487,13 +493,13 @@ public class SmartAndStupidRobotGame extends JFrame {
                 implements StupidRobot.StupidRobotActionListener {
 
             @Override
-            public void stupidRobotMadeMove(StupidRobot.StupidRobotActionEvent e) {
+            public void stupidRobotMadeMove(final StupidRobotActionEvent e) {
                 _log.fine("Stupid robot made move");
                 repaint();
             }
 
             @Override
-            public void smartRobotIsCaught(StupidRobot.StupidRobotActionEvent e) {
+            public void smartRobotIsCaught(final StupidRobotActionEvent e) {
                 _infoLabel.setText("Game is over");
             }
         }
@@ -504,7 +510,7 @@ public class SmartAndStupidRobotGame extends JFrame {
      */
     private class MenuItemsListener implements ActionListener {
         @Override
-        public void actionPerformed(ActionEvent e) {
+        public void actionPerformed(final ActionEvent e) {
             String command = e.getActionCommand();
             if ("exit".equals(command)) {
                 System.exit(0);
@@ -544,7 +550,7 @@ public class SmartAndStupidRobotGame extends JFrame {
     private class SeasonsListener implements SeasonsManager.SeasonsListener {
 
         @Override
-        public void seasonIsChanged(SeasonsManager.SeasonsEvent e) {
+        public void seasonIsChanged(final SeasonsEvent e) {
             if (_view._model.isGameFinished()) {
                 return;
             }
@@ -563,7 +569,7 @@ public class SmartAndStupidRobotGame extends JFrame {
     private class ModelListener implements Model.ModelListener {
 
         @Override
-        public void gameIsOver(Model.ModelEvent e) {
+        public void gameIsOver(final ModelEvent e) {
             repaint();
             _infoLabel.setText("Game is over");
         }

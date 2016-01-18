@@ -36,7 +36,7 @@ public class Wall extends ImmovableObject<MiddlePosition> {
      *
      * @param field A field on which a wall is placed.
      */
-    public Wall(Field field) {
+    public Wall(final Field field) {
         super(field);
     }
 }

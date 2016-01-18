@@ -42,7 +42,7 @@ public class MiddlePosition {
      * @param direct  Direction which is corresponding the side of the cell.
      * @param cellPos Cell position.
      */
-    public MiddlePosition(Direction direct, CellPosition cellPos) {
+    public MiddlePosition(final Direction direct, final CellPosition cellPos) {
         _direct = direct;
         _cellPos = cellPos;
     }
@@ -73,7 +73,7 @@ public class MiddlePosition {
      * @return Result of checking.
      */
     @Override
-    public boolean equals(Object obj) {
+    public boolean equals(final Object obj) {
         if (obj instanceof MiddlePosition) {
             final MiddlePosition other = (MiddlePosition) obj;
             return _cellPos.equals(other._cellPos) &&

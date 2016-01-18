@@ -41,7 +41,7 @@ public class Direction {
      * @param angle The angle corresponding to the direction (0 degree - is the
      *              north direction).
      */
-    private Direction(int angle) {
+    private Direction(final int angle) {
         int copy = angle % 360;
         if (copy < 0) {
             copy += 360;
@@ -119,7 +119,7 @@ public class Direction {
      * @param other Direction to check.
      * @return Result of checking.
      */
-    public boolean isOpposite(Direction other) {
+    public boolean isOpposite(final Direction other) {
         return this.opposite().equals(other);
     }
 
@@ -132,7 +132,7 @@ public class Direction {
      * @return Result of checking.
      */
     @Override
-    public boolean equals(Object other) {
+    public boolean equals(final Object other) {
         if (other instanceof Direction) {
             Direction otherDirect = (Direction) other;
             return _angle == otherDirect._angle;

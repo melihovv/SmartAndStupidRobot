@@ -29,6 +29,8 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import melihovv.SmartAndStupidRobotGame.model.field.*;
+import melihovv.SmartAndStupidRobotGame.model.field.SmartRobot.SmartRobotActionEvent;
+import melihovv.SmartAndStupidRobotGame.model.field.StupidRobot.StupidRobotActionEvent;
 import melihovv.SmartAndStupidRobotGame.model.field.position.CellPosition;
 import melihovv.SmartAndStupidRobotGame.model.field.position.MiddlePosition;
 import melihovv.SmartAndStupidRobotGame.model.navigation.Direction;
@@ -85,7 +87,7 @@ public class Model {
      *                                              it is impossible to read
      *                                              file.
      */
-    public void start(String path)
+    public void start(final String path)
             throws IOException, IllegalArgumentException {
 
         _isGameFinished = false;
@@ -149,7 +151,7 @@ public class Model {
      *                                              it is impossible to read
      *                                              file.
      */
-    private void loadSituation(String path)
+    private void loadSituation(final String path)
             throws IllegalArgumentException, IOException {
 
         _field.clear();
@@ -318,7 +320,7 @@ public class Model {
      *
      * @param dir Direction in which smart robot make movement.
      */
-    public void makeMove(Direction dir) {
+    public void makeMove(final Direction dir) {
         if (!_isGameFinished) {
             smartRobot().makeMove(dir);
         }
@@ -388,7 +390,7 @@ public class Model {
      *
      * @param l The seasons listener.
      */
-    public void addListener(ModelListener l) {
+    public void addListener(final ModelListener l) {
         _listenerList.add(l);
     }
 
@@ -397,7 +399,7 @@ public class Model {
      *
      * @param l The seasons listener.
      */
-    public void removeListener(ModelListener l) {
+    public void removeListener(final ModelListener l) {
         _listenerList.remove(l);
     }
 
@@ -421,7 +423,7 @@ public class Model {
      * The target of the smart robot.
      */
     public static class Target extends FieldObject<CellPosition> {
-        public Target(Field field) {
+        public Target(final Field field) {
             super(field);
         }
 
@@ -432,7 +434,7 @@ public class Model {
          * @return True if position was not null, otherwise — false.
          */
         @Override
-        public boolean setPos(CellPosition pos) {
+        public boolean setPos(final CellPosition pos) {
             if (pos != null) {
                 _pos = pos;
                 return true;
@@ -448,7 +450,7 @@ public class Model {
             implements SmartRobot.SmartRobotActionListener {
 
         @Override
-        public void smartRobotMadeMove(SmartRobot.SmartRobotActionEvent e) {
+        public void smartRobotMadeMove(final SmartRobotActionEvent e) {
             log.fine("Smart robot made move");
             identifyGameOver();
 
@@ -465,11 +467,11 @@ public class Model {
             implements StupidRobot.StupidRobotActionListener {
 
         @Override
-        public void stupidRobotMadeMove(StupidRobot.StupidRobotActionEvent e) {
+        public void stupidRobotMadeMove(final StupidRobotActionEvent e) {
         }
 
         @Override
-        public void smartRobotIsCaught(StupidRobot.StupidRobotActionEvent e) {
+        public void smartRobotIsCaught(final StupidRobotActionEvent e) {
             log.info("Smart robot is caught");
             _isGameFinished = true;
         }
@@ -486,7 +488,7 @@ public class Model {
          * @param source The object on which the Event initially occurred.
          * @throws IllegalArgumentException if source is null.
          */
-        public ModelEvent(Object source) {
+        public ModelEvent(final Object source) {
             super(source);
         }
     }
@@ -501,7 +503,7 @@ public class Model {
          *
          * @param e Model event.
          */
-        void gameIsOver(ModelEvent e);
+        void gameIsOver(final ModelEvent e);
     }
 
     /**
@@ -510,7 +512,7 @@ public class Model {
     private class SeasonsListener implements SeasonsManager.SeasonsListener {
 
         @Override
-        public void seasonIsChanged(SeasonsManager.SeasonsEvent e) {
+        public void seasonIsChanged(final SeasonsManager.SeasonsEvent e) {
             identifyGameOver();
         }
     }

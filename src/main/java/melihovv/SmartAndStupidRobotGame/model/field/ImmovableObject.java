@@ -35,7 +35,7 @@ public abstract class ImmovableObject<Position> extends FieldObject<Position> {
      *
      * @param field A field on which object is placed.
      */
-    public ImmovableObject(Field field) {
+    public ImmovableObject(final Field field) {
         super(field);
     }
 }

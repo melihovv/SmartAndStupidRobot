@@ -49,7 +49,7 @@ public class SmartRobot extends MovableObject<CellPosition> {
      *
      * @param field A field on which the smart robot is placed.
      */
-    public SmartRobot(Field field) {
+    public SmartRobot(final Field field) {
         super(field);
         _listenerList = new ArrayList<>();
         _event = new SmartRobotActionEvent(this);
@@ -60,7 +60,7 @@ public class SmartRobot extends MovableObject<CellPosition> {
      *
      * @param dir The direction in which the motion is made.
      */
-    public void makeMove(Direction dir) {
+    public void makeMove(final Direction dir) {
         if (isMovePossible(dir)) {
             if (_field.move(this, dir)) {
                 fireRobotMadeMove();
@@ -74,7 +74,7 @@ public class SmartRobot extends MovableObject<CellPosition> {
      * @param dir The direction in which it is checked.
      * @return Result of checking.
      */
-    private boolean isMovePossible(Direction dir) {
+    private boolean isMovePossible(final Direction dir) {
         List<FieldObject> objs = _field.objects(Wall.class,
                 new MiddlePosition(dir, _pos));
         if (!objs.isEmpty()) {
@@ -92,7 +92,7 @@ public class SmartRobot extends MovableObject<CellPosition> {
      * @return True if position was not null, otherwise — false.
      */
     @Override
-    public boolean setPos(CellPosition pos) {
+    public boolean setPos(final CellPosition pos) {
         if (pos != null) {
             _pos = pos;
             return true;
@@ -111,7 +111,7 @@ public class SmartRobot extends MovableObject<CellPosition> {
      *
      * @param l The smart robot action listener.
      */
-    public void addListener(SmartRobotActionListener l) {
+    public void addListener(final SmartRobotActionListener l) {
         _listenerList.add(l);
     }
 
@@ -121,7 +121,7 @@ public class SmartRobot extends MovableObject<CellPosition> {
      *
      * @param l The smart robot action listener.
      */
-    public void removeListener(SmartRobotActionListener l) {
+    public void removeListener(final SmartRobotActionListener l) {
         _listenerList.remove(l);
     }
 
@@ -151,7 +151,7 @@ public class SmartRobot extends MovableObject<CellPosition> {
          *
          * @param source Source of event.
          */
-        public SmartRobotActionEvent(Object source) {
+        public SmartRobotActionEvent(final Object source) {
             super(source);
         }
     }
@@ -167,6 +167,6 @@ public class SmartRobot extends MovableObject<CellPosition> {
          *
          * @param e The smart robot action event.
          */
-        void smartRobotMadeMove(SmartRobotActionEvent e);
+        void smartRobotMadeMove(final SmartRobotActionEvent e);
     }
 }

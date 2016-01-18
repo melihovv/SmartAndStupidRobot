@@ -68,7 +68,7 @@ public class Field implements CanMoveFieldObject<CellPosition> {
      * @throws IllegalArgumentException If <code>dimension</code> isn't
      *                                  positive.
      */
-    public Field(Dimension dimension) throws IllegalArgumentException {
+    public Field(final Dimension dimension) throws IllegalArgumentException {
         setSize(dimension);
         _objs = new HashMap<>();
     }
@@ -107,7 +107,7 @@ public class Field implements CanMoveFieldObject<CellPosition> {
      * @throws IllegalArgumentException If <code>dimension</code> isn't
      *                                  positive.
      */
-    public void setSize(Dimension dimension) throws IllegalArgumentException {
+    public void setSize(final Dimension dimension) throws IllegalArgumentException {
         if (dimension.getWidth() <= 0 || dimension.getHeight() <= 0) {
             throw new IllegalArgumentException(
                     "Field size must be positive");
@@ -122,8 +122,8 @@ public class Field implements CanMoveFieldObject<CellPosition> {
      * @param obj An object to be added.
      * @return True if object was added, otherwise false.
      */
-    public <Position> boolean addObject(Position pos,
-                                        FieldObject<Position> obj) {
+    public <Position> boolean addObject(final Position pos,
+                                        final FieldObject<Position> obj) {
         final Class objClass = obj.getClass();
 
         if (obj.setPos(pos)) {
@@ -149,7 +149,7 @@ public class Field implements CanMoveFieldObject<CellPosition> {
      * @return True if such object was on the field and it was deleted,
      * otherwise false.
      */
-    public <Position> boolean removeObject(FieldObject<Position> obj) {
+    public <Position> boolean removeObject(final FieldObject<Position> obj) {
         boolean success = false;
         final Class objClass = obj.getClass();
 
@@ -185,7 +185,7 @@ public class Field implements CanMoveFieldObject<CellPosition> {
      * @param objType Type of objects.
      * @return All objects of type <code>objType</code>.
      */
-    public List<FieldObject> objects(Class objType) {
+    public List<FieldObject> objects(final Class objType) {
         final List<FieldObject> objList = new ArrayList<>();
 
         if (_objs.containsKey(objType)) {
@@ -201,7 +201,7 @@ public class Field implements CanMoveFieldObject<CellPosition> {
      * @param pos Position on which objects will be returned.
      * @return List of objects which are on position <code>pos</code>.
      */
-    public <Position> List<FieldObject> objects(Position pos) {
+    public <Position> List<FieldObject> objects(final Position pos) {
         final List<FieldObject> objsList = new ArrayList<>();
 
         for (Map.Entry<Class, List<FieldObject>> entry : _objs.entrySet()) {
@@ -221,7 +221,8 @@ public class Field implements CanMoveFieldObject<CellPosition> {
      * @return List of objects of type <code>objType</code> which are on
      * position <code>pos</code>.
      */
-    public <Position> List<FieldObject> objects(Class objType, Position pos) {
+    public <Position> List<FieldObject> objects(final Class objType,
+                                                final Position pos) {
         final List<FieldObject> objList = new ArrayList<>();
 
         if (_objs.containsKey(objType)) {
@@ -241,8 +242,8 @@ public class Field implements CanMoveFieldObject<CellPosition> {
      * @return List of objects of type <code>objType</code> which are on
      * middle position <code>pos</code>.
      */
-    public List<FieldObject> objects(Class<Wall> objType,
-                                     MiddlePosition pos) {
+    public List<FieldObject> objects(final Class<Wall> objType,
+                                     final MiddlePosition pos) {
 
         final List<FieldObject> objList = new ArrayList<>();
         final MiddlePosition oppositePos = new MiddlePosition(
@@ -266,7 +267,7 @@ public class Field implements CanMoveFieldObject<CellPosition> {
      * @param objType Type of object to return.
      * @return First object of type <code>objType</code>.
      */
-    public FieldObject object(Class objType) {
+    public FieldObject object(final Class objType) {
         final List<FieldObject> objects = objects(objType);
         return objects.size() != 0 ? objects.get(0) : null;
     }
@@ -277,7 +278,7 @@ public class Field implements CanMoveFieldObject<CellPosition> {
      * @param pos Position to check.
      * @return True if position is free, otherwise — false.
      */
-    public <Position> boolean isPosFree(Position pos) {
+    public <Position> boolean isPosFree(final Position pos) {
         for (Map.Entry<Class, List<FieldObject>> entry : _objs.entrySet()) {
             for (FieldObject obj : entry.getValue()) {
                 if (obj.pos().equals(pos)) {
@@ -302,7 +303,7 @@ public class Field implements CanMoveFieldObject<CellPosition> {
      * @param pos Position which is checked.
      * @return True if <code>pos</code> belongs to field, otherwise — false.
      */
-    public boolean contains(Point pos) {
+    public boolean contains(final Point pos) {
         return pos.getX() >= 1 && pos.getX() <= _dim.getWidth() &&
                 pos.getY() >= 1 && pos.getY() <= _dim.getHeight();
     }
@@ -317,7 +318,7 @@ public class Field implements CanMoveFieldObject<CellPosition> {
      */
     @SuppressWarnings("unchecked")
     @Override
-    public boolean move(MovableObject<CellPosition> object, Direction dir) {
+    public boolean move(final MovableObject<CellPosition> object, final Direction dir) {
         List<FieldObject> objects = objects(object.pos().next(dir));
 
         if (objects.size() != 0 &&
@@ -337,7 +338,7 @@ public class Field implements CanMoveFieldObject<CellPosition> {
      * @param pos Position of cell.
      * @return First free cell around cell with position <code>pos</code>.
      */
-    public CellPosition freeCellAround(CellPosition pos, Class type) {
+    public CellPosition freeCellAround(final CellPosition pos, final Class type) {
         for (int[] offset : _offsets) {
             final CellPosition p = new CellPosition(
                     new Point(

@@ -43,7 +43,7 @@ public class Mire extends ImmovableObject<CellPosition>
      *
      * @param field A field on which mire is placed.
      */
-    public Mire(Field field) {
+    public Mire(final Field field) {
         super(field);
         _isFrozen = false;
     }
@@ -80,8 +80,8 @@ public class Mire extends ImmovableObject<CellPosition>
      * @return True if object was moved, otherwise - false.
      */
     @Override
-    public boolean move(MovableObject<CellPosition> object,
-                        Direction dir) {
+    public boolean move(final MovableObject<CellPosition> object,
+                        final Direction dir) {
         if (_isFrozen) {
             final List<FieldObject> objectsAhead = _field.objects(
                     Mire.class,
@@ -113,7 +113,7 @@ public class Mire extends ImmovableObject<CellPosition>
      * @return True if position was set, otherwise — false.
      */
     @Override
-    public boolean setPos(CellPosition pos) {
+    public boolean setPos(final CellPosition pos) {
         if (pos != null && _field.objects(Mire.class, pos).isEmpty()) {
             _pos = pos;
             return true;

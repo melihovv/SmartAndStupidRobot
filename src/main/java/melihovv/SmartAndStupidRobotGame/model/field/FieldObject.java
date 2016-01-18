@@ -40,7 +40,7 @@ public abstract class FieldObject<Position> {
      *
      * @param field A field on which object is placed.
      */
-    public FieldObject(Field field) {
+    public FieldObject(final Field field) {
         _field = field;
     }
 
@@ -60,7 +60,7 @@ public abstract class FieldObject<Position> {
      * @param pos The position to which object will be placed.
      * @return True if position was set, otherwise — false.
      */
-    public boolean setPos(Position pos) {
+    public boolean setPos(final Position pos) {
         if (pos != null && _field.isPosFree(pos)) {
             _pos = pos;
             return true;

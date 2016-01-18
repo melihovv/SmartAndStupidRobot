@@ -48,7 +48,8 @@ public class Summer extends Season {
      * @param temperature Temperature.
      * @param downfall    Downfall.
      */
-    public Summer(String name, int temperature, String downfall) {
+    public Summer(final String name, final int temperature,
+                  final String downfall) {
         super(name, temperature, downfall);
     }
 
@@ -60,7 +61,7 @@ public class Summer extends Season {
      * @param field The game field.
      */
     @Override
-    public void influence(Field field) {
+    public void influence(final Field field) {
         for (FieldObject mire : field.objects(Mire.class)) {
             CellPosition pos = field.freeCellAround(
                     ((Mire) mire).pos(),
@@ -85,7 +86,7 @@ public class Summer extends Season {
      * @param field The game field.
      */
     @Override
-    public void cleanInfluence(Field field) {
+    public void cleanInfluence(final Field field) {
         _mires.forEach(field::removeObject);
         ((StupidRobot) field.object(StupidRobot.class)).checkIfRobotIsInMire();
     }

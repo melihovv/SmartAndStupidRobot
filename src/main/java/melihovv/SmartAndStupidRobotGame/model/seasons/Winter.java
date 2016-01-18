@@ -41,7 +41,8 @@ public class Winter extends Season {
      * @param temperature Temperature.
      * @param downfall    Downfall.
      */
-    public Winter(String name, int temperature, String downfall) {
+    public Winter(final String name, final int temperature,
+                  final String downfall) {
         super(name, temperature, downfall);
     }
 
@@ -53,7 +54,7 @@ public class Winter extends Season {
      * @param field The game field.
      */
     @Override
-    public void influence(Field field) {
+    public void influence(final Field field) {
         for (FieldObject mire : field.objects(Mire.class)) {
             ((Mire) mire).freeze();
         }
@@ -68,7 +69,7 @@ public class Winter extends Season {
      * @param field The game field.
      */
     @Override
-    public void cleanInfluence(Field field) {
+    public void cleanInfluence(final Field field) {
         for (FieldObject mire : field.objects(Mire.class)) {
             ((Mire) mire).unfreeze();
         }

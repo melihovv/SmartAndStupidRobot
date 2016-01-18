@@ -51,7 +51,7 @@ public class CellPosition {
      *
      * @param pos Position.
      */
-    public CellPosition(Point pos) {
+    public CellPosition(final Point pos) {
         _pos = pos;
     }
 
@@ -71,7 +71,7 @@ public class CellPosition {
      * @param dir Direction.
      * @return New cell position.
      */
-    public CellPosition next(Direction dir) {
+    public CellPosition next(final Direction dir) {
         return new CellPosition(calcNewPos(_pos, dir));
     }
 
@@ -83,7 +83,7 @@ public class CellPosition {
      * @param dir Direction in which new position is calculated.
      * @return Coordinates of the new position.
      */
-    private static Point calcNewPos(Point pos, Direction dir) {
+    private static Point calcNewPos(final Point pos, final Direction dir) {
         final int[] offset = _offset.get(dir);
         return new Point(pos.x + offset[0], pos.y + offset[1]);
     }
@@ -96,7 +96,7 @@ public class CellPosition {
      * @return Result of checking.
      */
     @Override
-    public boolean equals(Object obj) {
+    public boolean equals(final Object obj) {
         if (obj instanceof CellPosition) {
             CellPosition other = (CellPosition) obj;
             return _pos.equals(other._pos);

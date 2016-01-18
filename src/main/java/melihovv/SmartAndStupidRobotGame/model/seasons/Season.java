@@ -45,7 +45,8 @@ public abstract class Season {
      * @param temperature Temperature.
      * @param downfall    Downfall.
      */
-    public Season(String name, int temperature, String downfall) {
+    public Season(final String name, final int temperature,
+                  final String downfall) {
         _name = name;
         _temperature = temperature;
         _downfall = downfall;
@@ -56,14 +57,14 @@ public abstract class Season {
      *
      * @param field The game field.
      */
-    public abstract void influence(Field field);
+    public abstract void influence(final Field field);
 
     /**
      * Cleans result of influence on the field and on the field objects.
      *
      * @param field The game field.
      */
-    public abstract void cleanInfluence(Field field);
+    public abstract void cleanInfluence(final Field field);
 
     /**
      * Returns season name.

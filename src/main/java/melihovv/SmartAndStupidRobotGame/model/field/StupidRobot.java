@@ -56,7 +56,7 @@ public class StupidRobot extends MovableObject<CellPosition> {
      *
      * @param field A field on which the stupid robot is placed.
      */
-    public StupidRobot(Field field) {
+    public StupidRobot(final Field field) {
         super(field);
         _listenerList = new ArrayList<>();
         _event = new StupidRobotActionEvent(this);
@@ -175,7 +175,7 @@ public class StupidRobot extends MovableObject<CellPosition> {
      * @param smRobPos Position of the smart robot.
      * @return Result of checking.
      */
-    private boolean isSmartRobotNear(CellPosition smRobPos) {
+    private boolean isSmartRobotNear(final CellPosition smRobPos) {
         return _pos.next(Direction.north()).equals(smRobPos) ||
                 _pos.next(Direction.south()).equals(smRobPos) ||
                 _pos.next(Direction.east()).equals(smRobPos) ||
@@ -188,7 +188,7 @@ public class StupidRobot extends MovableObject<CellPosition> {
      * @param dir The direction in which it is checked.
      * @return Result of checking.
      */
-    private boolean isMovePossible(Direction dir) {
+    private boolean isMovePossible(final Direction dir) {
         List<FieldObject> objs = _field.objects(Wall.class,
                 new MiddlePosition(dir, _pos));
         if (!objs.isEmpty()) {
@@ -206,7 +206,7 @@ public class StupidRobot extends MovableObject<CellPosition> {
      * @return True if position was not null, otherwise — false.
      */
     @Override
-    public boolean setPos(CellPosition pos) {
+    public boolean setPos(final CellPosition pos) {
         if (pos != null) {
             _pos = pos;
             return true;
@@ -224,7 +224,7 @@ public class StupidRobot extends MovableObject<CellPosition> {
      *
      * @param l The stupid robot action listener.
      */
-    public void addListener(StupidRobotActionListener l) {
+    public void addListener(final StupidRobotActionListener l) {
         _listenerList.add(l);
     }
 
@@ -234,7 +234,7 @@ public class StupidRobot extends MovableObject<CellPosition> {
      *
      * @param l The stupid robot action listener.
      */
-    public void removeListener(StupidRobotActionListener l) {
+    public void removeListener(final StupidRobotActionListener l) {
         _listenerList.remove(l);
     }
 
@@ -274,7 +274,7 @@ public class StupidRobot extends MovableObject<CellPosition> {
          *
          * @param source Source of event.
          */
-        public StupidRobotActionEvent(Object source) {
+        public StupidRobotActionEvent(final Object source) {
             super(source);
         }
     }
@@ -290,13 +290,13 @@ public class StupidRobot extends MovableObject<CellPosition> {
          *
          * @param e The smart robot action event.
          */
-        void stupidRobotMadeMove(StupidRobotActionEvent e);
+        void stupidRobotMadeMove(final StupidRobotActionEvent e);
 
         /**
          * This method is invoked when stupid robot has caught the smart one.
          *
          * @param e The smart robot action event.
          */
-        void smartRobotIsCaught(StupidRobotActionEvent e);
+        void smartRobotIsCaught(final StupidRobotActionEvent e);
     }
 }

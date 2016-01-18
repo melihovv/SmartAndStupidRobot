@@ -34,7 +34,7 @@ public abstract class MovableObject<Position> extends FieldObject<Position> {
      *
      * @param field A field on which object is placed.
      */
-    public MovableObject(Field field) {
+    public MovableObject(final Field field) {
         super(field);
     }
 }

@@ -55,7 +55,7 @@ public class SeasonsManager implements ActionListener {
     /**
      * Constructs seasons manager.
      */
-    public SeasonsManager(Field field) {
+    public SeasonsManager(final Field field) {
         _field = field;
         _seasons = new ArrayList<>();
         _listenerList = new ArrayList<>();
@@ -69,7 +69,7 @@ public class SeasonsManager implements ActionListener {
      *
      * @param season Season.
      */
-    public void addSeason(Season season) {
+    public void addSeason(final Season season) {
         _seasons.add(season);
     }
 
@@ -115,7 +115,7 @@ public class SeasonsManager implements ActionListener {
      *
      * @param l The seasons listener.
      */
-    public void addListener(SeasonsListener l) {
+    public void addListener(final SeasonsListener l) {
         _listenerList.add(l);
     }
 
@@ -124,7 +124,7 @@ public class SeasonsManager implements ActionListener {
      *
      * @param l The seasons listener.
      */
-    public void removeListener(SeasonsListener l) {
+    public void removeListener(final SeasonsListener l) {
         _listenerList.remove(l);
     }
 
@@ -150,7 +150,7 @@ public class SeasonsManager implements ActionListener {
      * @param e Action event.
      */
     @Override
-    public void actionPerformed(ActionEvent e) {
+    public void actionPerformed(final ActionEvent e) {
         if (_seasons.size() == 0) {
             return;
         }
@@ -186,7 +186,7 @@ public class SeasonsManager implements ActionListener {
          * @param source The object on which the Event initially occurred.
          * @throws IllegalArgumentException if source is null.
          */
-        public SeasonsEvent(Object source) {
+        public SeasonsEvent(final Object source) {
             super(source);
         }
 
@@ -204,7 +204,7 @@ public class SeasonsManager implements ActionListener {
          *
          * @param name Season name to set.
          */
-        public void setName(String name) {
+        public void setName(final String name) {
             _name = name;
         }
 
@@ -222,7 +222,7 @@ public class SeasonsManager implements ActionListener {
          *
          * @param downfall Downfall.
          */
-        public void setDownfall(String downfall) {
+        public void setDownfall(final String downfall) {
             _downfall = downfall;
         }
 
@@ -238,6 +238,6 @@ public class SeasonsManager implements ActionListener {
          *
          * @param e Seasons event.
          */
-        void seasonIsChanged(SeasonsEvent e);
+        void seasonIsChanged(final SeasonsEvent e);
     }
 }

@@ -39,5 +39,5 @@ public interface CanMoveFieldObject<Position> {
      * @param dir    Direction in which object is moved.
      * @return True if object was moved, otherwise - false.
      */
-    boolean move(MovableObject<Position> object, Direction dir);
+    boolean move(final MovableObject<Position> object, final Direction dir);
 }
