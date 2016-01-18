@@ -34,7 +34,6 @@ import java.util.EventListener;
 import java.util.EventObject;
 import java.util.List;
 
-// TODO improve stupid robot in winter.
 // TODO load situation from file.
 // TODO add rain.
 
