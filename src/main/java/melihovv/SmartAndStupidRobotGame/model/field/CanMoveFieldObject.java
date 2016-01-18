@@ -29,7 +29,7 @@ import melihovv.SmartAndStupidRobotGame.model.navigation.Direction;
 /**
  * This interface defines object that can move other field object.
  */
-public interface CanMoveFieldObject {
+public interface CanMoveFieldObject<Position> {
 
     /**
      * Move movable object <code>object</code> in the direction of
@@ -39,6 +39,5 @@ public interface CanMoveFieldObject {
      * @param dir    Direction in which object is moved.
      * @return True if object was moved, otherwise - false.
      */
-    <Position> boolean move(MovableObject<Position> object,
-                            Direction dir);
+    boolean move(MovableObject<Position> object, Direction dir);
 }

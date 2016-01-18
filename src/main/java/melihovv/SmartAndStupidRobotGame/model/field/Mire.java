@@ -33,7 +33,7 @@ import java.util.List;
  * The <code>Mire</code> class defines mire on the field.
  */
 public class Mire extends ImmovableObject<CellPosition>
-        implements CanMoveFieldObject {
+        implements CanMoveFieldObject<CellPosition> {
 
     // If mire is frozen or not.
     private boolean _isFrozen;
@@ -80,9 +80,8 @@ public class Mire extends ImmovableObject<CellPosition>
      * @return True if object was moved, otherwise - false.
      */
     @Override
-    @SuppressWarnings("unchecked")
-    public <Position> boolean move(MovableObject<Position> object,
-                                   Direction dir) {
+    public boolean move(MovableObject<CellPosition> object,
+                        Direction dir) {
         if (_isFrozen) {
             final List<FieldObject> objectsAhead = _field.objects(
                     Mire.class,
@@ -90,7 +89,7 @@ public class Mire extends ImmovableObject<CellPosition>
             );
 
             if (objectsAhead.size() != 0) {
-                return object.setPos((Position) _pos.next(dir));
+                return object.setPos(_pos.next(dir));
             }
 
             final List<FieldObject> objectsBehind = _field.objects(
@@ -99,11 +98,11 @@ public class Mire extends ImmovableObject<CellPosition>
             );
 
             if (objectsBehind.size() != 0) {
-                return object.setPos((Position) _pos.next(dir));
+                return object.setPos(_pos.next(dir));
             }
         }
 
-        return object.setPos((Position) _pos);
+        return object.setPos(_pos);
     }
 
     /**

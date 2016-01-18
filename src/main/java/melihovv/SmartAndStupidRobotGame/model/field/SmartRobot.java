@@ -35,7 +35,6 @@ import java.util.EventObject;
 import java.util.List;
 
 // TODO improve stupid robot in winter.
-// TODO field is responsible for movement.
 // TODO load situation from file.
 // TODO add rain.
 
@@ -67,13 +66,7 @@ public class SmartRobot extends MovableObject<CellPosition> {
      */
     public void makeMove(Direction dir) {
         if (isMovePossible(dir)) {
-            List<FieldObject> objects = _field.objects(_pos.next(dir));
-
-            if (objects.size() != 0 && objects.get(0) instanceof Mire &&
-                    ((Mire) objects.get(0)).move(this, dir)) {
-
-                fireRobotMadeMove();
-            } else if (setPos(_pos.next(dir))) {
+            if (_field.move(this, dir)) {
                 fireRobotMadeMove();
             }
         }

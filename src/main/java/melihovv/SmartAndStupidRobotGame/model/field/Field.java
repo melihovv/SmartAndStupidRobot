@@ -24,7 +24,9 @@
 
 package melihovv.SmartAndStupidRobotGame.model.field;
 
+import melihovv.SmartAndStupidRobotGame.model.field.position.CellPosition;
 import melihovv.SmartAndStupidRobotGame.model.field.position.MiddlePosition;
+import melihovv.SmartAndStupidRobotGame.model.navigation.Direction;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -38,7 +40,7 @@ import java.util.stream.Collectors;
  * The <code>Field</code> class defines game field. It stores all object that
  * can be placed on it.
  */
-public class Field {
+public class Field implements CanMoveFieldObject<CellPosition> {
 
     // Field objects.
     private final HashMap<Class, List<FieldObject>> _objs;
@@ -227,7 +229,7 @@ public class Field {
      * @return List of objects of type <code>objType</code> which are on
      * middle position <code>pos</code>.
      */
-    public List<FieldObject> objects(Class objType,
+    public List<FieldObject> objects(Class<Wall> objType,
                                      MiddlePosition pos) {
 
         final List<FieldObject> objList = new ArrayList<>();
@@ -280,5 +282,28 @@ public class Field {
     public boolean contains(Point pos) {
         return pos.getX() >= 1 && pos.getX() <= _dim.getWidth() &&
                 pos.getY() >= 1 && pos.getY() <= _dim.getHeight();
+    }
+
+    /**
+     * Move movable object <code>object</code> in the direction of
+     * <code>dir</code>.
+     *
+     * @param object Object to move.
+     * @param dir    Direction in which object is moved.
+     * @return True if object was moved, otherwise - false.
+     */
+    @SuppressWarnings("unchecked")
+    @Override
+    public boolean move(MovableObject<CellPosition> object, Direction dir) {
+        List<FieldObject> objects = objects(object.pos().next(dir));
+
+        if (objects.size() != 0 &&
+                objects.get(0) instanceof CanMoveFieldObject) {
+
+            return ((CanMoveFieldObject<CellPosition>) objects.get(0))
+                    .move(object, dir);
+        }
+
+        return object.setPos(object.pos().next(dir));
     }
 }
