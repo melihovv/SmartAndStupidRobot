@@ -28,7 +28,6 @@ import melihovv.SmartAndStupidRobotGame.model.field.position.CellPosition;
 import melihovv.SmartAndStupidRobotGame.model.field.position.MiddlePosition;
 import melihovv.SmartAndStupidRobotGame.model.navigation.Direction;
 
-import java.awt.*;
 import java.util.ArrayList;
 import java.util.EventListener;
 import java.util.EventObject;
@@ -36,9 +35,9 @@ import java.util.List;
 import java.util.logging.Logger;
 
 /**
- * The <code>StupidRobot</code> defines stupid robot on the field.
+ * The <code>StupidRobot</code> class defines stupid robot on the field.
  */
-public class StupidRobot extends MovableObject<CellPosition> {
+public class StupidRobot extends AbstractRobot {
 
     // List of the stupid robot's listeners.
     private final List<StupidRobotActionListener> _listenerList;
@@ -182,37 +181,6 @@ public class StupidRobot extends MovableObject<CellPosition> {
                 _pos.next(Direction.west()).equals(smRobPos);
     }
 
-    /**
-     * Check if movement is possible in the direction <code>dir</code>.
-     *
-     * @param dir The direction in which it is checked.
-     * @return Result of checking.
-     */
-    private boolean isMovePossible(final Direction dir) {
-        List<FieldObject> objs = _field.objects(Wall.class,
-                new MiddlePosition(dir, _pos));
-        if (!objs.isEmpty()) {
-            return false;
-        }
-
-        Point nextPos = _pos.next(dir).pos();
-        return _field.contains(nextPos);
-    }
-
-    /**
-     * Sets the stupid robot position to <code>pos</code>.
-     *
-     * @param pos The position to which object will be placed.
-     * @return True if position was not null, otherwise — false.
-     */
-    @Override
-    public boolean setPos(final CellPosition pos) {
-        if (pos != null) {
-            _pos = pos;
-            return true;
-        }
-        return false;
-    }
 
     ////////////////////////////////////////////////////////////////////////////
     // Events.
