@@ -131,6 +131,7 @@ public class Model {
         if (smRobPos.equals(_target.pos())) {
             _isGameFinished = true;
             log.info("Smart robot has reached target position");
+            _event.setMessage("Smart robot wins");
             fireGameIsOver();
         }
 
@@ -138,6 +139,7 @@ public class Model {
             if (smRobPos.equals(mire.pos()) && !((Mire) mire).isFrozen()) {
                 _isGameFinished = true;
                 log.info("Smart robot in mire");
+                _event.setMessage("Smart robot in mire, he lose");
                 fireGameIsOver();
                 break;
             }
@@ -482,6 +484,8 @@ public class Model {
      */
     public static class ModelEvent extends EventObject {
 
+        private String _message;
+
         /**
          * Constructs a prototypical Event.
          *
@@ -490,6 +494,24 @@ public class Model {
          */
         public ModelEvent(final Object source) {
             super(source);
+        }
+
+        /**
+         * Returns game event message.
+         *
+         * @return Game event message.
+         */
+        public String message() {
+            return _message;
+        }
+
+        /**
+         * Sets game event message.
+         *
+         * @param message Game event message.
+         */
+        public void setMessage(String message) {
+            _message = message;
         }
     }
 

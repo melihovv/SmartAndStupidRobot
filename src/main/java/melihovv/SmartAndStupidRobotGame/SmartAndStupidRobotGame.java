@@ -571,7 +571,7 @@ public class SmartAndStupidRobotGame extends JFrame {
         @Override
         public void gameIsOver(final ModelEvent e) {
             repaint();
-            _infoLabel.setText("Game is over");
+            _infoLabel.setText(e.message());
         }
     }
 }
