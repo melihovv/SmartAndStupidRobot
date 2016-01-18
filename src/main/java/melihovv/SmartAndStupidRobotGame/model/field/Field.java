@@ -69,8 +69,8 @@ public class Field implements CanMoveFieldObject<CellPosition> {
      *                                  positive.
      */
     public Field(final Dimension dimension) throws IllegalArgumentException {
-        setSize(dimension);
         _objs = new HashMap<>();
+        setSize(dimension);
     }
 
     /**
@@ -104,14 +104,31 @@ public class Field implements CanMoveFieldObject<CellPosition> {
      * Sets field size.
      *
      * @param dimension The dimension of the field that will be set.
-     * @throws IllegalArgumentException If <code>dimension</code> isn't
-     *                                  positive.
+     * @throws IllegalArgumentException If <code>dimension</code> less than 2 or
+     *                                  any object became outside the field.
      */
     public void setSize(final Dimension dimension) throws IllegalArgumentException {
-        if (dimension.getWidth() <= 0 || dimension.getHeight() <= 0) {
+        if (dimension.getWidth() < 2 || dimension.getHeight() < 2) {
             throw new IllegalArgumentException(
-                    "Field size must be positive");
+                    "Field size must be greater or equal 2");
         }
+
+        for (FieldObject obj : objects()) {
+            if (obj.pos() instanceof CellPosition) {
+                final Point p = ((CellPosition) obj.pos()).pos();
+                if (p.x > dimension.getWidth() || p.y > dimension.getHeight()) {
+                    throw new IllegalArgumentException(
+                            "Invalid dimension");
+                }
+            } else if (obj.pos() instanceof MiddlePosition) {
+                final Point p = ((MiddlePosition) obj.pos()).cellPos().pos();
+                if (p.x > dimension.getWidth() || p.y > dimension.getHeight()) {
+                    throw new IllegalArgumentException(
+                            "Invalid dimension");
+                }
+            }
+        }
+
         _dim = dimension;
     }
 
