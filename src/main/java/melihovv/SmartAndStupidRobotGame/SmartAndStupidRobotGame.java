@@ -120,6 +120,7 @@ public class SmartAndStupidRobotGame extends JFrame {
 
     /**
      * Main function.
+     *
      * @param args Args.
      */
     public static void main(String[] args) {
@@ -194,12 +195,17 @@ public class SmartAndStupidRobotGame extends JFrame {
             _model.smartRobot().addListener(new SmartRobotListener());
             _model.stupidRobot().addListener(new StupidRobotListener());
             super.repaint();
-            _infoLabel.setText(_model.seasonsManager().activeSeason().name() +
-                    " is now");
+
+            Season activeSeason = _model.seasonsManager().activeSeason();
+            String downfall = activeSeason.downfall().length() != 0 ?
+                    ", downfall: " + activeSeason.downfall() :
+                    "";
+            _infoLabel.setText(activeSeason.name() + " is now" + downfall);
         }
 
         /**
          * Paints view.
+         *
          * @param g Graphic context.
          */
         @Override
@@ -245,6 +251,7 @@ public class SmartAndStupidRobotGame extends JFrame {
 
         /**
          * Draws grid.
+         *
          * @param g Graphic context.
          */
         private void drawGrid(Graphics g) {
@@ -268,7 +275,8 @@ public class SmartAndStupidRobotGame extends JFrame {
 
         /**
          * Draws target.
-         * @param g Graphic context.
+         *
+         * @param g      Graphic context.
          * @param target Smart robot target.
          */
         private void drawTarget(Graphics g, Model.Target target) {
@@ -287,7 +295,8 @@ public class SmartAndStupidRobotGame extends JFrame {
 
         /**
          * Draws smart robot.
-         * @param g Graphic context.
+         *
+         * @param g          Graphic context.
          * @param smartRobot Smart robot.
          */
         private void drawSmartRobot(Graphics g, SmartRobot smartRobot) {
@@ -306,7 +315,8 @@ public class SmartAndStupidRobotGame extends JFrame {
 
         /**
          * Draws stupid robot.
-         * @param g Graphic context.
+         *
+         * @param g           Graphic context.
          * @param stupidRobot Stupid robot.
          */
         private void drawStupidRobot(Graphics g, StupidRobot stupidRobot) {
@@ -325,7 +335,8 @@ public class SmartAndStupidRobotGame extends JFrame {
 
         /**
          * Draws mires.
-         * @param g Graphic context.
+         *
+         * @param g     Graphic context.
          * @param mires Mires.
          */
         private void drawMires(Graphics g, List<FieldObject> mires) {
@@ -343,7 +354,8 @@ public class SmartAndStupidRobotGame extends JFrame {
 
         /**
          * Draws walls.
-         * @param g Graphic context.
+         *
+         * @param g     Graphic context.
          * @param walls Walls.
          */
         private void drawWalls(Graphics g, List<FieldObject> walls) {
@@ -406,6 +418,7 @@ public class SmartAndStupidRobotGame extends JFrame {
 
         /**
          * This method is invoked when the key is typed.
+         *
          * @param e Key event.
          */
         @Override
@@ -414,6 +427,7 @@ public class SmartAndStupidRobotGame extends JFrame {
 
         /**
          * This method is invoked when the key is pressed.
+         *
          * @param e Key event.
          */
         @Override
@@ -440,6 +454,7 @@ public class SmartAndStupidRobotGame extends JFrame {
 
         /**
          * This method is invoked when the key is released.
+         *
          * @param e Key event.
          */
         @Override
