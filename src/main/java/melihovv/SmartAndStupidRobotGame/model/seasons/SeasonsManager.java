@@ -74,6 +74,13 @@ public class SeasonsManager implements ActionListener {
     }
 
     /**
+     * Removes all seasons.
+     */
+    public void removeAllSeasons() {
+        _seasons.clear();
+    }
+
+    /**
      * Runs endless loop with season changing.
      */
     public void start() {

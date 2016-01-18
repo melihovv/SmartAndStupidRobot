@@ -79,6 +79,7 @@ public class Model {
 
         _manager.stop();
         _manager.clearListeners();
+        _manager.removeAllSeasons();
         _manager.addSeason(new Summer("summer", 25, "rain"));
         _manager.addSeason(new Winter("winter", -20, ""));
         _manager.start();
