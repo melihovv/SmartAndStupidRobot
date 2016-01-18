@@ -84,9 +84,21 @@ public class Mire extends ImmovableObject<CellPosition>
     public <Position> boolean move(MovableObject<Position> object,
                                    Direction dir) {
         if (_isFrozen) {
-            List<FieldObject> objects = _field.objects(_pos.next(dir));
+            final List<FieldObject> objectsAhead = _field.objects(
+                    Mire.class,
+                    _pos.next(dir)
+            );
 
-            if (objects.size() != 0 && objects.get(0) instanceof Mire) {
+            if (objectsAhead.size() != 0) {
+                return object.setPos((Position) _pos.next(dir));
+            }
+
+            final List<FieldObject> objectsBehind = _field.objects(
+                    Mire.class,
+                    _pos.next(dir.opposite())
+            );
+
+            if (objectsBehind.size() != 0) {
                 return object.setPos((Position) _pos.next(dir));
             }
         }
