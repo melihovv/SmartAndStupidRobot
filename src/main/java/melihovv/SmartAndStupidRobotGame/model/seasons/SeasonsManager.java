@@ -25,6 +25,7 @@
 package melihovv.SmartAndStupidRobotGame.model.seasons;
 
 import melihovv.SmartAndStupidRobotGame.model.field.Field;
+import melihovv.SmartAndStupidRobotGame.model.seasons.downfall.Downfall;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
@@ -165,8 +166,12 @@ public class SeasonsManager implements ActionListener {
         Season curSeason = _seasons.get(_activeSeasonIndex);
         curSeason.influence(_field);
 
-        _event.setName(curSeason.name());
-        _event.setDownfall(curSeason.downfall());
+        List<String> temp = new ArrayList<>();
+        for (Downfall downfall : curSeason.downfall()) {
+            temp.add(downfall.getClass().getSimpleName());
+        }
+        _event.setDownfall(temp);
+        _event.setName(curSeason.getClass().getSimpleName());
         fireSeasonChanged();
     }
 
@@ -178,7 +183,7 @@ public class SeasonsManager implements ActionListener {
         // Season name.
         private String _name;
         // Downfall.
-        private String _downfall;
+        private List<String> _downfall;
 
         /**
          * Constructs a prototypical Event.
@@ -213,7 +218,7 @@ public class SeasonsManager implements ActionListener {
          *
          * @return Downfall.
          */
-        public String downfall() {
+        public List<String> downfall() {
             return _downfall;
         }
 
@@ -222,7 +227,7 @@ public class SeasonsManager implements ActionListener {
          *
          * @param downfall Downfall.
          */
-        public void setDownfall(final String downfall) {
+        public void setDownfall(final List<String> downfall) {
             _downfall = downfall;
         }
     }

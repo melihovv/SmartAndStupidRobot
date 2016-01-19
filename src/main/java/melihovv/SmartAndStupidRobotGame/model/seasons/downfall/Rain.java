@@ -22,72 +22,56 @@
  * SOFTWARE.
  */
 
-package melihovv.SmartAndStupidRobotGame.model.seasons;
+package melihovv.SmartAndStupidRobotGame.model.seasons.downfall;
 
 import melihovv.SmartAndStupidRobotGame.model.field.Field;
-import melihovv.SmartAndStupidRobotGame.model.seasons.downfall.Downfall;
+import melihovv.SmartAndStupidRobotGame.model.field.FieldObject;
+import melihovv.SmartAndStupidRobotGame.model.field.Mire;
+import melihovv.SmartAndStupidRobotGame.model.field.StupidRobot;
+import melihovv.SmartAndStupidRobotGame.model.field.position.CellPosition;
 
-import java.awt.*;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 /**
- * The abstract <code>Season</code> class defines the abstract season.
+ * The <code>Rain</code> class defines rain.
  */
-public abstract class Season {
+public class Rain extends Downfall {
 
-    // Temperature.
-    private final int _temperature;
-    // Downfall.
-    private final List<Downfall> _downfall;
-
-    /**
-     * Constructs season.
-     *
-     * @param temperature Temperature.
-     * @param downfall    Downfall.
-     */
-    public Season(final int temperature, final List<Downfall> downfall) {
-        _temperature = temperature;
-        _downfall = downfall;
-    }
+    // New mires which are created when it is raining.
+    private List<Mire> _mires = new ArrayList<>();
 
     /**
      * Influences on the field and on the field objects.
      *
      * @param field The game field.
      */
-    public abstract void influence(final Field field);
+    @Override
+    public void influence(final Field field) {
+        for (FieldObject mire : field.objects(Mire.class)) {
+            CellPosition pos = field.freeCellAround(
+                    ((Mire) mire).pos(),
+                    Mire.class
+            );
+
+            if (pos != null) {
+                Mire newMire = new Mire(field);
+                newMire.setPos(pos);
+                field.addObject(pos, newMire);
+                _mires.add(newMire);
+            }
+        }
+        ((StupidRobot) field.object(StupidRobot.class)).checkIfRobotIsInMire();
+    }
 
     /**
      * Cleans result of influence on the field and on the field objects.
      *
      * @param field The game field.
      */
-    public abstract void cleanInfluence(final Field field);
-
-    /**
-     * Returns temperature.
-     *
-     * @return Temperature.
-     */
-    public int temperature() {
-        return _temperature;
+    @Override
+    public void cleanInfluence(final Field field) {
+        _mires.forEach(field::removeObject);
+        ((StupidRobot) field.object(StupidRobot.class)).checkIfRobotIsInMire();
     }
-
-    /**
-     * Returns downfall.
-     *
-     * @return Downfall.
-     */
-    public List<Downfall> downfall() {
-        return _downfall;
-    }
-
-    /**
-     * Returns colors for field objects draw.
-     *
-     * @return Colors for field objects draw.
-     */
-    public abstract Map<String, Color> colors();
 }

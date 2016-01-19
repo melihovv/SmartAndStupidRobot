@@ -37,6 +37,8 @@ import melihovv.SmartAndStupidRobotGame.model.navigation.Direction;
 import melihovv.SmartAndStupidRobotGame.model.seasons.SeasonsManager;
 import melihovv.SmartAndStupidRobotGame.model.seasons.Summer;
 import melihovv.SmartAndStupidRobotGame.model.seasons.Winter;
+import melihovv.SmartAndStupidRobotGame.model.seasons.downfall.Downfall;
+import melihovv.SmartAndStupidRobotGame.model.seasons.downfall.Rain;
 
 import java.awt.*;
 import java.io.IOException;
@@ -105,8 +107,10 @@ public class Model {
         _manager.stop();
         _manager.clearListeners();
         _manager.removeAllSeasons();
-        _manager.addSeason(new Winter("winter", -20, ""));
-        _manager.addSeason(new Summer("summer", 25, "rain"));
+        _manager.addSeason(new Winter(-20, new ArrayList<>()));
+        _manager.addSeason(new Summer(25, new ArrayList<Downfall>() {{
+            add(new Rain());
+        }}));
         _manager.start();
         _manager.addListener(new SeasonsListener());
 

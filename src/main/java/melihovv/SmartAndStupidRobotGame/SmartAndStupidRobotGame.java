@@ -37,6 +37,7 @@ import melihovv.SmartAndStupidRobotGame.model.navigation.Direction;
 import melihovv.SmartAndStupidRobotGame.model.seasons.Season;
 import melihovv.SmartAndStupidRobotGame.model.seasons.SeasonsManager;
 import melihovv.SmartAndStupidRobotGame.model.seasons.SeasonsManager.SeasonsEvent;
+import melihovv.SmartAndStupidRobotGame.model.seasons.downfall.Downfall;
 
 import javax.swing.*;
 import javax.swing.border.MatteBorder;
@@ -201,10 +202,16 @@ public class SmartAndStupidRobotGame extends JFrame {
             super.repaint();
 
             Season activeSeason = _model.seasonsManager().activeSeason();
-            String downfall = activeSeason.downfall().length() != 0 ?
-                    ", downfall: " + activeSeason.downfall() :
-                    "";
-            _infoLabel.setText(activeSeason.name() + " is now" + downfall);
+            String downfall = "";
+            if (activeSeason.downfall().size() != 0) {
+                downfall += ", downfall:";
+                for (Downfall d : activeSeason.downfall()) {
+                    downfall += " " + d.getClass().getSimpleName() + ",";
+                }
+                downfall = downfall.substring(0, downfall.length() - 1);
+            }
+            _infoLabel.setText(activeSeason.getClass().getSimpleName() +
+                    " is now" + downfall);
         }
 
         /**
@@ -409,9 +416,14 @@ public class SmartAndStupidRobotGame extends JFrame {
                 return;
             }
 
-            String downfall = e.downfall().length() != 0 ?
-                    ", downfall: " + e.downfall() :
-                    "";
+            String downfall = "";
+            if (e.downfall().size() != 0) {
+                downfall += ", downfall:";
+                for (String s : e.downfall()) {
+                    downfall += " " + s + ",";
+                }
+                downfall = downfall.substring(0, downfall.length() - 1);
+            }
             _infoLabel.setText(e.name() + " is now" + downfall);
             repaint();
         }

@@ -22,36 +22,14 @@
  * SOFTWARE.
  */
 
-package melihovv.SmartAndStupidRobotGame.model.seasons;
+package melihovv.SmartAndStupidRobotGame.model.seasons.downfall;
 
 import melihovv.SmartAndStupidRobotGame.model.field.Field;
-import melihovv.SmartAndStupidRobotGame.model.seasons.downfall.Downfall;
-
-import java.awt.*;
-import java.util.List;
-import java.util.Map;
 
 /**
- * The abstract <code>Season</code> class defines the abstract season.
+ * The abstract <code>Downfall</code> class defines the abstract downfall.
  */
-public abstract class Season {
-
-    // Temperature.
-    private final int _temperature;
-    // Downfall.
-    private final List<Downfall> _downfall;
-
-    /**
-     * Constructs season.
-     *
-     * @param temperature Temperature.
-     * @param downfall    Downfall.
-     */
-    public Season(final int temperature, final List<Downfall> downfall) {
-        _temperature = temperature;
-        _downfall = downfall;
-    }
-
+public abstract class Downfall {
     /**
      * Influences on the field and on the field objects.
      *
@@ -65,29 +43,4 @@ public abstract class Season {
      * @param field The game field.
      */
     public abstract void cleanInfluence(final Field field);
-
-    /**
-     * Returns temperature.
-     *
-     * @return Temperature.
-     */
-    public int temperature() {
-        return _temperature;
-    }
-
-    /**
-     * Returns downfall.
-     *
-     * @return Downfall.
-     */
-    public List<Downfall> downfall() {
-        return _downfall;
-    }
-
-    /**
-     * Returns colors for field objects draw.
-     *
-     * @return Colors for field objects draw.
-     */
-    public abstract Map<String, Color> colors();
 }

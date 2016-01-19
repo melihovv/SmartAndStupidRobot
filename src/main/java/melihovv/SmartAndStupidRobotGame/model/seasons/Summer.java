@@ -25,13 +25,9 @@
 package melihovv.SmartAndStupidRobotGame.model.seasons;
 
 import melihovv.SmartAndStupidRobotGame.model.field.Field;
-import melihovv.SmartAndStupidRobotGame.model.field.FieldObject;
-import melihovv.SmartAndStupidRobotGame.model.field.Mire;
-import melihovv.SmartAndStupidRobotGame.model.field.StupidRobot;
-import melihovv.SmartAndStupidRobotGame.model.field.position.CellPosition;
+import melihovv.SmartAndStupidRobotGame.model.seasons.downfall.Downfall;
 
 import java.awt.*;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -41,8 +37,6 @@ import java.util.Map;
  */
 public class Summer extends Season {
 
-    // New mires which are created when it is raining.
-    private List<Mire> _mires = new ArrayList<>();
     // Colors to draw field objects.
     private static Map<String, Color> _colors =
             new HashMap<String, Color>() {{
@@ -56,13 +50,11 @@ public class Summer extends Season {
     /**
      * Constructs summer season.
      *
-     * @param name        Season name.
      * @param temperature Temperature.
      * @param downfall    Downfall.
      */
-    public Summer(final String name, final int temperature,
-                  final String downfall) {
-        super(name, temperature, downfall);
+    public Summer(final int temperature, final List<Downfall> downfall) {
+        super(temperature, downfall);
     }
 
     /**
@@ -74,20 +66,9 @@ public class Summer extends Season {
      */
     @Override
     public void influence(final Field field) {
-        for (FieldObject mire : field.objects(Mire.class)) {
-            CellPosition pos = field.freeCellAround(
-                    ((Mire) mire).pos(),
-                    Mire.class
-            );
-
-            if (pos != null) {
-                Mire newMire = new Mire(field);
-                newMire.setPos(pos);
-                field.addObject(pos, newMire);
-                _mires.add(newMire);
-            }
+        for (Downfall downfall : downfall()) {
+            downfall.influence(field);
         }
-        ((StupidRobot) field.object(StupidRobot.class)).checkIfRobotIsInMire();
     }
 
     /**
@@ -99,8 +80,9 @@ public class Summer extends Season {
      */
     @Override
     public void cleanInfluence(final Field field) {
-        _mires.forEach(field::removeObject);
-        ((StupidRobot) field.object(StupidRobot.class)).checkIfRobotIsInMire();
+        for (Downfall downfall : downfall()) {
+            downfall.cleanInfluence(field);
+        }
     }
 
     /**

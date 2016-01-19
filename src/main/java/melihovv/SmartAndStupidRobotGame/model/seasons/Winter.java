@@ -28,9 +28,11 @@ import melihovv.SmartAndStupidRobotGame.model.field.Field;
 import melihovv.SmartAndStupidRobotGame.model.field.FieldObject;
 import melihovv.SmartAndStupidRobotGame.model.field.Mire;
 import melihovv.SmartAndStupidRobotGame.model.field.StupidRobot;
+import melihovv.SmartAndStupidRobotGame.model.seasons.downfall.Downfall;
 
 import java.awt.*;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -51,13 +53,11 @@ public class Winter extends Season {
     /**
      * Constructs winter season.
      *
-     * @param name        Season name.
      * @param temperature Temperature.
      * @param downfall    Downfall.
      */
-    public Winter(final String name, final int temperature,
-                  final String downfall) {
-        super(name, temperature, downfall);
+    public Winter(final int temperature, final List<Downfall> downfall) {
+        super(temperature, downfall);
     }
 
     /**
