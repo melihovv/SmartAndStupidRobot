@@ -83,9 +83,9 @@ public class Model {
     /**
      * Starts new game.
      *
-     * @throws IOException|IllegalArgumentException If json file is invalid or
-     *                                              it is impossible to read
-     *                                              file.
+     * @param path Path of the situation file.
+     * @throws IOException If it is impossible to read file.
+     * @throws IllegalArgumentException If json file is invalid.
      */
     public void start(final String path)
             throws IOException, IllegalArgumentException {
@@ -151,9 +151,9 @@ public class Model {
     /**
      * Load game situation from file.
      *
-     * @throws IOException|InvalidArgumentException If json file is invalid or
-     *                                              it is impossible to read
-     *                                              file.
+     * @param path Path of situation file.
+     * @throws IOException If it is impossible to read file.
+     * @throws IllegalArgumentException If json file is invalid.
      */
     private void loadSituation(final String path)
             throws IllegalArgumentException, IOException {

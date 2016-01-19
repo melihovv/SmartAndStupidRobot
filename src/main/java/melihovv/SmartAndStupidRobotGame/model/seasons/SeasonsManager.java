@@ -55,6 +55,7 @@ public class SeasonsManager implements ActionListener {
 
     /**
      * Constructs seasons manager.
+     * @param field Game field.
      */
     public SeasonsManager(final Field field) {
         _field = field;

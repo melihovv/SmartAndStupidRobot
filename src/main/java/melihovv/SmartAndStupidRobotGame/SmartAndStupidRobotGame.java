@@ -190,9 +190,11 @@ public class SmartAndStupidRobotGame extends JFrame {
 
         /**
          * Starts the game.
+         *
+         * @throws IOException If it is impossible to read file.
+         * @throws IllegalArgumentException If json file is invalid.
          */
-        public void start()
-                throws IOException, IllegalArgumentException {
+        public void start() throws IOException, IllegalArgumentException {
 
             _isGameStarted = true;
             _model.start(_path);

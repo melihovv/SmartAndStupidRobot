@@ -353,6 +353,7 @@ public class Field implements CanMoveFieldObject<CellPosition> {
      * <code>type</code> around cell with position <code>pos</code>.
      *
      * @param pos Position of cell.
+     * @param type Object type.
      * @return First free cell around cell with position <code>pos</code>.
      */
     public CellPosition freeCellAround(final CellPosition pos, final Class type) {
