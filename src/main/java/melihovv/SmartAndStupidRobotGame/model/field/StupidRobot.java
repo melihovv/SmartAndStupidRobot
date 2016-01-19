@@ -28,9 +28,8 @@ import melihovv.SmartAndStupidRobotGame.model.field.position.CellPosition;
 import melihovv.SmartAndStupidRobotGame.model.field.position.MiddlePosition;
 import melihovv.SmartAndStupidRobotGame.model.navigation.Direction;
 
-import java.util.ArrayList;
-import java.util.EventListener;
-import java.util.EventObject;
+import java.awt.*;
+import java.util.*;
 import java.util.List;
 import java.util.logging.Logger;
 
@@ -59,6 +58,34 @@ public class StupidRobot extends AbstractRobot {
         super(field);
         _listenerList = new ArrayList<>();
         _event = new StupidRobotActionEvent(this);
+    }
+
+    /**
+     * Draws field object.
+     *
+     * @param g         Graphics context.
+     * @param ltc       Left top corner of cell where to draw.
+     * @param constants Such constants as font size, cell size, etc.
+     * @param colors    Colors.
+     */
+    @Override
+    public void draw(
+            final Graphics g,
+            final Point ltc,
+            final Map<String, Integer> constants,
+            final Map<String, Color> colors
+    ) {
+        Color preserved = g.getColor();
+        g.setColor(colors.get("font"));
+
+        g.drawString(
+                "St",
+                ltc.x + constants.get("cell size") / 3,
+                ltc.y + constants.get("cell size") / 5 +
+                        constants.get("font size")
+        );
+
+        g.setColor(preserved);
     }
 
     /**

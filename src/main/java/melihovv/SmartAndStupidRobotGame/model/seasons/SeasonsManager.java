@@ -225,7 +225,6 @@ public class SeasonsManager implements ActionListener {
         public void setDownfall(final String downfall) {
             _downfall = downfall;
         }
-
     }
 
     /**

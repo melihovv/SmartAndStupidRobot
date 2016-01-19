@@ -26,6 +26,9 @@ package melihovv.SmartAndStupidRobotGame.model.seasons;
 
 import melihovv.SmartAndStupidRobotGame.model.field.Field;
 
+import java.awt.*;
+import java.util.Map;
+
 /**
  * The abstract <code>Season</code> class defines the abstract season.
  */
@@ -92,4 +95,11 @@ public abstract class Season {
     public String downfall() {
         return _downfall;
     }
+
+    /**
+     * Returns colors for field objects draw.
+     *
+     * @return Colors for field objects draw.
+     */
+    public abstract Map<String, Color> colors();
 }

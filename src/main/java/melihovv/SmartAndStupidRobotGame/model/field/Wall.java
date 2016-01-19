@@ -25,6 +25,10 @@
 package melihovv.SmartAndStupidRobotGame.model.field;
 
 import melihovv.SmartAndStupidRobotGame.model.field.position.MiddlePosition;
+import melihovv.SmartAndStupidRobotGame.model.navigation.Direction;
+
+import java.awt.*;
+import java.util.Map;
 
 /**
  * The <code>Wall</code> class defines a wall on the field.
@@ -38,5 +42,61 @@ public class Wall extends ImmovableObject<MiddlePosition> {
      */
     public Wall(final Field field) {
         super(field);
+    }
+
+    /**
+     * Draws field object.
+     *
+     * @param g         Graphics context.
+     * @param ltc       Left top corner of cell where to draw.
+     * @param constants Such constants as font size, cell size, etc.
+     * @param colors    Colors.
+     */
+    @Override
+    public void draw(
+            final Graphics g,
+            final Point ltc,
+            final Map<String, Integer> constants,
+            final Map<String, Color> colors
+    ) {
+        Color preserved = g.getColor();
+        g.setColor(colors.get("wall"));
+
+        Direction dir = _pos.direct();
+
+        if (dir.equals(Direction.north())) {
+            g.drawLine(
+                    ltc.x + 1,
+                    ltc.y,
+                    ltc.x + constants.get("cell size") - 1,
+                    ltc.y
+            );
+        } else if (dir.equals(Direction.south())) {
+            g.drawLine(
+                    ltc.x + 1,
+                    ltc.y + constants.get("cell size"),
+                    ltc.x + constants.get("cell size") - 1,
+                    ltc.y + constants.get("cell size")
+            );
+        } else if (dir.equals(Direction.west())) {
+            g.drawLine(
+                    ltc.x,
+                    ltc.y + 1,
+                    ltc.x,
+                    ltc.y + constants.get("cell size") - 1
+            );
+        } else if (dir.equals(Direction.east())) {
+            g.drawLine(
+                    ltc.x + constants.get("cell size"),
+                    ltc.y + 1,
+                    ltc.x + constants.get("cell size"),
+                    ltc.y + constants.get("cell size") - 1
+            );
+        } else {
+            throw new IllegalArgumentException(
+                    "Direction must be north, south, west or east");
+        }
+
+        g.setColor(preserved);
     }
 }

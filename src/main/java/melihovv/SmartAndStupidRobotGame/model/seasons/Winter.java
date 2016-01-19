@@ -29,10 +29,24 @@ import melihovv.SmartAndStupidRobotGame.model.field.FieldObject;
 import melihovv.SmartAndStupidRobotGame.model.field.Mire;
 import melihovv.SmartAndStupidRobotGame.model.field.StupidRobot;
 
+import java.awt.*;
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * The <code>Winter</code> class defines the winter season.
  */
 public class Winter extends Season {
+
+    // Colors to draw field objects.
+    private static Map<String, Color> _colors =
+            new HashMap<String, Color>() {{
+                put("field", new Color(83, 201, 239));
+                put("grid", Color.BLUE);
+                put("font", Color.RED);
+                put("mire", Color.WHITE);
+                put("wall", Color.BLACK);
+            }};
 
     /**
      * Constructs winter season.
@@ -74,5 +88,15 @@ public class Winter extends Season {
             ((Mire) mire).unfreeze();
         }
         ((StupidRobot) field.object(StupidRobot.class)).checkIfRobotIsInMire();
+    }
+
+    /**
+     * Returns colors for field objects draw.
+     *
+     * @return Colors for field objects draw.
+     */
+    @Override
+    public Map<String, Color> colors() {
+        return _colors;
     }
 }

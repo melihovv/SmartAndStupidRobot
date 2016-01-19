@@ -26,16 +26,17 @@ package melihovv.SmartAndStupidRobotGame;
 
 import melihovv.SmartAndStupidRobotGame.model.Model;
 import melihovv.SmartAndStupidRobotGame.model.Model.ModelEvent;
-import melihovv.SmartAndStupidRobotGame.model.field.*;
+import melihovv.SmartAndStupidRobotGame.model.field.FieldObject;
+import melihovv.SmartAndStupidRobotGame.model.field.SmartRobot;
 import melihovv.SmartAndStupidRobotGame.model.field.SmartRobot.SmartRobotActionEvent;
+import melihovv.SmartAndStupidRobotGame.model.field.StupidRobot;
 import melihovv.SmartAndStupidRobotGame.model.field.StupidRobot.StupidRobotActionEvent;
 import melihovv.SmartAndStupidRobotGame.model.field.position.CellPosition;
+import melihovv.SmartAndStupidRobotGame.model.field.position.MiddlePosition;
 import melihovv.SmartAndStupidRobotGame.model.navigation.Direction;
 import melihovv.SmartAndStupidRobotGame.model.seasons.Season;
 import melihovv.SmartAndStupidRobotGame.model.seasons.SeasonsManager;
 import melihovv.SmartAndStupidRobotGame.model.seasons.SeasonsManager.SeasonsEvent;
-import melihovv.SmartAndStupidRobotGame.model.seasons.Summer;
-import melihovv.SmartAndStupidRobotGame.model.seasons.Winter;
 
 import javax.swing.*;
 import javax.swing.border.MatteBorder;
@@ -46,7 +47,9 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.io.File;
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.logging.Logger;
 
 /**
@@ -149,23 +152,14 @@ public class SmartAndStupidRobotGame extends JFrame {
         private static final int CELL_SIZE = 30;
         // Font height.
         private static final int FONT_HEIGHT = 15;
-
-        // Main summer color.
-        private final Color SUMMER_COLOR = new Color(175, 255, 175);
-        // Main winter color.
-        private final Color WINTER_COLOR = new Color(83, 201, 239);
-        // Summer grid color.
-        private final Color SUMMER_GRID_COLOR = Color.GREEN;
-        // Winter grid color.
-        private final Color WINTER_GRID_COLOR = Color.BLUE;
-        // Font color.
-        private final Color FONT_COLOR = Color.RED;
-        // Summer mire color.
-        private final Color SUMMER_MIRE_COLOR = new Color(139, 69, 19);
-        // Winter mire color.
-        private final Color WINTER_MIRE_COLOR = Color.WHITE;
-        // Wall color.
-        private final Color WALL_COLOR = Color.BLACK;
+        // Constants.
+        private Map<String, Integer> _constants =
+                new HashMap<String, Integer>() {{
+                    put("cell size", CELL_SIZE);
+                    put("font size", FONT_HEIGHT);
+                }};
+        // Colors for field objects draw.
+        private Map<String, Color> _colors = new HashMap<>();
 
         // Width of field.
         private final int _width;
@@ -220,43 +214,36 @@ public class SmartAndStupidRobotGame extends JFrame {
          */
         @Override
         public void paintComponent(final Graphics g) {
-            g.setColor(getCurrentSeasonColor(WINTER_COLOR, SUMMER_COLOR));
-            g.fillRect(0, 0, super.getWidth(), getHeight());
-
-            _offsetX = Math.abs(super.getWidth() - _width) / 2;
-            _offsetY = Math.abs(super.getHeight() - _height) / 2;
-
-            drawGrid(g);
-
             if (_isGameStarted) {
-                drawWalls(g, _model.field().objects(Wall.class));
-                drawMires(g, _model.field().objects(Mire.class));
-                drawTarget(g, _model.target());
-                drawSmartRobot(g, _model.smartRobot());
-                drawStupidRobot(g, _model.stupidRobot());
-            }
-        }
+                _colors = _model.seasonsManager().activeSeason().colors();
+                g.setColor(_colors.get("field"));
+                g.fillRect(0, 0, super.getWidth(), getHeight());
 
-        /**
-         * Returns <code>winterColor</code> if winter is now,
-         * <code>summerColor</code> if summer is now, otherwise -
-         * <code>summerColor</code>.
-         *
-         * @param winterColor Color to return when season is winter.
-         * @param summerColor Color to return when season is summer.
-         * @return Current season color.
-         */
-        private Color getCurrentSeasonColor(final Color winterColor,
-                                            final Color summerColor) {
-            Season season = _model.seasonsManager().activeSeason();
-            if (season != null) {
-                if (season instanceof Winter) {
-                    return winterColor;
-                } else if (season instanceof Summer) {
-                    return summerColor;
+                _offsetX = Math.abs(super.getWidth() - _width) / 2;
+                _offsetY = Math.abs(super.getHeight() - _height) / 2;
+
+                drawGrid(g);
+                final List<FieldObject> objects = _model.field().objects();
+                for (FieldObject obj : _model.field().objects()) {
+                    if (obj.pos() instanceof CellPosition) {
+                        obj.draw(
+                                g,
+                                leftTopCorner((CellPosition) obj.pos()),
+                                _constants,
+                                _colors
+                        );
+                    } else if (obj.pos() instanceof MiddlePosition) {
+                        obj.draw(
+                                g,
+                                leftTopCorner(
+                                        ((MiddlePosition) obj.pos()).cellPos()
+                                ),
+                                _constants,
+                                _colors
+                        );
+                    }
                 }
             }
-            return summerColor;
         }
 
         /**
@@ -266,8 +253,7 @@ public class SmartAndStupidRobotGame extends JFrame {
          */
         private void drawGrid(final Graphics g) {
             Color preserved = g.getColor();
-            g.setColor(getCurrentSeasonColor(WINTER_GRID_COLOR,
-                    SUMMER_GRID_COLOR));
+            g.setColor(_colors.get("grid"));
 
             final int height = super.getHeight();
             final int width = super.getWidth();
@@ -278,138 +264,6 @@ public class SmartAndStupidRobotGame extends JFrame {
 
                 int y = _offsetY + CELL_SIZE * (i - 1);
                 g.drawLine(0, y, width, y);
-            }
-
-            g.setColor(preserved);
-        }
-
-        /**
-         * Draws target.
-         *
-         * @param g      Graphic context.
-         * @param target Smart robot target.
-         */
-        private void drawTarget(final Graphics g, final Model.Target target) {
-            Color preserved = g.getColor();
-            g.setColor(FONT_COLOR);
-
-            Point ltc = leftTopCorner(target.pos());
-            g.drawString(
-                    "T",
-                    ltc.x + CELL_SIZE / 3,
-                    ltc.y + CELL_SIZE / 5 + FONT_HEIGHT
-            );
-
-            g.setColor(preserved);
-        }
-
-        /**
-         * Draws smart robot.
-         *
-         * @param g          Graphic context.
-         * @param smartRobot Smart robot.
-         */
-        private void drawSmartRobot(final Graphics g,
-                                    final SmartRobot smartRobot) {
-            Color preserved = g.getColor();
-            g.setColor(FONT_COLOR);
-
-            Point ltc = leftTopCorner(smartRobot.pos());
-            g.drawString(
-                    "Sm",
-                    ltc.x + CELL_SIZE / 5,
-                    ltc.y + CELL_SIZE / 5 + FONT_HEIGHT
-            );
-
-            g.setColor(preserved);
-        }
-
-        /**
-         * Draws stupid robot.
-         *
-         * @param g           Graphic context.
-         * @param stupidRobot Stupid robot.
-         */
-        private void drawStupidRobot(final Graphics g,
-                                     final StupidRobot stupidRobot) {
-            Color preserved = g.getColor();
-            g.setColor(FONT_COLOR);
-
-            Point ltc = leftTopCorner(stupidRobot.pos());
-            g.drawString(
-                    "St",
-                    ltc.x + CELL_SIZE / 3,
-                    ltc.y + CELL_SIZE / 5 + FONT_HEIGHT
-            );
-
-            g.setColor(preserved);
-        }
-
-        /**
-         * Draws mires.
-         *
-         * @param g     Graphic context.
-         * @param mires Mires.
-         */
-        private void drawMires(final Graphics g, final List<FieldObject> mires) {
-            Color preserved = g.getColor();
-            g.setColor(getCurrentSeasonColor(WINTER_MIRE_COLOR,
-                    SUMMER_MIRE_COLOR));
-
-            for (FieldObject mire : mires) {
-                Point ltc = leftTopCorner(((Mire) mire).pos());
-                g.fillRect(ltc.x + 1, ltc.y + 1, CELL_SIZE - 1, CELL_SIZE - 1);
-            }
-
-            g.setColor(preserved);
-        }
-
-        /**
-         * Draws walls.
-         *
-         * @param g     Graphic context.
-         * @param walls Walls.
-         */
-        private void drawWalls(final Graphics g, final List<FieldObject> walls) {
-            Color preserved = g.getColor();
-            g.setColor(WALL_COLOR);
-
-            for (FieldObject wall : walls) {
-                Point ltc = leftTopCorner(((Wall) wall).pos().cellPos());
-                Direction dir = ((Wall) wall).pos().direct();
-
-                if (dir.equals(Direction.north())) {
-                    g.drawLine(
-                            ltc.x + 1,
-                            ltc.y,
-                            ltc.x + CELL_SIZE - 1,
-                            ltc.y
-                    );
-                } else if (dir.equals(Direction.south())) {
-                    g.drawLine(
-                            ltc.x + 1,
-                            ltc.y + CELL_SIZE,
-                            ltc.x + CELL_SIZE - 1,
-                            ltc.y + CELL_SIZE
-                    );
-                } else if (dir.equals(Direction.west())) {
-                    g.drawLine(
-                            ltc.x,
-                            ltc.y + 1,
-                            ltc.x,
-                            ltc.y + CELL_SIZE - 1
-                    );
-                } else if (dir.equals(Direction.east())) {
-                    g.drawLine(
-                            ltc.x + CELL_SIZE,
-                            ltc.y + 1,
-                            ltc.x + CELL_SIZE,
-                            ltc.y + CELL_SIZE - 1
-                    );
-                } else {
-                    throw new IllegalArgumentException(
-                            "Direction must be north, south, west or east");
-                }
             }
 
             g.setColor(preserved);

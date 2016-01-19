@@ -43,7 +43,7 @@ import java.util.stream.Collectors;
 public class Field implements CanMoveFieldObject<CellPosition> {
 
     // Field objects.
-    private final HashMap<Class, List<FieldObject>> _objs;
+    private final Map<Class, List<FieldObject>> _objs;
     // Field dimension.
     private Dimension _dim;
     // Logger.

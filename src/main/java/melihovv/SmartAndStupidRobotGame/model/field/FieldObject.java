@@ -24,6 +24,9 @@
 
 package melihovv.SmartAndStupidRobotGame.model.field;
 
+import java.awt.*;
+import java.util.Map;
+
 /**
  * The <code>FieldObject</code> class defines game field object. It has
  * position on the game field.
@@ -68,4 +71,19 @@ public abstract class FieldObject<Position> {
 
         return false;
     }
+
+    /**
+     * Draws field object.
+     *
+     * @param g         Graphics context.
+     * @param ltc       Left top corner of cell where to draw.
+     * @param constants Such constants as font size, cell size, etc.
+     * @param colors    Colors.
+     */
+    public abstract void draw(
+            final Graphics g,
+            final Point ltc,
+            final Map<String, Integer> constants,
+            final Map<String, Color> colors
+    );
 }

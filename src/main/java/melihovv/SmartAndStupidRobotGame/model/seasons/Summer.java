@@ -30,8 +30,11 @@ import melihovv.SmartAndStupidRobotGame.model.field.Mire;
 import melihovv.SmartAndStupidRobotGame.model.field.StupidRobot;
 import melihovv.SmartAndStupidRobotGame.model.field.position.CellPosition;
 
+import java.awt.*;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * The <code>Summer</code> class defines the summer season.
@@ -40,6 +43,15 @@ public class Summer extends Season {
 
     // New mires which are created when it is raining.
     private List<Mire> _mires = new ArrayList<>();
+    // Colors to draw field objects.
+    private static Map<String, Color> _colors =
+            new HashMap<String, Color>() {{
+                put("field", new Color(175, 255, 175));
+                put("grid", Color.GREEN);
+                put("font", Color.RED);
+                put("mire", new Color(139, 69, 19));
+                put("wall", Color.BLACK);
+            }};
 
     /**
      * Constructs summer season.
@@ -89,5 +101,15 @@ public class Summer extends Season {
     public void cleanInfluence(final Field field) {
         _mires.forEach(field::removeObject);
         ((StupidRobot) field.object(StupidRobot.class)).checkIfRobotIsInMire();
+    }
+
+    /**
+     * Returns colors for field objects draw.
+     *
+     * @return Colors for field objects draw.
+     */
+    @Override
+    public Map<String, Color> colors() {
+        return _colors;
     }
 }

@@ -27,7 +27,9 @@ package melihovv.SmartAndStupidRobotGame.model.field;
 import melihovv.SmartAndStupidRobotGame.model.field.position.CellPosition;
 import melihovv.SmartAndStupidRobotGame.model.navigation.Direction;
 
+import java.awt.*;
 import java.util.List;
+import java.util.Map;
 
 /**
  * The <code>Mire</code> class defines mire on the field.
@@ -119,5 +121,34 @@ public class Mire extends ImmovableObject<CellPosition>
             return true;
         }
         return false;
+    }
+
+
+    /**
+     * Draws field object.
+     *
+     * @param g         Graphics context.
+     * @param ltc       Left top corner of cell where to draw.
+     * @param constants Such constants as font size, cell size, etc.
+     * @param colors    Colors.
+     */
+    @Override
+    public void draw(
+            final Graphics g,
+            final Point ltc,
+            final Map<String, Integer> constants,
+            final Map<String, Color> colors
+    ) {
+        Color preserved = g.getColor();
+        g.setColor(colors.get("mire"));
+
+        g.fillRect(
+                ltc.x + 1,
+                ltc.y + 1,
+                constants.get("cell size") - 1,
+                constants.get("cell size") - 1
+        );
+
+        g.setColor(preserved);
     }
 }
