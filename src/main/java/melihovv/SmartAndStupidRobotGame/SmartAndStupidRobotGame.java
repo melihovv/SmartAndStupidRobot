@@ -49,7 +49,6 @@ import java.awt.event.KeyListener;
 import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
 
@@ -230,7 +229,6 @@ public class SmartAndStupidRobotGame extends JFrame {
                 _offsetY = Math.abs(super.getHeight() - _height) / 2;
 
                 drawGrid(g);
-                final List<FieldObject> objects = _model.field().objects();
                 for (FieldObject obj : _model.field().objects()) {
                     if (obj.pos() instanceof CellPosition) {
                         obj.draw(

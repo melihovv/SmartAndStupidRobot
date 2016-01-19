@@ -30,7 +30,7 @@ import melihovv.SmartAndStupidRobotGame.model.navigation.Direction;
 
 import java.awt.*;
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
@@ -69,7 +69,7 @@ public class Field implements CanMoveFieldObject<CellPosition> {
      *                                  positive.
      */
     public Field(final Dimension dimension) throws IllegalArgumentException {
-        _objs = new HashMap<>();
+        _objs = new LinkedHashMap<>();
         setSize(dimension);
     }
 

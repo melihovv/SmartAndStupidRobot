@@ -189,60 +189,6 @@ public class Model {
             _field.setSize(new Dimension(width, height));
         }
 
-        // Add target.
-        final JsonObject target = json.get("target").getAsJsonObject();
-        if (!target.has("pos")) {
-            throw new IllegalArgumentException("Invalid situation file");
-        }
-        {
-            final JsonArray pos = target.get("pos").getAsJsonArray();
-            final int x = pos.get(0).getAsInt();
-            final int y = pos.get(1).getAsInt();
-            if (!_field.contains(new Point(x, y))) {
-                throw new IllegalArgumentException("Invalid situation file");
-            }
-            _field.addObject(
-                    new CellPosition(new Point(x, y)),
-                    _target
-            );
-        }
-
-        // Add smart robot.
-        final JsonObject smRobot = json.get("smart robot").getAsJsonObject();
-        if (!smRobot.has("pos")) {
-            throw new IllegalArgumentException("Invalid situation file");
-        }
-        {
-            final JsonArray pos = smRobot.get("pos").getAsJsonArray();
-            final int x = pos.get(0).getAsInt();
-            final int y = pos.get(1).getAsInt();
-            if (!_field.contains(new Point(x, y))) {
-                throw new IllegalArgumentException("Invalid situation file");
-            }
-            _field.addObject(
-                    new CellPosition(new Point(x, y)),
-                    new SmartRobot(_field)
-            );
-        }
-
-        // Add stupid robot.
-        final JsonObject stRobot = json.get("stupid robot").getAsJsonObject();
-        if (!stRobot.has("pos")) {
-            throw new IllegalArgumentException("Invalid situation file");
-        }
-        {
-            final JsonArray pos = stRobot.get("pos").getAsJsonArray();
-            final int x = pos.get(0).getAsInt();
-            final int y = pos.get(1).getAsInt();
-            if (!_field.contains(new Point(x, y))) {
-                throw new IllegalArgumentException("Invalid situation file");
-            }
-            _field.addObject(
-                    new CellPosition(new Point(x, y)),
-                    new StupidRobot(_field)
-            );
-        }
-
         // Add walls.
         if (json.has("walls")) {
             final JsonArray walls = json.get("walls").getAsJsonArray();
@@ -315,6 +261,60 @@ public class Model {
                         new Mire(_field)
                 );
             }
+        }
+
+        // Add target.
+        final JsonObject target = json.get("target").getAsJsonObject();
+        if (!target.has("pos")) {
+            throw new IllegalArgumentException("Invalid situation file");
+        }
+        {
+            final JsonArray pos = target.get("pos").getAsJsonArray();
+            final int x = pos.get(0).getAsInt();
+            final int y = pos.get(1).getAsInt();
+            if (!_field.contains(new Point(x, y))) {
+                throw new IllegalArgumentException("Invalid situation file");
+            }
+            _field.addObject(
+                    new CellPosition(new Point(x, y)),
+                    _target
+            );
+        }
+
+        // Add stupid robot.
+        final JsonObject stRobot = json.get("stupid robot").getAsJsonObject();
+        if (!stRobot.has("pos")) {
+            throw new IllegalArgumentException("Invalid situation file");
+        }
+        {
+            final JsonArray pos = stRobot.get("pos").getAsJsonArray();
+            final int x = pos.get(0).getAsInt();
+            final int y = pos.get(1).getAsInt();
+            if (!_field.contains(new Point(x, y))) {
+                throw new IllegalArgumentException("Invalid situation file");
+            }
+            _field.addObject(
+                    new CellPosition(new Point(x, y)),
+                    new StupidRobot(_field)
+            );
+        }
+
+        // Add smart robot.
+        final JsonObject smRobot = json.get("smart robot").getAsJsonObject();
+        if (!smRobot.has("pos")) {
+            throw new IllegalArgumentException("Invalid situation file");
+        }
+        {
+            final JsonArray pos = smRobot.get("pos").getAsJsonArray();
+            final int x = pos.get(0).getAsInt();
+            final int y = pos.get(1).getAsInt();
+            if (!_field.contains(new Point(x, y))) {
+                throw new IllegalArgumentException("Invalid situation file");
+            }
+            _field.addObject(
+                    new CellPosition(new Point(x, y)),
+                    new SmartRobot(_field)
+            );
         }
     }
 
